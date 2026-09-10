@@ -1,15 +1,17 @@
 {
   "name": "Voidmark Dynasty",
   "short_name": "Voidmark",
-  "description": "Voidmark Dynasty Clan Comms",
+  "description": "Voidmark Dynasty clan hub and communications app",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#07060d",
   "theme_color": "#07060d",
+  "orientation": "any",
   "icons": [
     {
       "src": "voidmark-dynasty.png",
-      "sizes": "2048x2048",
+      "sizes": "any",
       "type": "image/png",
       "purpose": "any maskable"
     }
