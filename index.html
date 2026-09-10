@@ -353,6 +353,7 @@
     gap:11px;
     padding:6px 4px;
     border-radius:4px;
+    position:relative;
   }
   .msg-row:hover{background:rgba(255,255,255,0.02);}
   .msg-avatar{
@@ -377,6 +378,57 @@
     white-space:pre-wrap;
   }
   .msg-row.own .msg-author{color:var(--gold);}
+  .msg-edited{font-size:10.5px;color:var(--text-lo);font-style:italic;}
+  .msg-receipt{font-size:11px;color:var(--text-lo);letter-spacing:-1px;}
+  .msg-receipt.read{color:var(--pulse);}
+  .msg-actions{
+    position:absolute;
+    top:2px;right:6px;
+    display:none;
+    gap:4px;
+    background:var(--void-1);
+    padding:2px;
+    border-radius:4px;
+  }
+  .msg-row:hover .msg-actions{display:flex;}
+  .msg-action-btn{
+    width:24px;height:24px;
+    flex:none;
+    background:var(--void-2);
+    border:1px solid var(--line);
+    color:var(--text-lo);
+    border-radius:3px;
+    font-size:12px;
+    display:flex;align-items:center;justify-content:center;
+    padding:0;
+    line-height:1;
+  }
+  .msg-action-btn:hover{border-color:var(--pulse);color:var(--text-hi);}
+  .msg-action-btn.delete-btn:hover{border-color:var(--danger);color:var(--danger);}
+  .msg-edit-input{
+    width:100%;
+    background:var(--void-0);
+    border:1px solid var(--pulse);
+    color:var(--text-hi);
+    font-family:var(--font-body);
+    font-size:14px;
+    line-height:1.45;
+    padding:6px 8px;
+    border-radius:3px;
+    resize:vertical;
+    outline:none;
+  }
+  .typing-indicator{
+    flex:none;
+    height:20px;
+    padding:0 22px 4px;
+    font-size:12px;
+    color:var(--text-lo);
+    font-style:italic;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+  }
   .system-note{
     text-align:center;
     color:var(--text-lo);
@@ -522,6 +574,7 @@
         </div>
       </div>
       <div id="messages"></div>
+      <div id="typing-indicator" class="typing-indicator hidden"></div>
       <form class="composer" id="composer-form">
         <input type="text" id="message-input" placeholder="Message the clan…" maxlength="1000" autocomplete="off">
         <button type="submit" class="send-btn" id="send-btn">Send</button>
@@ -542,17 +595,25 @@ const FieldValue = firebase.firestore.FieldValue;
 const FAKE_DOMAIN = "@voidmark.clan";
 const HEARTBEAT_MS = 20000;
 const ONLINE_WINDOW_MS = 45000;
+const TYPING_THROTTLE_MS = 2500;  // min gap between typing-timestamp writes
+const TYPING_TIMEOUT_MS = 5000;   // how long a typing timestamp is considered "live"
  
 let currentUser = null;      // firebase auth user
 let currentUsername = null;
 let currentView = "clan";    // "clan" or a uid for DM
 let usersCache = {};         // uid -> {username, mainFrame, lastSeen}
-let dmMetaCache = {};        // chatId -> {participants, unread}
+let dmMetaCache = {};        // chatId -> {participants, unread, lastRead}
 let unsubClanChat = null;
 let unsubDM = null;
 let unsubDMMeta = null;
+let unsubTyping = null;
 let heartbeatTimer = null;
 let tickTimer = null;
+let typingTickTimer = null;
+let typingCache = {};        // uid -> {username, updatedAt}  (other users typing in current view)
+let lastTypingWriteAt = 0;
+let lastRenderedMsgs = [];   // cache of currently-displayed messages, for receipt re-renders
+let editingMessageId = null; // guards against a snapshot re-render clobbering an in-progress edit
  
 /* ============================================================
    HELPERS
@@ -714,6 +775,10 @@ function enterChatScreen(){
   openClanChat();
   startHeartbeat();
  
+  // re-check every second so the typing indicator clears itself once a timestamp
+  // goes stale, even if no new Firestore snapshot arrives
+  typingTickTimer = setInterval(renderTypingIndicator, 1000);
+ 
   window.addEventListener("beforeunload", markOffline);
 }
  
@@ -725,9 +790,14 @@ function exitChatScreen(){
   if (unsubClanChat) unsubClanChat();
   if (unsubDM) unsubDM();
   if (unsubDMMeta) unsubDMMeta();
+  if (unsubTyping) unsubTyping();
   stopHeartbeat();
+  clearInterval(typingTickTimer);
   usersCache = {};
   dmMetaCache = {};
+  typingCache = {};
+  lastRenderedMsgs = [];
+  editingMessageId = null;
 }
  
 /* ============================================================
@@ -818,11 +888,13 @@ function isOnline(lastSeen){
  
 /* track unread badges across all my DMs */
 function subscribeDMMeta(){
-  db.collection("dms").where("participants", "array-contains", currentUser.uid)
+  unsubDMMeta = db.collection("dms").where("participants", "array-contains", currentUser.uid)
     .onSnapshot((qs) => {
       dmMetaCache = {};
       qs.forEach(doc => { dmMetaCache[doc.id] = doc.data(); });
       renderRoster();
+      // lastRead may have just changed for the thread we're looking at — refresh checkmarks
+      if (currentView !== "clan" && lastRenderedMsgs.length) renderMessages(lastRenderedMsgs);
     });
 }
  
@@ -849,9 +921,11 @@ function openClanChat(){
   unsubClanChat = db.collection("clanChat").orderBy("createdAt", "asc").limitToLast(200)
     .onSnapshot((qs) => {
       const msgs = [];
-      qs.forEach(doc => msgs.push(doc.data()));
+      qs.forEach(doc => msgs.push({ id: doc.id, ...doc.data() }));
       renderMessages(msgs);
     });
+ 
+  subscribeTyping();
 }
  
 /* ============================================================
@@ -871,10 +945,11 @@ function openDM(uid){
  
   const chatId = dmChatId(currentUser.uid, uid);
  
-  // reset my unread count for this thread
+  // reset my unread count for this thread, and mark it read as of now
   db.collection("dms").doc(chatId).set({
     participants: [currentUser.uid, uid],
-    unread: { [currentUser.uid]: 0 }
+    unread: { [currentUser.uid]: 0 },
+    lastRead: { [currentUser.uid]: FieldValue.serverTimestamp() }
   }, { merge: true }).catch(()=>{});
  
   $("messages").innerHTML = '<div class="system-note">Loading transmissions…</div>';
@@ -882,15 +957,22 @@ function openDM(uid){
     .orderBy("createdAt", "asc").limitToLast(200)
     .onSnapshot((qs) => {
       const msgs = [];
-      qs.forEach(doc => msgs.push(doc.data()));
+      qs.forEach(doc => msgs.push({ id: doc.id, ...doc.data() }));
       renderMessages(msgs);
     });
+ 
+  subscribeTyping();
 }
  
 /* ============================================================
    RENDER MESSAGES
 ============================================================= */
 function renderMessages(msgs){
+  lastRenderedMsgs = msgs;
+ 
+  // don't stomp on an in-progress edit box when a snapshot fires mid-edit
+  if (editingMessageId && msgs.some(m => m.id === editingMessageId)) return;
+ 
   const box = $("messages");
   const wasAtBottom = box.scrollTop + box.clientHeight >= box.scrollHeight - 40;
  
@@ -899,18 +981,39 @@ function renderMessages(msgs){
     return;
   }
  
+  const inDM = currentView !== "clan";
+  const dmMeta = inDM ? dmMetaCache[dmChatId(currentUser.uid, currentView)] : null;
+  const otherLastRead = dmMeta && dmMeta.lastRead ? dmMeta.lastRead[currentView] : null;
+ 
   box.innerHTML = msgs.map(m => {
     const own = currentUser && m.uid === currentUser.uid;
+ 
+    let receiptHtml = "";
+    if (own && inDM) {
+      const isRead = !!(otherLastRead && otherLastRead.toDate && m.createdAt && m.createdAt.toDate
+        && otherLastRead.toDate().getTime() >= m.createdAt.toDate().getTime());
+      receiptHtml = `<span class="msg-receipt ${isRead ? 'read' : ''}" title="${isRead ? 'Read' : 'Sent'}">${isRead ? '✓✓' : '✓'}</span>`;
+    }
+ 
+    const actionsHtml = own ? `
+        <div class="msg-actions">
+          <button type="button" class="msg-action-btn edit-btn" title="Edit message">✎</button>
+          <button type="button" class="msg-action-btn delete-btn" title="Delete message">🗑</button>
+        </div>` : "";
+ 
     return `
-      <div class="msg-row ${own ? 'own':''}">
+      <div class="msg-row ${own ? 'own':''}" data-id="${m.id}">
         <div class="msg-avatar">${escapeHtml(initials(m.username))}</div>
         <div class="msg-body">
           <div class="msg-meta">
             <span class="msg-author">${escapeHtml(m.username)}</span>
             <span class="msg-time" title="${escapeHtml(formatFullDateTime(m.createdAt))}">${formatTime(m.createdAt)}</span>
+            ${m.edited ? '<span class="msg-edited">(edited)</span>' : ''}
+            ${receiptHtml}
           </div>
-          <div class="msg-text">${escapeHtml(m.text)}</div>
+          <div class="msg-text" data-raw="${escapeHtml(m.text)}">${escapeHtml(m.text)}</div>
         </div>
+        ${actionsHtml}
       </div>`;
   }).join("");
  
@@ -918,6 +1021,78 @@ function renderMessages(msgs){
     box.scrollTop = box.scrollHeight;
   }
 }
+ 
+/* ============================================================
+   EDIT / DELETE OWN MESSAGES
+============================================================= */
+function currentMessagesCollectionRef(){
+  if (currentView === "clan") return db.collection("clanChat");
+  const chatId = dmChatId(currentUser.uid, currentView);
+  return db.collection("dms").doc(chatId).collection("messages");
+}
+ 
+function startEditMessage(row){
+  const msgId = row.getAttribute("data-id");
+  const textEl = row.querySelector(".msg-text");
+  if (!textEl) return;
+  const raw = textEl.getAttribute("data-raw") || "";
+ 
+  editingMessageId = msgId;
+ 
+  const input = document.createElement("textarea");
+  input.className = "msg-edit-input";
+  input.value = raw;
+  input.rows = 1;
+  textEl.replaceWith(input);
+  input.focus();
+  input.setSelectionRange(input.value.length, input.value.length);
+ 
+  let settled = false;
+  const commit = () => {
+    if (settled) return;
+    settled = true;
+    editingMessageId = null;
+    const newText = input.value.trim();
+    if (newText && newText !== raw) {
+      currentMessagesCollectionRef().doc(msgId).update({
+        text: newText,
+        edited: true,
+        editedAt: FieldValue.serverTimestamp()
+      }).catch(err => alert("Edit failed: " + (err.message || err)));
+    } else {
+      renderMessages(lastRenderedMsgs); // restore original view (also covers empty edit = no-op)
+    }
+  };
+  const cancel = () => {
+    if (settled) return;
+    settled = true;
+    editingMessageId = null;
+    renderMessages(lastRenderedMsgs);
+  };
+ 
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); commit(); }
+    else if (e.key === "Escape") { e.preventDefault(); cancel(); }
+  });
+  input.addEventListener("blur", commit);
+}
+ 
+function deleteMessage(row){
+  const msgId = row.getAttribute("data-id");
+  if (!confirm("Delete this message? This can't be undone.")) return;
+  currentMessagesCollectionRef().doc(msgId).delete()
+    .catch(err => alert("Delete failed: " + (err.message || err)));
+}
+ 
+$("messages").addEventListener("click", (e) => {
+  const editBtn = e.target.closest(".edit-btn");
+  const deleteBtn = e.target.closest(".delete-btn");
+  if (editBtn) {
+    startEditMessage(editBtn.closest(".msg-row"));
+  } else if (deleteBtn) {
+    deleteMessage(deleteBtn.closest(".msg-row"));
+  }
+});
  
 /* ============================================================
    SENDING MESSAGES
@@ -929,6 +1104,7 @@ $("composer-form").addEventListener("submit", async (e) => {
   if (!text || !currentUser) return;
   input.value = "";
   $("send-btn").disabled = true;
+  clearTypingFlag();
  
   try {
     if (currentView === "clan") {
@@ -966,6 +1142,74 @@ $("composer-form").addEventListener("submit", async (e) => {
 });
  
 /* ============================================================
+   TYPING INDICATOR
+============================================================= */
+function typingCollectionRef(){
+  if (currentView === "clan") return db.collection("typingClan");
+  const chatId = dmChatId(currentUser.uid, currentView);
+  return db.collection("dms").doc(chatId).collection("typing");
+}
+ 
+function subscribeTyping(){
+  if (unsubTyping) { unsubTyping(); unsubTyping = null; }
+  typingCache = {};
+  $("typing-indicator").classList.add("hidden");
+ 
+  unsubTyping = typingCollectionRef().onSnapshot((qs) => {
+    typingCache = {};
+    qs.forEach(doc => {
+      if (doc.id !== currentUser.uid) typingCache[doc.id] = doc.data();
+    });
+    renderTypingIndicator();
+  });
+}
+ 
+function renderTypingIndicator(){
+  const el = $("typing-indicator");
+  const now = Date.now();
+  const names = Object.values(typingCache)
+    .filter(t => t.updatedAt && t.updatedAt.toDate && (now - t.updatedAt.toDate().getTime()) < TYPING_TIMEOUT_MS)
+    .map(t => t.username);
+ 
+  if (names.length === 0) {
+    el.classList.add("hidden");
+    el.textContent = "";
+    return;
+  }
+  let text;
+  if (names.length === 1) text = `${names[0]} is typing…`;
+  else if (names.length === 2) text = `${names[0]} and ${names[1]} are typing…`;
+  else text = `${names.length} people are typing…`;
+  el.textContent = text;
+  el.classList.remove("hidden");
+}
+ 
+function writeTypingFlag(){
+  if (!currentUser) return;
+  const now = Date.now();
+  if (now - lastTypingWriteAt < TYPING_THROTTLE_MS) return;
+  lastTypingWriteAt = now;
+  typingCollectionRef().doc(currentUser.uid).set({
+    username: currentUsername,
+    updatedAt: FieldValue.serverTimestamp()
+  }).catch(()=>{});
+}
+ 
+function clearTypingFlag(){
+  if (!currentUser) return;
+  lastTypingWriteAt = 0;
+  typingCollectionRef().doc(currentUser.uid).delete().catch(()=>{});
+}
+ 
+$("message-input").addEventListener("input", () => {
+  if ($("message-input").value.length > 0) {
+    writeTypingFlag();
+  } else {
+    clearTypingFlag();
+  }
+});
+ 
+/* ============================================================
    MOBILE ROSTER TOGGLE
 ============================================================= */
 $("menu-toggle").addEventListener("click", () => {
@@ -980,4 +1224,3 @@ function closeMobileRoster(){
 </script>
 </body>
 </html>
- 
