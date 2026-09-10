@@ -575,6 +575,25 @@ function formatTime(ts){
   const time = d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
   return sameDay ? time : d.toLocaleDateString([], {month:'short', day:'numeric'}) + " " + time;
 }
+function formatFullDateTime(ts){
+  if (!ts || !ts.toDate) return "Sending…";
+  const d = ts.toDate();
+  return d.toLocaleDateString([], {weekday:'short', month:'short', day:'numeric', year:'numeric'})
+    + " · " + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+}
+function formatLastSeen(ts){
+  if (!ts || !ts.toDate) return "Last seen unknown";
+  const d = ts.toDate();
+  const diffMs = Date.now() - d.getTime();
+  const diffMin = Math.floor(diffMs / 60000);
+  if (diffMin < 1) return "Last seen just now";
+  if (diffMin < 60) return `Last seen ${diffMin}m ago`;
+  const diffHr = Math.floor(diffMin / 60);
+  if (diffHr < 24) return `Last seen ${diffHr}h ago`;
+  const diffDay = Math.floor(diffHr / 24);
+  if (diffDay < 7) return `Last seen ${diffDay}d ago`;
+  return "Last seen " + d.toLocaleDateString([], {month:'short', day:'numeric'});
+}
 function showAuthError(msg){
   const el = $("auth-error");
   el.textContent = msg;
@@ -752,6 +771,8 @@ function renderRoster(){
   const ids = Object.keys(usersCache).filter(id => id !== (currentUser && currentUser.uid));
   $("member-count").textContent = Object.keys(usersCache).length;
  
+  if (currentView !== "clan") updateDMSubtitle(currentView);
+ 
   if (ids.length === 0) {
     list.innerHTML = '<div class="system-note" style="padding:14px 4px;">No other Tenno enlisted yet.</div>';
     return;
@@ -769,7 +790,7 @@ function renderRoster(){
         <div class="avatar">${escapeHtml(initials(u.username))}<div class="status-dot ${online ? 'online':''}"></div></div>
         <div class="roster-item-info">
           <div class="roster-item-name">${escapeHtml(u.username)}</div>
-          <div class="roster-item-sub">${u.mainFrame ? escapeHtml(u.mainFrame) : (online ? "Online" : "Offline")}</div>
+          <div class="roster-item-sub">${online ? (u.mainFrame ? escapeHtml(u.mainFrame) : "Online") : escapeHtml(formatLastSeen(u.lastSeen))}</div>
         </div>
         ${unread > 0 ? `<div class="unread-badge">${unread > 9 ? '9+' : unread}</div>` : ""}
       </div>`;
@@ -781,6 +802,13 @@ function renderRoster(){
       closeMobileRoster();
     });
   });
+}
+ 
+function updateDMSubtitle(uid){
+  const u = usersCache[uid];
+  if (!u) { $("chat-subtitle").textContent = "Private message · not visible to other clan members"; return; }
+  const status = isOnline(u.lastSeen) ? "Online now" : formatLastSeen(u.lastSeen);
+  $("chat-subtitle").textContent = `Private message · ${status}`;
 }
  
 function isOnline(lastSeen){
@@ -834,7 +862,7 @@ function openDM(uid){
   $("nav-clan-chat").classList.remove("active");
   const u = usersCache[uid] || {username: "Unknown"};
   $("chat-title").textContent = u.username;
-  $("chat-subtitle").textContent = "Private message · not visible to other clan members";
+  updateDMSubtitle(uid);
   $("message-input").placeholder = `Message ${u.username}…`;
   renderRoster();
  
@@ -879,7 +907,7 @@ function renderMessages(msgs){
         <div class="msg-body">
           <div class="msg-meta">
             <span class="msg-author">${escapeHtml(m.username)}</span>
-            <span class="msg-time">${formatTime(m.createdAt)}</span>
+            <span class="msg-time" title="${escapeHtml(formatFullDateTime(m.createdAt))}">${formatTime(m.createdAt)}</span>
           </div>
           <div class="msg-text">${escapeHtml(m.text)}</div>
         </div>
@@ -952,3 +980,4 @@ function closeMobileRoster(){
 </script>
 </body>
 </html>
+ 
