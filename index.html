@@ -38,6 +38,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-storage-compat.js"></script>
  
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -498,6 +499,156 @@
     }
     #roster-backdrop.open{display:block;}
   }
+
+
+  /* ============================================================
+     VOIDMARK DYNASTY HUB ENHANCEMENTS
+     Added on top of the original UI; original styles are retained.
+  ============================================================= */
+  :root{
+    --away:#e1b85b;
+    --busy:#e8607a;
+    --info:#70b7ff;
+  }
+  .topbar{height:60px;box-shadow:0 1px 0 rgba(255,255,255,.015);}
+  .me-tag{cursor:pointer;padding:6px 8px;border-radius:4px;transition:background .15s;}
+  .me-tag:hover{background:var(--void-2);}
+  .role-chip{
+    display:inline-flex;align-items:center;
+    margin-left:6px;padding:2px 6px;border-radius:999px;
+    border:1px solid rgba(201,168,106,.45);color:var(--gold);
+    font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  }
+  .icon-btn{
+    width:35px;height:35px;display:flex;align-items:center;justify-content:center;
+    background:transparent;border:1px solid var(--line);color:var(--text-lo);
+    border-radius:3px;position:relative;font-size:15px;
+  }
+  .icon-btn:hover{border-color:var(--pulse);color:var(--text-hi);}
+  .notif-count{
+    position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;
+    display:flex;align-items:center;justify-content:center;padding:0 4px;
+    border-radius:9px;background:var(--danger);color:#fff;font-size:10px;font-weight:700;
+  }
+  .roster-nav-item.channel-nav.active{background:var(--void-3);}
+  .channel-symbol{width:13px;text-align:center;color:var(--text-lo);font-weight:700;}
+  .roster-nav-item.active .channel-symbol{color:var(--gold);}
+  .member-role{color:var(--gold);font-size:9px;margin-left:4px;text-transform:uppercase;}
+  .avatar img,.msg-avatar img{width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;}
+  .avatar,.msg-avatar{overflow:visible;}
+  .avatar > img,.msg-avatar > img{overflow:hidden;}
+  .status-dot.away{background:var(--away);}
+  .status-dot.busy{background:var(--busy);}
+  .status-dot.invisible{background:#4a465e;}
+  .chat-header{min-height:52px;height:auto;padding-top:7px;padding-bottom:7px;}
+  .chat-header-actions{margin-left:auto;display:flex;gap:7px;align-items:center;}
+  .pinned-strip{
+    flex:none;padding:8px 20px;border-bottom:1px solid var(--line);
+    background:rgba(201,168,106,.055);color:var(--gold);font-size:11.5px;
+    cursor:pointer;display:flex;align-items:center;gap:8px;
+  }
+  .pinned-strip:hover{background:rgba(201,168,106,.09);}
+  .reply-preview{
+    flex:none;display:flex;align-items:center;gap:10px;padding:8px 20px;
+    border-top:1px solid var(--line);background:var(--void-1);font-size:11.5px;color:var(--text-lo);
+  }
+  .reply-preview b{color:var(--gold);}
+  .reply-preview .reply-copy{min-width:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .reply-preview button{background:transparent;border:none;color:var(--text-lo);font-size:16px;padding:0 4px;}
+  .reply-preview button:hover{color:var(--danger);}
+  .date-divider{display:flex;align-items:center;gap:10px;color:var(--text-lo);font-size:10px;text-transform:uppercase;letter-spacing:.7px;margin:15px 0 10px;}
+  .date-divider::before,.date-divider::after{content:"";height:1px;background:var(--line);flex:1;}
+  .msg-row.compact{padding-top:2px;padding-bottom:2px;}
+  .msg-row.compact .msg-avatar{visibility:hidden;}
+  .msg-row.compact .msg-meta{display:none;}
+  .msg-row.compact .msg-body{padding-top:1px;}
+  .msg-body{flex:1;min-width:0;}
+  .msg-reply{
+    border-left:2px solid var(--pulse);padding:3px 7px;margin:1px 0 4px;
+    font-size:10.5px;color:var(--text-lo);background:rgba(139,111,232,.055);
+    border-radius:0 3px 3px 0;cursor:pointer;max-width:650px;
+  }
+  .msg-reply b{color:var(--pulse);}
+  .mention{color:var(--gold-bright);font-weight:600;background:rgba(201,168,106,.08);border-radius:3px;padding:0 2px;}
+  .pin-mark{font-size:10px;color:var(--gold);}
+  .reaction-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px;}
+  .reaction-pill{
+    border:1px solid var(--line);background:var(--void-2);color:var(--text-hi);
+    border-radius:999px;font-size:11px;padding:2px 7px;line-height:18px;
+  }
+  .reaction-pill.mine{border-color:var(--pulse);background:rgba(139,111,232,.12);}
+  .reaction-picker{display:flex;gap:2px;}
+  .reaction-picker button{width:26px;height:24px;background:var(--void-2);border:1px solid var(--line);border-radius:3px;padding:0;font-size:13px;}
+  .reaction-picker button:hover{border-color:var(--pulse);}
+  .msg-action-btn.pin-btn.active{color:var(--gold);border-color:var(--gold);}
+  .system-note.error{color:var(--danger);}
+
+  /* Squad finder */
+  #squad-panel{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .squad-header{height:56px;flex:none;display:flex;align-items:center;padding:0 20px;border-bottom:1px solid var(--line);gap:12px;}
+  .squad-header h2{font-family:var(--font-display);font-size:17px;margin:0;}
+  .squad-header p{font-size:11px;color:var(--text-lo);margin:1px 0 0;}
+  .squad-grid{flex:1;overflow-y:auto;padding:18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;align-content:start;}
+  .squad-card{background:linear-gradient(180deg,var(--void-2),var(--void-1));border:1px solid var(--line);border-radius:5px;padding:14px;position:relative;}
+  .squad-card.closed{opacity:.65;}
+  .squad-card h3{font-family:var(--font-display);font-size:16px;margin:0 0 3px;}
+  .squad-meta{font-size:10.5px;color:var(--text-lo);margin-bottom:12px;}
+  .squad-details{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px;}
+  .squad-kv{background:var(--void-0);border:1px solid var(--line);padding:7px;border-radius:3px;}
+  .squad-kv span{display:block;color:var(--text-lo);font-size:9px;text-transform:uppercase;letter-spacing:.6px;}
+  .squad-kv b{display:block;font-size:11.5px;margin-top:2px;}
+  .squad-note{font-size:12px;color:#d8d3ec;line-height:1.4;min-height:34px;}
+  .squad-members{font-size:10px;color:var(--text-lo);margin-top:10px;}
+  .squad-actions{display:flex;gap:7px;margin-top:11px;}
+
+  /* Modal / profile / admin / notifications */
+  .modal-root{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.67);backdrop-filter:blur(3px);}
+  .modal{width:min(620px,100%);max-height:min(760px,88vh);display:flex;flex-direction:column;background:linear-gradient(180deg,var(--void-2),var(--void-1));border:1px solid var(--line);border-radius:5px;box-shadow:0 24px 80px rgba(0,0,0,.5);}
+  .modal.wide{width:min(850px,100%);}
+  .modal-head{display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line);}
+  .modal-head h2{font-family:var(--font-display);font-size:18px;margin:0;}
+  .modal-close{margin-left:auto;background:transparent;border:none;color:var(--text-lo);font-size:22px;line-height:1;}
+  .modal-close:hover{color:var(--text-hi);}
+  .modal-body{overflow-y:auto;padding:16px;}
+  .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;}
+  .small-btn{background:transparent;border:1px solid var(--line);color:var(--text-lo);font-size:11px;padding:7px 10px;border-radius:3px;}
+  .small-btn:hover{border-color:var(--pulse);color:var(--text-hi);}
+  .small-btn.primary{background:var(--pulse);border-color:var(--pulse);color:#0d0a1a;font-weight:700;}
+  .small-btn.danger{border-color:rgba(232,96,122,.55);color:var(--danger);}
+  .small-btn:disabled{opacity:.45;cursor:default;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .form-span{grid-column:1/-1;}
+  .modal .field input,.modal .field select,.modal .field textarea{width:100%;background:var(--void-0);border:1px solid var(--line);color:var(--text-hi);padding:10px 11px;border-radius:3px;outline:none;}
+  .modal .field textarea{resize:vertical;}
+  .modal .field input:focus,.modal .field select:focus,.modal .field textarea:focus{border-color:var(--pulse);}
+  .profile-top{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+  .profile-avatar{width:70px;height:70px;border:1px solid var(--line);background:var(--void-3);border-radius:7px;display:flex;align-items:center;justify-content:center;font:700 24px var(--font-display);color:var(--gold);overflow:hidden;flex:none;}
+  .profile-avatar img{width:100%;height:100%;object-fit:cover;}
+  .profile-name{font:700 22px var(--font-display);}
+  .profile-meta{font-size:11px;color:var(--text-lo);margin-top:3px;}
+  .admin-user{display:grid;grid-template-columns:minmax(130px,1fr) 135px auto auto;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);}
+  .admin-user:last-child{border-bottom:none;}
+  .admin-user .name{font-size:12.5px;font-weight:600;}
+  .admin-user .sub{font-size:10px;color:var(--text-lo);margin-top:2px;}
+  .admin-user select{background:var(--void-0);border:1px solid var(--line);color:var(--text-hi);padding:7px;border-radius:3px;font-size:11px;}
+  .notification-item{padding:10px;border:1px solid var(--line);border-radius:4px;margin-bottom:8px;cursor:pointer;background:var(--void-1);}
+  .notification-item.unread{border-color:rgba(139,111,232,.55);background:rgba(139,111,232,.07);}
+  .notification-title{font-size:12px;font-weight:600;}
+  .notification-text{font-size:11px;color:var(--text-lo);margin-top:3px;}
+  .notification-time{font-size:9.5px;color:var(--text-lo);margin-top:5px;}
+  #toast-stack{position:fixed;right:14px;bottom:14px;z-index:130;display:flex;flex-direction:column;gap:7px;pointer-events:none;}
+  .toast{width:min(330px,calc(100vw - 28px));background:var(--void-2);border:1px solid var(--line);border-left:3px solid var(--pulse);border-radius:4px;padding:10px 12px;box-shadow:0 12px 35px rgba(0,0,0,.4);animation:toastIn .18s ease-out;}
+  .toast b{font-size:11.5px;display:block;}.toast span{font-size:10.5px;color:var(--text-lo);display:block;margin-top:2px;}
+  @keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  @media (max-width:760px){
+    .topbar{padding:0 10px;gap:7px;}.topbar .clan-name{font-size:16px;}.topbar #admin-panel-btn{display:none!important;}
+    .chat-header{padding-left:13px;padding-right:13px;}.pinned-strip,.reply-preview{padding-left:13px;padding-right:13px;}
+    #messages{padding-left:10px;padding-right:10px;}.composer{padding-left:10px;padding-right:10px;}
+    .form-grid{grid-template-columns:1fr;}.form-span{grid-column:auto;}.admin-user{grid-template-columns:1fr auto;}.admin-user select{grid-column:1/2;}.admin-user .small-btn{grid-row:2;}
+    .squad-grid{grid-template-columns:1fr;padding:12px;}
+  }
+
 </style>
 </head>
 <body>
@@ -554,16 +705,37 @@
     <button id="menu-toggle">☰</button>
     <div class="clan-name">VOIDMARK <span>DYNASTY</span></div>
     <div class="spacer"></div>
-    <div class="me-tag">Signed in as <b id="me-username"></b></div>
+    <div class="me-tag" id="me-profile-btn" title="Open your profile">Signed in as <b id="me-username"></b><span class="role-chip" id="me-role">Member</span></div>
+    <button class="btn-ghost hidden" id="admin-panel-btn">Clan Management</button>
+    <button class="icon-btn" id="notifications-btn" title="Notifications">🔔<span id="notif-count" class="notif-count hidden">0</span></button>
     <button class="btn-ghost" id="logout-btn">Log out</button>
   </div>
  
   <div class="body-wrap">
     <div id="roster-backdrop"></div>
     <div id="roster-panel">
-      <div class="roster-list" style="padding-top:10px;">
-        <div class="roster-nav-item active" id="nav-clan-chat">
-          <div class="dot-icon"></div> Clan Comms
+      <div class="roster-list" id="channel-list" style="padding-top:10px;flex:none;max-height:320px;">
+        <div class="roster-header" style="border:0;padding:4px 10px 7px;">Channels</div>
+        <div class="roster-nav-item channel-nav active" id="nav-clan-chat" data-view="clan">
+          <div class="channel-symbol">#</div> Clan Comms
+        </div>
+        <div class="roster-nav-item channel-nav" data-channel="announcements">
+          <div class="channel-symbol">◆</div> Announcements <span style="margin-left:auto;color:var(--gold);font-size:10px;">STAFF</span>
+        </div>
+        <div class="roster-nav-item channel-nav" data-channel="squad-recruitment">
+          <div class="channel-symbol">#</div> Squad Recruitment
+        </div>
+        <div class="roster-nav-item channel-nav" data-channel="trading">
+          <div class="channel-symbol">#</div> Trading
+        </div>
+        <div class="roster-nav-item channel-nav" data-channel="builds">
+          <div class="channel-symbol">#</div> Builds
+        </div>
+        <div class="roster-nav-item channel-nav" data-channel="off-topic">
+          <div class="channel-symbol">#</div> Off Topic
+        </div>
+        <div class="roster-nav-item" id="nav-squad-finder">
+          <div class="channel-symbol">⚔</div> Squad Finder
         </div>
       </div>
       <div class="roster-header">Members — <span id="member-count">0</span></div>
@@ -576,17 +748,45 @@
           <div class="chat-header-title" id="chat-title">Clan Comms</div>
           <div class="chat-header-sub" id="chat-subtitle">Visible to all of Voidmark Dynasty</div>
         </div>
+        <div class="chat-header-actions">
+          <button type="button" class="btn-ghost" id="show-pins-btn">📌 Pins</button>
+        </div>
       </div>
+      <div id="pinned-strip" class="pinned-strip hidden">📌 <span id="pinned-strip-text"></span></div>
       <div id="messages"></div>
       <div id="typing-indicator" class="typing-indicator hidden"></div>
+      <div id="reply-preview" class="reply-preview hidden">
+        <div class="reply-copy">Replying to <b id="reply-user"></b>: <span id="reply-text"></span></div>
+        <button type="button" id="cancel-reply" title="Cancel reply">×</button>
+      </div>
       <form class="composer" id="composer-form">
         <input type="text" id="message-input" placeholder="Message the clan…" maxlength="1000" autocomplete="off">
         <button type="submit" class="send-btn" id="send-btn">Send</button>
       </form>
     </div>
+
+    <div id="squad-panel" class="hidden">
+      <div class="squad-header">
+        <div>
+          <h2>Squad Finder</h2>
+          <p>Find clanmates for missions, relics, Steel Path, Railjack and more.</p>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn-ghost" id="create-squad-btn">+ Create Squad</button>
+      </div>
+      <div id="squad-grid" class="squad-grid"></div>
+    </div>
   </div>
 </div>
  
+<div id="modal-root" class="modal-root hidden">
+  <div class="modal" id="modal-card">
+    <div class="modal-head"><h2 id="modal-title"></h2><button class="modal-close" id="modal-close" type="button">×</button></div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+<div id="toast-stack"></div>
+
 <script>
 /* ============================================================
    FIREBASE INIT
@@ -594,6 +794,7 @@
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
+const storage = firebase.storage();
 const FieldValue = firebase.firestore.FieldValue;
  
 const FAKE_DOMAIN = "@voidmark.clan";
@@ -601,7 +802,19 @@ const HEARTBEAT_MS = 20000;
 const ONLINE_WINDOW_MS = 45000;
 const TYPING_THROTTLE_MS = 2500;  // min gap between typing-timestamp writes
 const TYPING_TIMEOUT_MS = 5000;   // how long a typing timestamp is considered "live"
- 
+
+const CHANNELS = {
+  announcements: {name:"Announcements", subtitle:"Official Voidmark Dynasty notices", staffOnly:true},
+  "squad-recruitment": {name:"Squad Recruitment", subtitle:"Looking for Tenno? Post here."},
+  trading: {name:"Trading", subtitle:"Clan trading, price checks and item requests"},
+  builds: {name:"Builds", subtitle:"Share Warframe, weapon and companion builds"},
+  "off-topic": {name:"Off Topic", subtitle:"Anything outside the Origin System"}
+};
+const ROLE_ORDER = ["Recruit","Member","Moderator","Officer","Warlord","Founder"];
+const STAFF_ROLES = new Set(["Moderator","Officer","Warlord","Founder"]);
+const MANAGER_ROLES = new Set(["Warlord","Founder"]);
+const REACTION_EMOJIS = ["👍","❤️","😂","🔥","👀"];
+
 let currentUser = null;      // firebase auth user
 let currentUsername = null;
 let currentIsAdmin = false;  // mirrors users/{me}.isAdmin, kept live via unsubMe
@@ -620,7 +833,13 @@ let typingCache = {};        // uid -> {username, updatedAt}  (other users typin
 let lastTypingWriteAt = 0;
 let lastRenderedMsgs = [];   // cache of currently-displayed messages, for receipt re-renders
 let editingMessageId = null; // guards against a snapshot re-render clobbering an in-progress edit
- 
+let currentRole = "Member";
+let unsubChannel = null;
+let unsubNotifications = null;
+let unsubSquads = null;
+let notificationsCache = [];
+let replyingTo = null;
+
 /* ============================================================
    HELPERS
 ============================================================= */
@@ -630,6 +849,88 @@ function escapeHtml(s){
 }
 function initials(name){
   return (name || "?").slice(0,2).toUpperCase();
+}
+function getRole(u){
+  if (!u) return "Member";
+  if (ROLE_ORDER.includes(u.role)) return u.role;
+  return u.isAdmin === true ? "Warlord" : "Member";
+}
+function isStaffUser(u){ return STAFF_ROLES.has(getRole(u)) || (u && u.isAdmin === true); }
+function canModerate(){ return currentIsAdmin || STAFF_ROLES.has(currentRole); }
+function canManageRanks(){ return currentIsAdmin || MANAGER_ROLES.has(currentRole); }
+function canPostAnnouncements(){ return currentIsAdmin || ["Officer","Warlord","Founder"].includes(currentRole); }
+function safeAttr(s){ return escapeHtml(String(s || "")); }
+function avatarHtml(u, fallbackName, cls=""){
+  const url = u && u.avatarUrl;
+  return url ? `<img class="${cls}" src="${safeAttr(url)}" alt="">` : escapeHtml(initials((u&&u.username)||fallbackName));
+}
+function effectiveStatus(u){
+  if (!u || u.banned === true || u.status === "invisible") return "offline";
+  if (!isOnline(u.lastSeen)) return "offline";
+  if (u.status === "away") return "away";
+  if (u.status === "busy") return "busy";
+  return "online";
+}
+function statusText(u){
+  const s = effectiveStatus(u);
+  if (s === "online") return u && u.customStatus ? u.customStatus : "Online";
+  if (s === "away") return u && u.customStatus ? `Away · ${u.customStatus}` : "Away";
+  if (s === "busy") return u && u.customStatus ? `Busy · ${u.customStatus}` : "Busy";
+  return formatLastSeen(u && u.lastSeen);
+}
+function relativeTime(ts){
+  if (!ts || !ts.toDate) return "just now";
+  const sec = Math.max(0, Math.floor((Date.now()-ts.toDate().getTime())/1000));
+  if (sec < 60) return "just now";
+  const min = Math.floor(sec/60); if (min < 60) return `${min}m ago`;
+  const hr = Math.floor(min/60); if (hr < 24) return `${hr}h ago`;
+  const day = Math.floor(hr/24); return day < 7 ? `${day}d ago` : ts.toDate().toLocaleDateString();
+}
+function formatMessageText(s){
+  return escapeHtml(String(s || "")).replace(/(^|[^A-Za-z0-9_])@([A-Za-z0-9_]{3,20})\b/g, '$1<span class="mention">@$2</span>');
+}
+function dateLabel(ts){
+  if (!ts || !ts.toDate) return "Today";
+  const d = ts.toDate(), now = new Date();
+  const a = new Date(d.getFullYear(),d.getMonth(),d.getDate());
+  const b = new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  const diff = Math.round((b-a)/86400000);
+  if (diff===0) return "Today"; if (diff===1) return "Yesterday";
+  return d.toLocaleDateString([], {weekday:'short',month:'short',day:'numeric',year:d.getFullYear()===now.getFullYear()?undefined:'numeric'});
+}
+function sameMessageGroup(a,b){
+  if (!a || !b || a.uid !== b.uid || !a.createdAt || !b.createdAt || !a.createdAt.toDate || !b.createdAt.toDate) return false;
+  return Math.abs(b.createdAt.toDate().getTime()-a.createdAt.toDate().getTime()) < 5*60*1000 && a.createdAt.toDate().toDateString()===b.createdAt.toDate().toDateString();
+}
+function selectNav(selector){
+  document.querySelectorAll('.channel-nav,#nav-squad-finder').forEach(el=>el.classList.remove('active'));
+  const el = document.querySelector(selector); if (el) el.classList.add('active');
+}
+function showChatPanel(){ $("chat-panel").classList.remove("hidden"); $("squad-panel").classList.add("hidden"); }
+function clearReply(){
+  replyingTo = null; $("reply-preview").classList.add("hidden");
+}
+function setReply(m){
+  replyingTo = {id:m.id, username:m.username || "Tenno", text:String(m.text||"").slice(0,120)};
+  $("reply-user").textContent = replyingTo.username; $("reply-text").textContent = replyingTo.text;
+  $("reply-preview").classList.remove("hidden"); $("message-input").focus();
+}
+function openModal(title, body, wide=false){
+  $("modal-title").textContent = title; $("modal-body").innerHTML = body;
+  $("modal-card").classList.toggle("wide", !!wide); $("modal-root").classList.remove("hidden");
+}
+function closeModal(){ $("modal-root").classList.add("hidden"); $("modal-body").innerHTML=""; }
+function toast(title,text=""){
+  const el=document.createElement("div"); el.className="toast";
+  const b=document.createElement("b"); b.textContent=title; el.appendChild(b);
+  if(text){const s=document.createElement("span");s.textContent=text;el.appendChild(s);} $("toast-stack").appendChild(el);
+  setTimeout(()=>el.remove(),4200);
+}
+function messageViewInfo(){
+  if(currentView==="clan") return {viewType:"channel",viewId:"clan"};
+  if(typeof currentView==="string" && currentView.startsWith("channel:")) return {viewType:"channel",viewId:currentView.slice(8)};
+  if(currentView==="squads") return {viewType:"squads",viewId:"squads"};
+  return {viewType:"dm",viewId:currentView};
 }
 function dmChatId(uidA, uidB){
   return [uidA, uidB].sort().join("_");
@@ -739,6 +1040,15 @@ $("register-form").addEventListener("submit", async (e) => {
       username: username,
       usernameLower: username.toLowerCase(),
       mainFrame: mainFrame || "",
+      masteryRank: "",
+      platform: "",
+      favoriteWeapon: "",
+      avatarUrl: "",
+      status: "online",
+      customStatus: "",
+      role: "Recruit",
+      isAdmin: false,
+      banned: false,
       createdAt: FieldValue.serverTimestamp(),
       lastSeen: FieldValue.serverTimestamp()
     });
@@ -757,7 +1067,8 @@ auth.onAuthStateChanged(async (user) => {
     const snap = await db.collection("users").doc(user.uid).get();
     const data = snap.exists ? snap.data() : {username: user.email.split("@")[0]};
     currentUsername = data.username;
-    currentIsAdmin = data.isAdmin === true;
+    currentRole = getRole(data);
+    currentIsAdmin = data.isAdmin === true || STAFF_ROLES.has(currentRole);
  
     // Live-watch my own user doc so an admin toggling my isAdmin/banned flag
     // takes effect immediately without needing to reload.
@@ -773,8 +1084,13 @@ auth.onAuthStateChanged(async (user) => {
         return;
       }
       currentUsername = d.username || currentUsername;
-      currentIsAdmin = d.isAdmin === true;
-      if (currentUser) $("me-username").textContent = currentUsername;
+      currentRole = getRole(d);
+      currentIsAdmin = d.isAdmin === true || STAFF_ROLES.has(currentRole);
+      if (currentUser) {
+        $("me-username").textContent = currentUsername;
+        $("me-role").textContent = currentRole;
+        $("admin-panel-btn").classList.toggle("hidden", !canModerate());
+      }
       // admin status can change which action buttons render on messages/roster
       if (lastRenderedMsgs.length) renderMessages(lastRenderedMsgs);
       renderRoster();
@@ -799,9 +1115,12 @@ function enterChatScreen(){
   $("auth-screen").classList.add("hidden");
   $("chat-screen").classList.remove("hidden");
   $("me-username").textContent = currentUsername;
+  $("me-role").textContent = currentRole;
+  $("admin-panel-btn").classList.toggle("hidden", !canModerate());
  
   subscribeRoster();
   subscribeDMMeta();
+  subscribeNotifications();
   openClanChat();
   startHeartbeat();
  
@@ -818,17 +1137,22 @@ function exitChatScreen(){
   $("login-username").focus();
  
   if (unsubClanChat) unsubClanChat();
+  if (unsubChannel) { unsubChannel(); unsubChannel = null; }
   if (unsubDM) unsubDM();
   if (unsubDMMeta) unsubDMMeta();
   if (unsubTyping) unsubTyping();
+  if (unsubNotifications) { unsubNotifications(); unsubNotifications = null; }
+  if (unsubSquads) { unsubSquads(); unsubSquads = null; }
   if (unsubMe) { unsubMe(); unsubMe = null; }
   stopHeartbeat();
   clearInterval(typingTickTimer);
   usersCache = {};
   dmMetaCache = {};
   typingCache = {};
+  notificationsCache = [];
   lastRenderedMsgs = [];
   editingMessageId = null;
+  clearReply();
 }
  
 /* ============================================================
@@ -871,23 +1195,24 @@ function renderRoster(){
   const list = $("roster-list");
   const ids = Object.keys(usersCache).filter(id => id !== (currentUser && currentUser.uid));
   $("member-count").textContent = Object.keys(usersCache).length;
- 
-  if (currentView !== "clan") updateDMSubtitle(currentView);
- 
+
+  if (currentView !== "clan" && currentView !== "squads" && !(typeof currentView === "string" && currentView.startsWith("channel:"))) updateDMSubtitle(currentView);
+
   if (ids.length === 0) {
     list.innerHTML = '<div class="system-note" style="padding:14px 4px;">No other Tenno enlisted yet.</div>';
     return;
   }
- 
+
   list.innerHTML = ids.map(uid => {
     const u = usersCache[uid];
-    const online = isOnline(u.lastSeen);
+    const state = effectiveStatus(u);
     const chatId = currentUser ? dmChatId(currentUser.uid, uid) : null;
     const meta = dmMetaCache[chatId];
     const unread = meta && meta.unread && meta.unread[currentUser.uid] ? meta.unread[currentUser.uid] : 0;
     const active = currentView === uid ? "active" : "";
     const banned = u.banned === true;
-    const banBtn = currentIsAdmin ? `
+    const role = getRole(u);
+    const banBtn = canModerate() ? `
         <button type="button" class="btn-ghost roster-ban-btn" data-uid="${uid}"
           title="${banned ? 'Lift suspension' : 'Suspend this user'}"
           style="flex:none;padding:4px 8px;font-size:11px;${banned ? 'border-color:var(--online);color:var(--online);' : 'border-color:var(--danger);color:var(--danger);'}">
@@ -895,30 +1220,27 @@ function renderRoster(){
         </button>` : "";
     return `
       <div class="roster-item ${active}" data-uid="${uid}" style="${banned ? 'opacity:0.5;' : ''}">
-        <div class="avatar">${escapeHtml(initials(u.username))}<div class="status-dot ${online ? 'online':''}"></div></div>
+        <div class="avatar roster-profile-trigger" title="View profile">${avatarHtml(u,u.username)}<div class="status-dot ${state}"></div></div>
         <div class="roster-item-info">
-          <div class="roster-item-name">${escapeHtml(u.username)}${u.isAdmin ? ' <span style="color:var(--gold);font-size:10px;">★</span>' : ''}${banned ? ' <span style="color:var(--danger);font-size:10px;">(banned)</span>' : ''}</div>
-          <div class="roster-item-sub">${online ? (u.mainFrame ? escapeHtml(u.mainFrame) : "Online") : escapeHtml(formatLastSeen(u.lastSeen))}</div>
+          <div class="roster-item-name">${escapeHtml(u.username)} <span class="member-role">${escapeHtml(role)}</span>${banned ? ' <span style="color:var(--danger);font-size:10px;">(banned)</span>' : ''}</div>
+          <div class="roster-item-sub">${escapeHtml(statusText(u))}</div>
         </div>
         ${unread > 0 ? `<div class="unread-badge">${unread > 9 ? '9+' : unread}</div>` : ""}
         ${banBtn}
       </div>`;
   }).join("");
- 
+
   list.querySelectorAll(".roster-item").forEach(el => {
     el.addEventListener("click", (e) => {
-      if (e.target.closest(".roster-ban-btn")) return; // handled separately below
-      openDM(el.getAttribute("data-uid"));
-      closeMobileRoster();
+      const uid = el.getAttribute("data-uid");
+      if (e.target.closest(".roster-ban-btn")) return;
+      if (e.target.closest(".roster-profile-trigger")) { showProfile(uid); return; }
+      openDM(uid); closeMobileRoster();
     });
   });
- 
+
   list.querySelectorAll(".roster-ban-btn").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const uid = btn.getAttribute("data-uid");
-      toggleBan(uid);
-    });
+    btn.addEventListener("click", (e) => { e.stopPropagation(); toggleBan(btn.getAttribute("data-uid")); });
   });
 }
  
@@ -977,23 +1299,47 @@ $("nav-clan-chat").addEventListener("click", () => {
  
 function openClanChat(){
   currentView = "clan";
-  $("nav-clan-chat").classList.add("active");
+  showChatPanel(); clearReply(); selectNav('#nav-clan-chat');
   $("chat-title").textContent = "Clan Comms";
   $("chat-subtitle").textContent = "Visible to all of Voidmark Dynasty";
   $("message-input").placeholder = "Message the clan…";
+  $("message-input").disabled = false; $("send-btn").disabled = false;
   renderRoster();
- 
+
   if (unsubDM) { unsubDM(); unsubDM = null; }
+  if (unsubChannel) { unsubChannel(); unsubChannel = null; }
   if (unsubClanChat) unsubClanChat();
- 
+
   $("messages").innerHTML = '<div class="system-note">Loading transmissions…</div>';
   unsubClanChat = db.collection("clanChat").orderBy("createdAt", "asc").limitToLast(200)
     .onSnapshot((qs) => {
       const msgs = [];
       qs.forEach(doc => msgs.push({ id: doc.id, ...doc.data() }));
       renderMessages(msgs);
-    });
- 
+    }, err => { $("messages").innerHTML = `<div class="system-note error">Could not load Clan Comms: ${escapeHtml(err.message)}</div>`; });
+
+  subscribeTyping();
+}
+
+function openChannel(channelId){
+  const ch = CHANNELS[channelId]; if (!ch) return;
+  currentView = `channel:${channelId}`;
+  showChatPanel(); clearReply(); selectNav(`[data-channel="${channelId}"]`);
+  $("chat-title").textContent = ch.name;
+  $("chat-subtitle").textContent = ch.subtitle;
+  $("message-input").placeholder = `Message #${ch.name.toLowerCase()}…`;
+  const blocked = !!ch.staffOnly && !canPostAnnouncements();
+  $("message-input").disabled = blocked; $("send-btn").disabled = blocked;
+  if (blocked) $("message-input").placeholder = "Only Officers, Warlords and Founders can post announcements";
+  renderRoster();
+
+  if (unsubClanChat) { unsubClanChat(); unsubClanChat = null; }
+  if (unsubDM) { unsubDM(); unsubDM = null; }
+  if (unsubChannel) unsubChannel();
+  $("messages").innerHTML = '<div class="system-note">Loading transmissions…</div>';
+  unsubChannel = db.collection("channels").doc(channelId).collection("messages").orderBy("createdAt","asc").limitToLast(200)
+    .onSnapshot(qs=>{ const msgs=[]; qs.forEach(doc=>msgs.push({id:doc.id,...doc.data()})); renderMessages(msgs); },
+      err=>{ $("messages").innerHTML=`<div class="system-note error">Could not load #${escapeHtml(ch.name)}: ${escapeHtml(err.message)}</div>`; });
   subscribeTyping();
 }
  
@@ -1002,7 +1348,7 @@ function openClanChat(){
 ============================================================= */
 function openDM(uid){
   currentView = uid;
-  $("nav-clan-chat").classList.remove("active");
+  showChatPanel(); clearReply(); selectNav('__none__');
   const u = usersCache[uid] || {username: "Unknown"};
   $("chat-title").textContent = u.username;
   updateDMSubtitle(uid);
@@ -1010,6 +1356,7 @@ function openDM(uid){
   renderRoster();
  
   if (unsubClanChat) { unsubClanChat(); unsubClanChat = null; }
+  if (unsubChannel) { unsubChannel(); unsubChannel = null; }
   if (unsubDM) unsubDM();
  
   const chatId = dmChatId(currentUser.uid, uid);
@@ -1038,59 +1385,101 @@ function openDM(uid){
 ============================================================= */
 function renderMessages(msgs){
   lastRenderedMsgs = msgs;
- 
-  // don't stomp on an in-progress edit box when a snapshot fires mid-edit
   if (editingMessageId && msgs.some(m => m.id === editingMessageId)) return;
- 
+
   const box = $("messages");
   const wasAtBottom = box.scrollTop + box.clientHeight >= box.scrollHeight - 40;
- 
+  updatePinnedStrip(msgs);
+
   if (msgs.length === 0) {
     box.innerHTML = '<div class="system-note">No transmissions yet. Say something to the Dynasty.</div>';
     return;
   }
- 
-  const inDM = currentView !== "clan";
+
+  const inDM = currentView !== "clan" && currentView !== "squads" && !(typeof currentView === "string" && currentView.startsWith("channel:"));
   const dmMeta = inDM ? dmMetaCache[dmChatId(currentUser.uid, currentView)] : null;
   const otherLastRead = dmMeta && dmMeta.lastRead ? dmMeta.lastRead[currentView] : null;
- 
-  box.innerHTML = msgs.map(m => {
+  let lastDate = "";
+
+  box.innerHTML = msgs.map((m, idx) => {
     const own = currentUser && m.uid === currentUser.uid;
- 
+    const user = usersCache[m.uid] || {username:m.username};
+    const compact = sameMessageGroup(msgs[idx-1], m);
+    const day = m.createdAt && m.createdAt.toDate ? m.createdAt.toDate().toDateString() : "pending";
+    const divider = day !== lastDate ? `<div class="date-divider">${escapeHtml(dateLabel(m.createdAt))}</div>` : "";
+    lastDate = day;
+
     let receiptHtml = "";
     if (own && inDM) {
       const isRead = !!(otherLastRead && otherLastRead.toDate && m.createdAt && m.createdAt.toDate
         && otherLastRead.toDate().getTime() >= m.createdAt.toDate().getTime());
       receiptHtml = `<span class="msg-receipt ${isRead ? 'read' : ''}" title="${isRead ? 'Read' : 'Sent'}">${isRead ? '✓✓' : '✓'}</span>`;
     }
- 
+
+    const reactions = m.reactionUsers && typeof m.reactionUsers === "object" ? m.reactionUsers : {};
+    const counts = {};
+    Object.entries(reactions).forEach(([uid,emoji])=>{ if(REACTION_EMOJIS.includes(emoji)){ if(!counts[emoji]) counts[emoji]=[]; counts[emoji].push(uid); } });
+    const reactionHtml = Object.entries(counts).map(([emoji,uids])=>`<button type="button" class="reaction-pill ${uids.includes(currentUser.uid)?'mine':''}" data-react="${safeAttr(emoji)}" title="${uids.map(uid=>usersCache[uid]?.username||'Tenno').map(safeAttr).join(', ')}">${emoji} ${uids.length}</button>`).join("");
+
+    const replyHtml = m.replyTo ? `<div class="msg-reply" data-jump="${safeAttr(m.replyTo.id)}"><b>↩ ${escapeHtml(m.replyTo.username||'Tenno')}</b> ${escapeHtml(String(m.replyTo.text||'').slice(0,120))}</div>` : "";
     const canEdit = own;
-    const canDelete = own || currentIsAdmin;
-    const actionsHtml = (canEdit || canDelete) ? `
-        <div class="msg-actions">
-          ${canEdit ? '<button type="button" class="msg-action-btn edit-btn" title="Edit message">✎</button>' : ''}
-          ${canDelete ? `<button type="button" class="msg-action-btn delete-btn" title="${own ? 'Delete message' : 'Delete message (admin)'}">🗑</button>` : ''}
-        </div>` : "";
- 
-    return `
-      <div class="msg-row ${own ? 'own':''}" data-id="${m.id}">
-        <div class="msg-avatar">${escapeHtml(initials(m.username))}</div>
+    const canDelete = own || canModerate();
+    const canPin = !inDM && canModerate();
+    const actionsHtml = `
+      <div class="msg-actions">
+        <button type="button" class="msg-action-btn reply-btn" title="Reply">↩</button>
+        <div class="reaction-picker">${REACTION_EMOJIS.map(e=>`<button type="button" class="react-btn" data-react="${e}" title="React ${e}">${e}</button>`).join('')}</div>
+        ${canPin ? `<button type="button" class="msg-action-btn pin-btn ${m.pinned?'active':''}" title="${m.pinned?'Unpin':'Pin'} message">📌</button>` : ''}
+        ${canEdit ? '<button type="button" class="msg-action-btn edit-btn" title="Edit message">✎</button>' : ''}
+        ${canDelete ? `<button type="button" class="msg-action-btn delete-btn" title="${own ? 'Delete message' : 'Delete message (moderator)'}">🗑</button>` : ''}
+      </div>`;
+
+    return `${divider}
+      <div class="msg-row ${own ? 'own':''} ${compact?'compact':''}" data-id="${m.id}">
+        <div class="msg-avatar">${avatarHtml(user,m.username)}</div>
         <div class="msg-body">
           <div class="msg-meta">
             <span class="msg-author">${escapeHtml(m.username)}</span>
+            <span class="member-role">${escapeHtml(getRole(user))}</span>
             <span class="msg-time" title="${escapeHtml(formatFullDateTime(m.createdAt))}">${formatTime(m.createdAt)}</span>
             ${m.edited ? '<span class="msg-edited">(edited)</span>' : ''}
+            ${m.pinned ? '<span class="pin-mark" title="Pinned">📌 pinned</span>' : ''}
             ${receiptHtml}
           </div>
-          <div class="msg-text" data-raw="${escapeHtml(m.text)}">${escapeHtml(m.text)}</div>
+          ${replyHtml}
+          <div class="msg-text" data-raw="${safeAttr(m.text)}">${formatMessageText(m.text)}</div>
+          ${reactionHtml ? `<div class="reaction-row">${reactionHtml}</div>` : ''}
         </div>
         ${actionsHtml}
       </div>`;
   }).join("");
- 
-  if (wasAtBottom || msgs[msgs.length-1].uid === (currentUser && currentUser.uid)) {
-    box.scrollTop = box.scrollHeight;
-  }
+
+  if (wasAtBottom || (msgs[msgs.length-1] && msgs[msgs.length-1].uid === (currentUser && currentUser.uid))) box.scrollTop = box.scrollHeight;
+}
+
+function updatePinnedStrip(msgs){
+  const pinned = msgs.filter(m=>m.pinned);
+  $("pinned-strip").classList.toggle("hidden", pinned.length===0);
+  $("pinned-strip-text").textContent = pinned.length ? `${pinned.length} pinned message${pinned.length===1?'':'s'} · ${pinned[pinned.length-1].username}: ${String(pinned[pinned.length-1].text||'').slice(0,80)}` : "";
+}
+function showPinnedMessages(){
+  const pinned=lastRenderedMsgs.filter(m=>m.pinned);
+  openModal("Pinned Messages", pinned.length ? pinned.map(m=>`<div class="notification-item" data-jump="${safeAttr(m.id)}"><div class="notification-title">${escapeHtml(m.username||'Tenno')}</div><div class="notification-text">${escapeHtml(m.text||'')}</div><div class="notification-time">${escapeHtml(formatFullDateTime(m.createdAt))}</div></div>`).join('') : '<div class="system-note">No pinned messages in this chat.</div>');
+  $("modal-root").querySelectorAll('[data-jump]').forEach(el=>el.onclick=()=>{const id=el.dataset.jump;closeModal();setTimeout(()=>jumpToMessage(id),50);});
+}
+function jumpToMessage(id){
+  const row=$("messages").querySelector(`.msg-row[data-id="${CSS.escape(id)}"]`); if(!row)return;
+  row.scrollIntoView({behavior:"smooth",block:"center"}); const old=row.style.outline; row.style.outline='1px solid var(--pulse)'; setTimeout(()=>row.style.outline=old,1400);
+}
+async function toggleReaction(msgId, emoji){
+  if(!REACTION_EMOJIS.includes(emoji)) return;
+  const ref=currentMessagesCollectionRef().doc(msgId);
+  try{await db.runTransaction(async tx=>{const snap=await tx.get(ref);if(!snap.exists)return;const map={...(snap.data().reactionUsers||{})};if(map[currentUser.uid]===emoji)delete map[currentUser.uid];else map[currentUser.uid]=emoji;tx.update(ref,{reactionUsers:map});});}catch(err){toast("Reaction failed",err.message);}
+}
+async function togglePin(msgId){
+  if(!canModerate()) return;
+  const ref=currentMessagesCollectionRef().doc(msgId);
+  try{await db.runTransaction(async tx=>{const snap=await tx.get(ref);if(!snap.exists)return;const next=!snap.data().pinned;tx.update(ref,{pinned:next,pinnedBy:next?currentUser.uid:null,pinnedAt:next?FieldValue.serverTimestamp():null});});}catch(err){toast("Pin failed",err.message);}
 }
  
 /* ============================================================
@@ -1098,6 +1487,9 @@ function renderMessages(msgs){
 ============================================================= */
 function currentMessagesCollectionRef(){
   if (currentView === "clan") return db.collection("clanChat");
+  if (typeof currentView === "string" && currentView.startsWith("channel:")) {
+    return db.collection("channels").doc(currentView.slice(8)).collection("messages");
+  }
   const chatId = dmChatId(currentUser.uid, currentView);
   return db.collection("dms").doc(chatId).collection("messages");
 }
@@ -1156,13 +1548,17 @@ function deleteMessage(row){
 }
  
 $("messages").addEventListener("click", (e) => {
-  const editBtn = e.target.closest(".edit-btn");
-  const deleteBtn = e.target.closest(".delete-btn");
-  if (editBtn) {
-    startEditMessage(editBtn.closest(".msg-row"));
-  } else if (deleteBtn) {
-    deleteMessage(deleteBtn.closest(".msg-row"));
-  }
+  const row=e.target.closest(".msg-row"); if(!row)return;
+  const msg=lastRenderedMsgs.find(m=>m.id===row.getAttribute("data-id")); if(!msg)return;
+  const editBtn = e.target.closest(".edit-btn"), deleteBtn = e.target.closest(".delete-btn");
+  const replyBtn=e.target.closest(".reply-btn"), reactBtn=e.target.closest("[data-react]");
+  const pinBtn=e.target.closest(".pin-btn"), jump=e.target.closest("[data-jump]");
+  if (editBtn) startEditMessage(row);
+  else if (deleteBtn) deleteMessage(row);
+  else if (replyBtn) setReply(msg);
+  else if (pinBtn) togglePin(msg.id);
+  else if (reactBtn) toggleReaction(msg.id,reactBtn.getAttribute("data-react"));
+  else if (jump) jumpToMessage(jump.getAttribute("data-jump"));
 });
  
 /* ============================================================
@@ -1172,51 +1568,62 @@ $("composer-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const input = $("message-input");
   const text = input.value.trim();
-  if (!text || !currentUser) return;
-  input.value = "";
-  $("send-btn").disabled = true;
-  clearTypingFlag();
- 
+  if (!text || !currentUser || currentView === "squads") return;
+  if (typeof currentView === "string" && currentView === "channel:announcements" && !canPostAnnouncements()) return;
+  input.value = ""; $("send-btn").disabled = true; clearTypingFlag();
+  const replyTo = replyingTo ? {...replyingTo} : null; clearReply();
+
   try {
+    const base={uid:currentUser.uid,username:currentUsername,text,createdAt:FieldValue.serverTimestamp()};
+    if(replyTo) base.replyTo=replyTo;
+    let sentRef=null;
     if (currentView === "clan") {
-      await db.collection("clanChat").add({
-        uid: currentUser.uid,
-        username: currentUsername,
-        text: text,
-        createdAt: FieldValue.serverTimestamp()
-      });
+      sentRef=await db.collection("clanChat").add(base);
+      await notifyMentions(text,{viewType:"channel",viewId:"clan",messageId:sentRef.id});
+    } else if (typeof currentView === "string" && currentView.startsWith("channel:")) {
+      const channelId=currentView.slice(8);
+      sentRef=await db.collection("channels").doc(channelId).collection("messages").add(base);
+      await notifyMentions(text,{viewType:"channel",viewId:channelId,messageId:sentRef.id});
     } else {
       const otherUid = currentView;
       const chatId = dmChatId(currentUser.uid, otherUid);
-      await db.collection("dms").doc(chatId).collection("messages").add({
-        uid: currentUser.uid,
-        username: currentUsername,
-        text: text,
-        createdAt: FieldValue.serverTimestamp()
-      });
+      sentRef=await db.collection("dms").doc(chatId).collection("messages").add(base);
       await db.collection("dms").doc(chatId).set({
-        participants: [currentUser.uid, otherUid],
-        lastText: text,
-        lastAt: FieldValue.serverTimestamp(),
-        unread: {
-          [otherUid]: FieldValue.increment(1),
-          [currentUser.uid]: 0
-        }
+        participants: [currentUser.uid, otherUid], lastText: text, lastAt: FieldValue.serverTimestamp(),
+        unread: { [otherUid]: FieldValue.increment(1), [currentUser.uid]: 0 }
       }, { merge: true });
+      await createNotification(otherUid,{type:"dm",title:`Message from ${currentUsername}`,text:text.slice(0,140),fromUid:currentUser.uid,viewType:"dm",viewId:currentUser.uid,messageId:sentRef.id});
     }
   } catch (err) {
     alert("Message failed to send: " + (err.message || err));
   } finally {
-    $("send-btn").disabled = false;
+    $("send-btn").disabled = (currentView === "channel:announcements" && !canPostAnnouncements());
     input.focus();
   }
 });
+
+async function createNotification(uid,data){
+  if(!uid || uid===currentUser.uid) return;
+  try{await db.collection("users").doc(uid).collection("notifications").add({...data,read:false,createdAt:FieldValue.serverTimestamp()});}catch(err){console.warn("Notification create failed",err);}
+}
+async function notifyMentions(text,view){
+  const names=[...String(text).matchAll(/@([A-Za-z0-9_]{3,20})/g)].map(m=>m[1].toLowerCase());
+  if(!names.length)return;
+  const done=new Set();
+  for(const [uid,u] of Object.entries(usersCache)){
+    if(uid===currentUser.uid || done.has(uid))continue;
+    if(names.includes(String(u.username||"").toLowerCase())){done.add(uid);await createNotification(uid,{type:"mention",title:`${currentUsername} mentioned you`,text:String(text).slice(0,140),fromUid:currentUser.uid,...view});}
+  }
+}
  
 /* ============================================================
    TYPING INDICATOR
 ============================================================= */
 function typingCollectionRef(){
   if (currentView === "clan") return db.collection("typingClan");
+  if (typeof currentView === "string" && currentView.startsWith("channel:")) {
+    return db.collection("channels").doc(currentView.slice(8)).collection("typing");
+  }
   const chatId = dmChatId(currentUser.uid, currentView);
   return db.collection("dms").doc(chatId).collection("typing");
 }
@@ -1280,6 +1687,122 @@ $("message-input").addEventListener("input", () => {
   }
 });
  
+/* ============================================================
+   CHANNEL NAVIGATION
+============================================================= */
+document.querySelectorAll("[data-channel]").forEach(el=>el.addEventListener("click",()=>{openChannel(el.dataset.channel);closeMobileRoster();}));
+$("show-pins-btn").addEventListener("click",showPinnedMessages);
+$("pinned-strip").addEventListener("click",showPinnedMessages);
+$("cancel-reply").addEventListener("click",clearReply);
+
+/* ============================================================
+   PROFILES / AVATARS / STATUS
+============================================================= */
+function showProfile(uid){
+  const u=uid===currentUser.uid ? (usersCache[uid]||{}) : usersCache[uid];
+  if(!u && uid!==currentUser.uid)return;
+  const own=uid===currentUser.uid, role=getRole(u), joined=u&&u.createdAt&&u.createdAt.toDate?u.createdAt.toDate().toLocaleDateString([], {year:'numeric',month:'long',day:'numeric'}):"Unknown";
+  const body=`
+    <div class="profile-top"><div class="profile-avatar" id="profile-avatar-preview">${avatarHtml(u,u?.username||currentUsername)}</div><div><div class="profile-name">${escapeHtml(u?.username||currentUsername)}</div><div class="profile-meta">${escapeHtml(role)} · Joined ${escapeHtml(joined)}</div>${!own?`<div class="profile-meta">${escapeHtml(statusText(u))}</div>`:''}</div></div>
+    <div class="form-grid">
+      <div class="field"><label>Main Warframe</label><input id="profile-frame" maxlength="30" value="${safeAttr(u?.mainFrame||'')}" ${own?'':'disabled'}></div>
+      <div class="field"><label>Mastery Rank</label><input id="profile-mr" maxlength="12" value="${safeAttr(u?.masteryRank||'')}" placeholder="e.g. MR 18" ${own?'':'disabled'}></div>
+      <div class="field"><label>Platform</label><select id="profile-platform" ${own?'':'disabled'}>${['','PC','PlayStation','Xbox','Nintendo Switch','Mobile'].map(v=>`<option ${String(u?.platform||'')===v?'selected':''}>${v}</option>`).join('')}</select></div>
+      <div class="field"><label>Favourite Weapon</label><input id="profile-weapon" maxlength="40" value="${safeAttr(u?.favoriteWeapon||'')}" ${own?'':'disabled'}></div>
+      ${own?`<div class="field"><label>Status</label><select id="profile-status">${[['online','Online'],['away','Away'],['busy','Busy'],['invisible','Invisible']].map(([v,l])=>`<option value="${v}" ${String(u?.status||'online')===v?'selected':''}>${l}</option>`).join('')}</select></div><div class="field"><label>Custom Status</label><input id="profile-custom" maxlength="60" value="${safeAttr(u?.customStatus||'')}" placeholder="e.g. Farming relics"></div><div class="field form-span"><label>Profile picture</label><input type="file" id="profile-avatar-file" accept="image/*"><div class="field-hint">JPG, PNG, WebP or GIF. Maximum 5 MB.</div></div>`:''}
+    </div>
+    <div class="modal-actions">${!own?`<button class="small-btn primary" id="profile-message">Message</button>`:''}${own?`<button class="small-btn primary" id="profile-save">Save Profile</button>`:''}</div>`;
+  openModal(own?"Your Tenno Profile":"Tenno Profile",body);
+  if(!own){$("profile-message").onclick=()=>{closeModal();openDM(uid);};return;}
+  $("profile-save").onclick=async()=>{
+    const btn=$("profile-save");btn.disabled=true;
+    try{
+      let avatarUrl=u?.avatarUrl||""; const file=$("profile-avatar-file").files[0];
+      if(file){if(file.size>5*1024*1024)throw new Error("Profile picture must be under 5 MB.");if(!file.type.startsWith("image/"))throw new Error("Choose an image file.");const ref=storage.ref().child(`avatars/${currentUser.uid}/profile-${Date.now()}`);const snap=await ref.put(file);avatarUrl=await snap.ref.getDownloadURL();}
+      await db.collection("users").doc(currentUser.uid).update({mainFrame:$("profile-frame").value.trim(),masteryRank:$("profile-mr").value.trim(),platform:$("profile-platform").value,favoriteWeapon:$("profile-weapon").value.trim(),status:$("profile-status").value,customStatus:$("profile-custom").value.trim(),avatarUrl,lastSeen:FieldValue.serverTimestamp()});
+      closeModal();toast("Profile updated","Your Voidmark profile has been saved.");
+    }catch(err){toast("Profile update failed",err.message);}finally{btn.disabled=false;}
+  };
+}
+$("me-profile-btn").addEventListener("click",()=>currentUser&&showProfile(currentUser.uid));
+
+/* ============================================================
+   CLAN MANAGEMENT / RANKS
+============================================================= */
+function openAdminPanel(){
+  if(!canModerate())return;
+  const ids=Object.keys(usersCache).filter(uid=>uid!==currentUser.uid);
+  const rows=ids.map(uid=>{const u=usersCache[uid],role=getRole(u);return `<div class="admin-user" data-uid="${uid}"><div><div class="name">${escapeHtml(u.username||'Tenno')}</div><div class="sub">${escapeHtml(u.banned?'Suspended':statusText(u))} · ${escapeHtml(role)}</div></div><select class="admin-role" ${canManageRanks()?'':'disabled'}>${ROLE_ORDER.map(r=>`<option ${r===role?'selected':''}>${r}</option>`).join('')}</select><button class="small-btn ${u.banned?'':'danger'} admin-ban">${u.banned?'Unban':'Ban'}</button><button class="small-btn admin-view">Profile</button></div>`;}).join('');
+  openModal("Clan Management",`<div style="font-size:11px;color:var(--text-lo);margin-bottom:12px">Moderators can manage suspensions. Warlords and Founders can also change clan ranks.</div>${rows||'<div class="system-note">No other members.</div>'}`,true);
+  $("modal-root").querySelectorAll(".admin-user").forEach(row=>{
+    const uid=row.dataset.uid,u=usersCache[uid];
+    const sel=row.querySelector(".admin-role");
+    if(sel)sel.onchange=async e=>{const role=e.target.value;if(!canManageRanks()){e.target.value=getRole(u);return;}if(role==="Founder"&&!confirm(`Promote ${u.username} to Founder?`)){e.target.value=getRole(u);return;}try{await db.collection("users").doc(uid).update({role,isAdmin:STAFF_ROLES.has(role)});toast("Rank updated",`${u.username} → ${role}`);}catch(err){toast("Rank update failed",err.message);e.target.value=getRole(u);}};
+    row.querySelector(".admin-ban").onclick=async()=>{const next=!(u.banned===true);if(!confirm(`${next?'Ban':'Unban'} ${u.username}?`))return;try{await db.collection("users").doc(uid).update({banned:next});toast(next?"Member suspended":"Suspension lifted",u.username);}catch(err){toast("Action failed",err.message);}};
+    row.querySelector(".admin-view").onclick=()=>{closeModal();showProfile(uid);};
+  });
+}
+$("admin-panel-btn").addEventListener("click",openAdminPanel);
+
+/* ============================================================
+   NOTIFICATIONS / @MENTIONS
+============================================================= */
+function subscribeNotifications(){
+  if(unsubNotifications)unsubNotifications();
+  unsubNotifications=db.collection("users").doc(currentUser.uid).collection("notifications").orderBy("createdAt","desc").limit(50).onSnapshot(qs=>{
+    const known=new Set(notificationsCache.map(n=>n.id));notificationsCache=[];qs.forEach(doc=>notificationsCache.push({id:doc.id,...doc.data()}));
+    const unread=notificationsCache.filter(n=>!n.read).length;$("notif-count").textContent=unread>99?'99+':unread;$("notif-count").classList.toggle("hidden",unread===0);
+    notificationsCache.filter(n=>!n.read&&!known.has(n.id)).slice(0,3).forEach(n=>{toast(n.title||"Notification",n.text||"");if(document.hidden&&typeof Notification!=="undefined"&&Notification.permission==="granted")try{new Notification(n.title||"Voidmark Dynasty",{body:n.text||""});}catch{}});
+  },err=>console.warn("Notification listener failed",err));
+}
+function openNotifications(){
+  const items=notificationsCache.length?notificationsCache.map(n=>`<div class="notification-item ${n.read?'':'unread'}" data-id="${n.id}"><div class="notification-title">${escapeHtml(n.title||'Notification')}</div><div class="notification-text">${escapeHtml(n.text||'')}</div><div class="notification-time">${escapeHtml(relativeTime(n.createdAt))}</div></div>`).join(''):'<div class="system-note">No notifications yet.</div>';
+  const perm=typeof Notification!=="undefined"?Notification.permission:"unsupported";
+  openModal("Notifications",`<div style="display:flex;gap:8px;margin-bottom:10px"><button class="small-btn" id="enable-browser-notif" ${perm==='granted'||perm==='unsupported'?'disabled':''}>${perm==='granted'?'Browser alerts enabled':perm==='unsupported'?'Browser alerts unavailable':'Enable browser alerts'}</button><button class="small-btn" id="mark-all-read">Mark all read</button></div>${items}`);
+  const enable=$("enable-browser-notif");if(enable&&!enable.disabled)enable.onclick=async()=>{const p=await Notification.requestPermission();enable.textContent=p==='granted'?'Browser alerts enabled':'Browser alerts not enabled';enable.disabled=p==='granted';};
+  $("mark-all-read").onclick=async()=>{const batch=db.batch();notificationsCache.filter(n=>!n.read).forEach(n=>batch.update(db.collection("users").doc(currentUser.uid).collection("notifications").doc(n.id),{read:true}));try{await batch.commit();}catch(err){toast("Notifications",err.message);}};
+  $("modal-root").querySelectorAll(".notification-item").forEach(el=>el.onclick=()=>openNotification(el.dataset.id));
+}
+async function openNotification(id){
+  const n=notificationsCache.find(x=>x.id===id);if(!n)return;db.collection("users").doc(currentUser.uid).collection("notifications").doc(id).update({read:true}).catch(()=>{});closeModal();
+  if(n.viewType==="dm")openDM(n.viewId);else if(n.viewType==="channel"){n.viewId==="clan"?openClanChat():openChannel(n.viewId);}else if(n.viewType==="squads")openSquadFinder();
+  if(n.messageId)setTimeout(()=>jumpToMessage(n.messageId),550);
+}
+$("notifications-btn").addEventListener("click",openNotifications);
+
+/* ============================================================
+   SQUAD FINDER
+============================================================= */
+function openSquadFinder(){
+  currentView="squads";clearReply();selectNav('#nav-squad-finder');$("chat-panel").classList.add("hidden");$("squad-panel").classList.remove("hidden");
+  if(unsubClanChat){unsubClanChat();unsubClanChat=null;}if(unsubChannel){unsubChannel();unsubChannel=null;}if(unsubDM){unsubDM();unsubDM=null;}if(unsubTyping){unsubTyping();unsubTyping=null;}
+  subscribeSquads();renderRoster();closeMobileRoster();
+}
+function subscribeSquads(){
+  if(unsubSquads)unsubSquads();$("squad-grid").innerHTML='<div class="system-note">Loading squads…</div>';
+  unsubSquads=db.collection("squads").orderBy("createdAt","desc").limit(60).onSnapshot(qs=>{const arr=[];qs.forEach(doc=>arr.push({id:doc.id,...doc.data()}));renderSquads(arr);},err=>{$("squad-grid").innerHTML=`<div class="system-note error">Could not load squads: ${escapeHtml(err.message)}</div>`;});
+}
+function renderSquads(arr){
+  if(!arr.length){$("squad-grid").innerHTML='<div class="system-note">No squads posted yet. Create one when you need clanmates.</div>';return;}
+  $("squad-grid").innerHTML=arr.map(s=>{const members=Array.isArray(s.members)?s.members:[],joined=members.includes(currentUser.uid),owner=s.creatorUid===currentUser.uid,closed=s.status==="closed",capacity=Math.max(1,Number(s.slots)||4);return `<div class="squad-card ${closed?'closed':''}" data-id="${s.id}"><h3>${escapeHtml(s.mission||'Squad')}</h3><div class="squad-meta">Posted by ${escapeHtml(s.creatorUsername||'Unknown')} · ${escapeHtml(relativeTime(s.createdAt))}</div><div class="squad-details"><div class="squad-kv"><span>Location / Node</span><b>${escapeHtml(s.node||'Any')}</b></div><div class="squad-kv"><span>Mode</span><b>${escapeHtml(s.mode||'Normal')}</b></div><div class="squad-kv"><span>Players</span><b>${members.length}/${capacity}</b></div><div class="squad-kv"><span>Status</span><b>${closed?'Closed':'Open'}</b></div></div><div class="squad-note">${escapeHtml(s.note||'No extra notes.')}</div><div class="squad-members">Members: ${escapeHtml(members.map(uid=>uid===currentUser.uid?currentUsername:(usersCache[uid]&&usersCache[uid].username)||'Tenno').join(', ')||'None yet')}</div><div class="squad-actions">${owner?`<button class="small-btn primary squad-toggle">${closed?'Reopen':'Close Squad'}</button><button class="small-btn danger squad-delete">Delete</button>`:`<button class="small-btn primary squad-join" ${closed&&!joined?'disabled':''}>${joined?'Leave Squad':members.length>=capacity?'Full':'Join Squad'}</button>`}</div></div>`;}).join('');
+  $("squad-grid").querySelectorAll(".squad-card").forEach(card=>{const id=card.dataset.id,s=arr.find(x=>x.id===id);const join=card.querySelector(".squad-join");if(join)join.onclick=()=>toggleSquadMembership(s);const toggle=card.querySelector(".squad-toggle");if(toggle)toggle.onclick=()=>db.collection("squads").doc(id).update({status:s.status==="closed"?"open":"closed"}).catch(err=>toast("Squad update failed",err.message));const del=card.querySelector(".squad-delete");if(del)del.onclick=()=>{if(confirm("Delete this squad post?"))db.collection("squads").doc(id).delete().catch(err=>toast("Delete failed",err.message));};});
+}
+async function toggleSquadMembership(s){
+  try{let joinedNow=false;await db.runTransaction(async tx=>{const ref=db.collection("squads").doc(s.id),snap=await tx.get(ref);if(!snap.exists)throw new Error("Squad no longer exists.");const d=snap.data(),members=Array.isArray(d.members)?[...d.members]:[],me=members.indexOf(currentUser.uid),capacity=Math.max(1,Number(d.slots)||4);if(me>=0){members.splice(me,1);joinedNow=false;}else{if(d.status==="closed")throw new Error("This squad is closed.");if(members.length>=capacity)throw new Error("This squad is full.");members.push(currentUser.uid);joinedNow=true;}tx.update(ref,{members});});if(joinedNow&&s.creatorUid!==currentUser.uid)createNotification(s.creatorUid,{type:"squad",title:`${currentUsername} joined your squad`,text:s.mission||"Squad Finder",fromUid:currentUser.uid,viewType:"squads",viewId:"squads"});}catch(err){toast("Squad update failed",err.message);}
+}
+function openCreateSquad(){
+  openModal("Create Squad",`<div class="form-grid"><div class="field form-span"><label>Mission / Activity</label><input id="sq-mission" maxlength="60" placeholder="e.g. Steel Path Omnia Fissure"></div><div class="field"><label>Node / Location</label><input id="sq-node" maxlength="50" placeholder="e.g. Lua / Circulus"></div><div class="field"><label>Mode</label><select id="sq-mode"><option>Normal</option><option>Steel Path</option><option>Railjack</option><option>Open World</option><option>Relic</option><option>Archon Hunt</option><option>Other</option></select></div><div class="field"><label>Squad Size</label><select id="sq-slots"><option value="2">2</option><option value="3">3</option><option value="4" selected>4</option><option value="8">8</option></select></div><div class="field form-span"><label>Notes</label><textarea id="sq-note" rows="3" maxlength="180" placeholder="Requirements, relics, frames, etc."></textarea></div></div><div class="modal-actions"><button class="small-btn" id="sq-cancel">Cancel</button><button class="small-btn primary" id="sq-create">Create Squad</button></div>`);
+  $("sq-cancel").onclick=closeModal;$("sq-create").onclick=async()=>{const mission=$("sq-mission").value.trim();if(!mission){toast("Squad","Enter a mission or activity.");return;}try{await db.collection("squads").add({creatorUid:currentUser.uid,creatorUsername:currentUsername,mission,node:$("sq-node").value.trim(),mode:$("sq-mode").value,slots:Number($("sq-slots").value),note:$("sq-note").value.trim(),members:[currentUser.uid],status:"open",createdAt:FieldValue.serverTimestamp()});closeModal();toast("Squad posted",mission);}catch(err){toast("Could not create squad",err.message);}};
+}
+$("nav-squad-finder").addEventListener("click",openSquadFinder);$("create-squad-btn").addEventListener("click",openCreateSquad);
+
+/* ============================================================
+   MODAL CLOSE / ESCAPE
+============================================================= */
+$("modal-close").addEventListener("click",closeModal);
+$("modal-root").addEventListener("click",e=>{if(e.target===$("modal-root"))closeModal();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("modal-root").classList.contains("hidden"))closeModal();});
+
 /* ============================================================
    MOBILE ROSTER TOGGLE
 ============================================================= */
