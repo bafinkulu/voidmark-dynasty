@@ -38,7 +38,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-storage-compat.js"></script>
  
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -794,7 +793,6 @@
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
-const storage = firebase.storage();
 const FieldValue = firebase.firestore.FieldValue;
  
 const FAKE_DOMAIN = "@voidmark.clan";
@@ -1068,7 +1066,7 @@ auth.onAuthStateChanged(async (user) => {
     const data = snap.exists ? snap.data() : {username: user.email.split("@")[0]};
     currentUsername = data.username;
     currentRole = getRole(data);
-    currentIsAdmin = data.isAdmin === true || STAFF_ROLES.has(currentRole);
+    currentIsAdmin = data.isAdmin === true;
  
     // Live-watch my own user doc so an admin toggling my isAdmin/banned flag
     // takes effect immediately without needing to reload.
@@ -1085,7 +1083,7 @@ auth.onAuthStateChanged(async (user) => {
       }
       currentUsername = d.username || currentUsername;
       currentRole = getRole(d);
-      currentIsAdmin = d.isAdmin === true || STAFF_ROLES.has(currentRole);
+      currentIsAdmin = d.isAdmin === true;
       if (currentUser) {
         $("me-username").textContent = currentUsername;
         $("me-role").textContent = currentRole;
@@ -1607,7 +1605,7 @@ async function createNotification(uid,data){
   try{await db.collection("users").doc(uid).collection("notifications").add({...data,read:false,createdAt:FieldValue.serverTimestamp()});}catch(err){console.warn("Notification create failed",err);}
 }
 async function notifyMentions(text,view){
-  const names=[...String(text).matchAll(/@([A-Za-z0-9_]{3,20})/g)].map(m=>m[1].toLowerCase());
+  const names=[...String(text).matchAll(/@([A-Za-z0-9_]{3,20})\b/g)].map(m=>m[1].toLowerCase());
   if(!names.length)return;
   const done=new Set();
   for(const [uid,u] of Object.entries(usersCache)){
@@ -1709,7 +1707,7 @@ function showProfile(uid){
       <div class="field"><label>Mastery Rank</label><input id="profile-mr" maxlength="12" value="${safeAttr(u?.masteryRank||'')}" placeholder="e.g. MR 18" ${own?'':'disabled'}></div>
       <div class="field"><label>Platform</label><select id="profile-platform" ${own?'':'disabled'}>${['','PC','PlayStation','Xbox','Nintendo Switch','Mobile'].map(v=>`<option ${String(u?.platform||'')===v?'selected':''}>${v}</option>`).join('')}</select></div>
       <div class="field"><label>Favourite Weapon</label><input id="profile-weapon" maxlength="40" value="${safeAttr(u?.favoriteWeapon||'')}" ${own?'':'disabled'}></div>
-      ${own?`<div class="field"><label>Status</label><select id="profile-status">${[['online','Online'],['away','Away'],['busy','Busy'],['invisible','Invisible']].map(([v,l])=>`<option value="${v}" ${String(u?.status||'online')===v?'selected':''}>${l}</option>`).join('')}</select></div><div class="field"><label>Custom Status</label><input id="profile-custom" maxlength="60" value="${safeAttr(u?.customStatus||'')}" placeholder="e.g. Farming relics"></div><div class="field form-span"><label>Profile picture</label><input type="file" id="profile-avatar-file" accept="image/*"><div class="field-hint">JPG, PNG, WebP or GIF. Maximum 5 MB.</div></div>`:''}
+      ${own?`<div class="field"><label>Status</label><select id="profile-status">${[['online','Online'],['away','Away'],['busy','Busy'],['invisible','Invisible']].map(([v,l])=>`<option value="${v}" ${String(u?.status||'online')===v?'selected':''}>${l}</option>`).join('')}</select></div><div class="field"><label>Custom Status</label><input id="profile-custom" maxlength="60" value="${safeAttr(u?.customStatus||'')}" placeholder="e.g. Farming relics"></div><div class="field form-span"><label>Profile picture URL / path</label><input type="text" id="profile-avatar-url" maxlength="500" value="${safeAttr(u?.avatarUrl||'')}" placeholder="e.g. avatars/revenant.png"><div class="field-hint">Use an image in your GitHub Pages site (for example avatars/revenant.png) or a direct HTTPS image URL. No Firebase Storage required.</div></div>`:''}
     </div>
     <div class="modal-actions">${!own?`<button class="small-btn primary" id="profile-message">Message</button>`:''}${own?`<button class="small-btn primary" id="profile-save">Save Profile</button>`:''}</div>`;
   openModal(own?"Your Tenno Profile":"Tenno Profile",body);
@@ -1717,8 +1715,8 @@ function showProfile(uid){
   $("profile-save").onclick=async()=>{
     const btn=$("profile-save");btn.disabled=true;
     try{
-      let avatarUrl=u?.avatarUrl||""; const file=$("profile-avatar-file").files[0];
-      if(file){if(file.size>5*1024*1024)throw new Error("Profile picture must be under 5 MB.");if(!file.type.startsWith("image/"))throw new Error("Choose an image file.");const ref=storage.ref().child(`avatars/${currentUser.uid}/profile-${Date.now()}`);const snap=await ref.put(file);avatarUrl=await snap.ref.getDownloadURL();}
+      let avatarUrl=$("profile-avatar-url").value.trim();
+      if(avatarUrl && !(avatarUrl.startsWith("https://") || avatarUrl.startsWith("http://") || /^[A-Za-z0-9_./%+\-]+$/.test(avatarUrl))) throw new Error("Use a valid image URL or site-relative path such as avatars/revenant.png.");
       await db.collection("users").doc(currentUser.uid).update({mainFrame:$("profile-frame").value.trim(),masteryRank:$("profile-mr").value.trim(),platform:$("profile-platform").value,favoriteWeapon:$("profile-weapon").value.trim(),status:$("profile-status").value,customStatus:$("profile-custom").value.trim(),avatarUrl,lastSeen:FieldValue.serverTimestamp()});
       closeModal();toast("Profile updated","Your Voidmark profile has been saved.");
     }catch(err){toast("Profile update failed",err.message);}finally{btn.disabled=false;}
@@ -1737,7 +1735,7 @@ function openAdminPanel(){
   $("modal-root").querySelectorAll(".admin-user").forEach(row=>{
     const uid=row.dataset.uid,u=usersCache[uid];
     const sel=row.querySelector(".admin-role");
-    if(sel)sel.onchange=async e=>{const role=e.target.value;if(!canManageRanks()){e.target.value=getRole(u);return;}if(role==="Founder"&&!confirm(`Promote ${u.username} to Founder?`)){e.target.value=getRole(u);return;}try{await db.collection("users").doc(uid).update({role,isAdmin:STAFF_ROLES.has(role)});toast("Rank updated",`${u.username} → ${role}`);}catch(err){toast("Rank update failed",err.message);e.target.value=getRole(u);}};
+    if(sel)sel.onchange=async e=>{const role=e.target.value;if(!canManageRanks()){e.target.value=getRole(u);return;}if(role==="Founder"&&!confirm(`Promote ${u.username} to Founder?`)){e.target.value=getRole(u);return;}try{await db.collection("users").doc(uid).update({role});toast("Rank updated",`${u.username} → ${role}`);}catch(err){toast("Rank update failed",err.message);e.target.value=getRole(u);}};
     row.querySelector(".admin-ban").onclick=async()=>{const next=!(u.banned===true);if(!confirm(`${next?'Ban':'Unban'} ${u.username}?`))return;try{await db.collection("users").doc(uid).update({banned:next});toast(next?"Member suspended":"Suspension lifted",u.username);}catch(err){toast("Action failed",err.message);}};
     row.querySelector(".admin-view").onclick=()=>{closeModal();showProfile(uid);};
   });
