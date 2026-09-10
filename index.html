@@ -761,7 +761,10 @@
     <div id="roster-backdrop"></div>
     <div id="roster-panel">
       <div class="roster-list" id="channel-list" style="padding-top:10px;flex:none;max-height:320px;">
-        <div class="roster-header" style="border:0;padding:4px 10px 7px;">Channels</div>
+        <div class="roster-nav-item" id="nav-hub">
+          <div class="channel-symbol">◈</div> Clan Hub
+        </div>
+        <div class="roster-header" style="border:0;padding:8px 10px 7px;">Channels</div>
         <div class="roster-nav-item channel-nav active" id="nav-clan-chat" data-view="clan">
           <div class="channel-symbol">#</div> Clan Comms
         </div>
@@ -779,9 +782,6 @@
         </div>
         <div class="roster-nav-item channel-nav" data-channel="off-topic">
           <div class="channel-symbol">#</div> Off Topic
-        </div>
-        <div class="roster-nav-item" id="nav-hub">
-          <div class="channel-symbol">◈</div> Clan Hub
         </div>
         <div class="roster-nav-item" id="nav-squad-finder">
           <div class="channel-symbol">⚔</div> Squad Finder
@@ -1939,7 +1939,7 @@ function subscribeChannelConfig(){
 }
 function renderChannelNav(){
   const visible=Object.values(channelCache).filter(ch=>!ch.archived&&channelAllows(ch,"read")).sort((a,b)=>(Number(a.order)||50)-(Number(b.order)||50)||String(a.name||a.id).localeCompare(String(b.name||b.id)));
-  $("channel-list").innerHTML=`<div class="roster-header" style="border:0;padding:4px 10px 7px;">Channels</div><div class="roster-nav-item channel-nav ${currentView==='clan'?'active':''}" id="nav-clan-chat" data-view="clan"><div class="channel-symbol">#</div> Clan Comms</div>${visible.map(ch=>`<div class="roster-nav-item channel-nav ${currentView===`channel:${ch.id}`?'active':''}" data-channel="${safeAttr(ch.id)}"><div class="channel-symbol">${ch.id==='announcements'?'◆':'#'}</div>${escapeHtml(ch.name||ch.id)}${!(ch.postRoles||[]).includes('All')?'<span style="margin-left:auto;color:var(--gold);font-size:9px;">LOCKED</span>':''}</div>`).join('')}<div class="roster-nav-item ${typeof currentView==='string'&&currentView.startsWith('hub:')?'active':''}" id="nav-hub"><div class="channel-symbol">◈</div> Clan Hub</div><div class="roster-nav-item ${currentView==='squads'?'active':''}" id="nav-squad-finder"><div class="channel-symbol">⚔</div> Squad Finder</div>`;
+  $("channel-list").innerHTML=`<div class="roster-nav-item ${typeof currentView==='string'&&currentView.startsWith('hub:')?'active':''}" id="nav-hub"><div class="channel-symbol">◈</div> Clan Hub</div><div class="roster-header" style="border:0;padding:8px 10px 7px;">Channels</div><div class="roster-nav-item channel-nav ${currentView==='clan'?'active':''}" id="nav-clan-chat" data-view="clan"><div class="channel-symbol">#</div> Clan Comms</div>${visible.map(ch=>`<div class="roster-nav-item channel-nav ${currentView===`channel:${ch.id}`?'active':''}" data-channel="${safeAttr(ch.id)}"><div class="channel-symbol">${ch.id==='announcements'?'◆':'#'}</div>${escapeHtml(ch.name||ch.id)}${!(ch.postRoles||[]).includes('All')?'<span style="margin-left:auto;color:var(--gold);font-size:9px;">LOCKED</span>':''}</div>`).join('')}<div class="roster-nav-item ${currentView==='squads'?'active':''}" id="nav-squad-finder"><div class="channel-symbol">⚔</div> Squad Finder</div>`;
 }
 function rolesChecks(name,selected){return `<div class="check-grid">${['All',...ROLE_ORDER].map(r=>`<label><input type="checkbox" name="${name}" value="${r}" ${(selected||[]).includes(r)?'checked':''}> ${r}</label>`).join('')}</div>`;}
 function selectedChecks(name){return [...$("modal-body").querySelectorAll(`input[name="${name}"]:checked`)].map(x=>x.value);}
