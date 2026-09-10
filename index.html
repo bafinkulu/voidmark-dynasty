@@ -648,6 +648,50 @@
     .squad-grid{grid-template-columns:1fr;padding:12px;}
   }
 
+
+  /* ============================================================
+     CLAN HUB EXPANSION
+  ============================================================= */
+  body[data-theme="orokin"]{--void-0:#0d0d0b;--void-1:#171713;--void-2:#24231c;--void-3:#343126;--line:#514b35;--gold:#e8cf87;--gold-bright:#fff1b8;--pulse:#b9a16a;--pulse-dim:#66583a;--text-hi:#fffaf0;--text-lo:#aaa38d;}
+  body[data-theme="corpus"]{--void-0:#061018;--void-1:#0a1924;--void-2:#102738;--void-3:#17384e;--line:#28556c;--gold:#7fd9ff;--gold-bright:#c0efff;--pulse:#3ca9d8;--pulse-dim:#245f78;--text-hi:#e9f8ff;--text-lo:#83a9ba;}
+  body[data-theme="grineer"]{--void-0:#100d09;--void-1:#1b1610;--void-2:#2a2218;--void-3:#3a2e20;--line:#5a4630;--gold:#e1a85f;--gold-bright:#f5ca8b;--pulse:#aa5e3e;--pulse-dim:#673a29;--text-hi:#f5e7d5;--text-lo:#a48d78;}
+  body[data-theme="infested"]{--void-0:#090b0c;--void-1:#111618;--void-2:#192326;--void-3:#243235;--line:#385052;--gold:#a8d86e;--gold-bright:#d4f2a8;--pulse:#7a63c9;--pulse-dim:#493b7c;--text-hi:#eef5ea;--text-lo:#92a58e;}
+  .connection-pill{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 8px;font-size:10px;color:var(--text-lo);white-space:nowrap;}
+  .connection-dot{width:7px;height:7px;border-radius:50%;background:var(--away);box-shadow:0 0 0 2px rgba(255,255,255,.03)}
+  .connection-pill.live .connection-dot{background:var(--online)}.connection-pill.offline .connection-dot{background:var(--danger)}.connection-pill.cached .connection-dot{background:var(--away)}
+  .hub-search{padding:7px 8px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;gap:6px;background:var(--void-1)}
+  .hub-search input,.hub-search select{width:100%;background:var(--void-0);border:1px solid var(--line);color:var(--text-hi);font-size:11px;padding:7px 8px;border-radius:3px;outline:none}.hub-search input:focus,.hub-search select:focus{border-color:var(--pulse)}
+  #hub-panel{flex:1;min-width:0;display:flex;flex-direction:column;background:var(--void-0)}
+  .hub-header{min-height:60px;flex:none;display:flex;align-items:center;padding:10px 18px;border-bottom:1px solid var(--line);gap:12px;background:var(--void-1)}
+  .hub-header h2{margin:0;font:700 20px var(--font-display)}.hub-header p{margin:2px 0 0;color:var(--text-lo);font-size:11px}
+  .hub-tabs{display:flex;gap:5px;overflow-x:auto;flex:none;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--void-1);scrollbar-width:thin}
+  .hub-tab{flex:none;background:transparent;border:1px solid transparent;color:var(--text-lo);font-size:11px;padding:7px 9px;border-radius:3px;white-space:nowrap}.hub-tab:hover{color:var(--text-hi);background:var(--void-2)}.hub-tab.active{border-color:var(--pulse);color:var(--text-hi);background:rgba(139,111,232,.1)}
+  #hub-content{flex:1;overflow:auto;padding:18px}
+  .dashboard-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}.hub-card{background:linear-gradient(180deg,var(--void-2),var(--void-1));border:1px solid var(--line);border-radius:5px;padding:14px;min-width:0}.hub-card.span-3{grid-column:span 3}.hub-card.span-4{grid-column:span 4}.hub-card.span-6{grid-column:span 6}.hub-card.span-8{grid-column:span 8}.hub-card.span-12{grid-column:1/-1}
+  .hub-card h3{font:600 15px var(--font-display);margin:0 0 9px}.hub-card-sub{font-size:10.5px;color:var(--text-lo);margin-top:-5px;margin-bottom:10px}.metric{font:700 27px var(--font-display);color:var(--gold)}.metric-label{font-size:10px;color:var(--text-lo);text-transform:uppercase;letter-spacing:.7px}.metric-small{font:700 18px var(--font-display)}
+  .hub-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}.hub-toolbar .spacer{flex:1}.hub-toolbar input,.hub-toolbar select{background:var(--void-1);border:1px solid var(--line);color:var(--text-hi);padding:8px 9px;border-radius:3px;font-size:11px;outline:none}.hub-toolbar input:focus,.hub-toolbar select:focus{border-color:var(--pulse)}
+  .hub-list{display:flex;flex-direction:column;gap:8px}.hub-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;background:var(--void-1);border:1px solid var(--line);border-radius:4px;padding:11px}.hub-row-title{font-size:12.5px;font-weight:600}.hub-row-sub{font-size:10.5px;color:var(--text-lo);margin-top:3px;line-height:1.35}.hub-row-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+  .tag{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:2px 7px;font-size:9px;color:var(--text-lo);white-space:nowrap}.tag.gold{border-color:rgba(201,168,106,.5);color:var(--gold)}.tag.good{border-color:rgba(95,217,138,.45);color:var(--online)}.tag.bad{border-color:rgba(232,96,122,.45);color:var(--danger)}
+  .progress-track{height:8px;background:var(--void-0);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-top:8px}.progress-fill{height:100%;background:linear-gradient(90deg,var(--pulse),var(--gold));width:0;transition:width .25s}.progress-copy{font-size:10px;color:var(--text-lo);margin-top:5px}
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}.stat-box{background:var(--void-1);border:1px solid var(--line);border-radius:4px;padding:12px}.stat-box .metric{font-size:22px}
+  .rating-stars{display:inline-flex;gap:2px}.rating-star{border:0;background:transparent;color:var(--text-lo);padding:0 1px;font-size:17px}.rating-star.on{color:var(--gold)}
+  .item-link{display:inline-flex;align-items:center;color:var(--gold-bright);text-decoration:none;border-bottom:1px dotted rgba(201,168,106,.55);font-weight:600}.item-link:hover{color:#fff}
+  .calendar-list{display:grid;gap:8px}.event-card{border:1px solid var(--line);background:var(--void-1);border-radius:4px;padding:12px}.event-date{font:700 13px var(--font-display);color:var(--gold)}.event-title{font-size:13px;font-weight:600;margin-top:3px}.event-meta{font-size:10px;color:var(--text-lo);margin-top:3px}.attendance{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+  .poll-option{margin:7px 0}.poll-bar{height:22px;border:1px solid var(--line);background:var(--void-0);border-radius:3px;position:relative;overflow:hidden;cursor:pointer}.poll-bar-fill{position:absolute;inset:0 auto 0 0;background:rgba(139,111,232,.24);pointer-events:none}.poll-bar-label{position:relative;z-index:1;display:flex;justify-content:space-between;padding:3px 7px;font-size:10.5px}.poll-check{display:flex;gap:7px;align-items:center;margin:5px 0;font-size:11px}
+  .activity-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;background:var(--text-lo)}.activity-dot.today{background:var(--online)}.activity-dot.week{background:var(--away)}.activity-dot.old{background:var(--danger)}
+  .offline-overlay{position:fixed;inset:0;z-index:500;background:rgba(7,6,13,.93);display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;backdrop-filter:blur(5px)}.offline-card{max-width:420px;border:1px solid var(--line);background:var(--void-1);padding:28px;border-radius:6px}.offline-card h2{font:700 24px var(--font-display);margin:0 0 7px}.offline-card p{font-size:12px;color:var(--text-lo);line-height:1.5;margin:0}.offline-card button{margin-top:15px}
+  .mobile-nav{display:none}.mobile-nav-btn{flex:1;background:var(--void-1);border:0;border-top:1px solid var(--line);color:var(--text-lo);padding:7px 2px 6px;font-size:9px;min-width:0}.mobile-nav-btn span{display:block;font-size:17px;line-height:18px;margin-bottom:2px}.mobile-nav-btn.active{color:var(--gold);background:var(--void-2)}
+  .admin-section-title{font:600 14px var(--font-display);margin:16px 0 7px;color:var(--gold)}.admin-section-title:first-child{margin-top:0}.note-card,.warning-card,.audit-card{padding:9px;border:1px solid var(--line);border-radius:3px;background:var(--void-0);font-size:11px;margin:6px 0}.warning-card{border-left:3px solid var(--danger)}.audit-card{border-left:3px solid var(--pulse)}
+  .channel-perms{display:grid;grid-template-columns:1fr 1fr;gap:8px}.check-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.check-grid label{font-size:10px;color:var(--text-lo)}
+  .install-hint{font-size:10px;color:var(--text-lo);margin-top:7px}
+  @media(max-width:1100px){.hub-card.span-3{grid-column:span 6}.hub-card.span-4{grid-column:span 6}.hub-card.span-8{grid-column:span 12}}
+  @media(max-width:760px){
+    .connection-pill{padding:4px 6px}.connection-pill span:last-child{display:none}#theme-btn{display:none}
+    .mobile-nav{position:fixed;display:flex;left:0;right:0;bottom:0;height:57px;z-index:80;background:var(--void-1)}.body-wrap{padding-bottom:57px}.modal-root{padding-bottom:70px}
+    #hub-content{padding:11px}.hub-header{padding:9px 12px;min-height:54px}.hub-header h2{font-size:17px}.hub-tabs{padding:6px 8px}.hub-tab{padding:6px 8px}
+    .dashboard-grid{grid-template-columns:1fr}.hub-card.span-3,.hub-card.span-4,.hub-card.span-6,.hub-card.span-8,.hub-card.span-12{grid-column:1/-1}.hub-row{grid-template-columns:1fr}.hub-row-actions{justify-content:flex-start}.check-grid{grid-template-columns:1fr 1fr}
+  }
+
 </style>
 </head>
 <body>
@@ -704,6 +748,9 @@
     <button id="menu-toggle">☰</button>
     <div class="clan-name">VOIDMARK <span>DYNASTY</span></div>
     <div class="spacer"></div>
+    <div id="connection-pill" class="connection-pill cached" title="Firestore connection status"><span class="connection-dot"></span><span id="connection-text">Connecting</span></div>
+    <button class="icon-btn" id="install-btn" title="Install Voidmark Dynasty">⬇</button>
+    <button class="icon-btn" id="theme-btn" title="Appearance">◐</button>
     <div class="me-tag" id="me-profile-btn" title="Open your profile">Signed in as <b id="me-username"></b><span class="role-chip" id="me-role">Member</span></div>
     <button class="btn-ghost hidden" id="admin-panel-btn">Clan Management</button>
     <button class="icon-btn" id="notifications-btn" title="Notifications">🔔<span id="notif-count" class="notif-count hidden">0</span></button>
@@ -733,11 +780,18 @@
         <div class="roster-nav-item channel-nav" data-channel="off-topic">
           <div class="channel-symbol">#</div> Off Topic
         </div>
+        <div class="roster-nav-item" id="nav-hub">
+          <div class="channel-symbol">◈</div> Clan Hub
+        </div>
         <div class="roster-nav-item" id="nav-squad-finder">
           <div class="channel-symbol">⚔</div> Squad Finder
         </div>
       </div>
       <div class="roster-header">Members — <span id="member-count">0</span></div>
+      <div class="hub-search">
+        <input id="member-search" type="search" maxlength="30" placeholder="Search members…">
+        <select id="member-role-filter"><option value="">All ranks</option><option>Recruit</option><option>Member</option><option>Moderator</option><option>Officer</option><option>Warlord</option><option>Founder</option></select>
+      </div>
       <div class="roster-list" id="roster-list"></div>
     </div>
  
@@ -775,8 +829,21 @@
       </div>
       <div id="squad-grid" class="squad-grid"></div>
     </div>
+
+    <div id="hub-panel" class="hidden">
+      <div class="hub-header"><div><h2 id="hub-title">Clan Hub</h2><p id="hub-subtitle">Voidmark Dynasty operations</p></div><div class="spacer"></div><button class="btn-ghost" id="hub-refresh-btn">Refresh</button></div>
+      <div class="hub-tabs" id="hub-tabs">
+        <button class="hub-tab active" data-hub-tab="dashboard">Dashboard</button><button class="hub-tab" data-hub-tab="dojo">Dojo</button><button class="hub-tab" data-hub-tab="research">Research</button><button class="hub-tab" data-hub-tab="resources">Resources</button><button class="hub-tab" data-hub-tab="treasury">Treasury</button><button class="hub-tab" data-hub-tab="builds">Builds</button><button class="hub-tab" data-hub-tab="farming">Farming</button><button class="hub-tab" data-hub-tab="polls">Polls</button><button class="hub-tab" data-hub-tab="calendar">Calendar</button><button class="hub-tab" data-hub-tab="objectives">Objectives</button><button class="hub-tab" data-hub-tab="statistics">Statistics</button>
+      </div>
+      <div id="hub-content"></div>
+    </div>
   </div>
+  <nav class="mobile-nav" id="mobile-nav">
+    <button class="mobile-nav-btn" data-mobile="hub"><span>◈</span>Home</button><button class="mobile-nav-btn active" data-mobile="chat"><span>💬</span>Chat</button><button class="mobile-nav-btn" data-mobile="squads"><span>⚔</span>Squads</button><button class="mobile-nav-btn" data-mobile="members"><span>👥</span>Members</button><button class="mobile-nav-btn" data-mobile="profile"><span>◉</span>Profile</button>
+  </nav>
 </div>
+
+<div id="offline-overlay" class="offline-overlay hidden"><div class="offline-card"><div class="sigil"></div><h2>Connection Lost</h2><p>Voidmark Dynasty cannot reach the network right now. The page will reconnect automatically when your connection returns.</p><button class="small-btn primary" id="offline-retry">Try Again</button></div></div>
  
 <div id="modal-root" class="modal-root hidden">
   <div class="modal" id="modal-card">
@@ -801,13 +868,14 @@ const ONLINE_WINDOW_MS = 45000;
 const TYPING_THROTTLE_MS = 2500;  // min gap between typing-timestamp writes
 const TYPING_TIMEOUT_MS = 5000;   // how long a typing timestamp is considered "live"
 
-const CHANNELS = {
-  announcements: {name:"Announcements", subtitle:"Official Voidmark Dynasty notices", staffOnly:true},
-  "squad-recruitment": {name:"Squad Recruitment", subtitle:"Looking for Tenno? Post here."},
-  trading: {name:"Trading", subtitle:"Clan trading, price checks and item requests"},
-  builds: {name:"Builds", subtitle:"Share Warframe, weapon and companion builds"},
-  "off-topic": {name:"Off Topic", subtitle:"Anything outside the Origin System"}
+const DEFAULT_CHANNELS = {
+  announcements: {name:"Announcements", subtitle:"Official Voidmark Dynasty notices", staffOnly:true, readRoles:["All"], postRoles:["Officer","Warlord","Founder"]},
+  "squad-recruitment": {name:"Squad Recruitment", subtitle:"Looking for Tenno? Post here.", readRoles:["All"], postRoles:["All"]},
+  trading: {name:"Trading", subtitle:"Clan trading, price checks and item requests", readRoles:["All"], postRoles:["All"]},
+  builds: {name:"Builds", subtitle:"Share Warframe, weapon and companion builds", readRoles:["All"], postRoles:["All"]},
+  "off-topic": {name:"Off Topic", subtitle:"Anything outside the Origin System", readRoles:["All"], postRoles:["All"]}
 };
+let channelCache = Object.fromEntries(Object.entries(DEFAULT_CHANNELS).map(([k,v])=>[k,{id:k,...v}]));
 const ROLE_ORDER = ["Recruit","Member","Moderator","Officer","Warlord","Founder"];
 const STAFF_ROLES = new Set(["Moderator","Officer","Warlord","Founder"]);
 const MANAGER_ROLES = new Set(["Warlord","Founder"]);
@@ -837,6 +905,15 @@ let unsubNotifications = null;
 let unsubSquads = null;
 let notificationsCache = [];
 let replyingTo = null;
+let currentUserData = {};
+let registrationInProgress = false;
+let unsubChannelConfig = null;
+let hubUnsubs = [];
+let currentHubTab = "dashboard";
+let memberSearchTerm = "";
+let memberRoleFilter = "";
+let deferredInstallPrompt = null;
+let eventReminderTimer = null;
 
 /* ============================================================
    HELPERS
@@ -857,6 +934,18 @@ function isStaffUser(u){ return STAFF_ROLES.has(getRole(u)) || (u && u.isAdmin =
 function canModerate(){ return currentIsAdmin || STAFF_ROLES.has(currentRole); }
 function canManageRanks(){ return currentIsAdmin || MANAGER_ROLES.has(currentRole); }
 function canPostAnnouncements(){ return currentIsAdmin || ["Officer","Warlord","Founder"].includes(currentRole); }
+function canManageChannels(){ return currentIsAdmin || ["Warlord","Founder"].includes(currentRole); }
+function isApprovedUser(u){ return !!u && (u.approvalStatus == null || u.approvalStatus === "approved"); }
+function isMutedUser(u){ return !!(u && u.mutedUntil && u.mutedUntil.toDate && u.mutedUntil.toDate().getTime() > Date.now()); }
+function displayRole(u){ const core=getRole(u); return u && u.customRole ? `${u.customRole} · ${core}` : core; }
+function channelAllows(ch, mode="read") {
+  if(!ch || ch.archived) return false;
+  if(currentIsAdmin) return true;
+  const readRoles=ch.readRoles||["All"];
+  if(mode==="post" && !(readRoles.includes("All")||readRoles.includes(currentRole))) return false;
+  const roles = mode === "post" ? (ch.postRoles || (ch.staffOnly ? ["Officer","Warlord","Founder"] : ["All"])) : readRoles;
+  return roles.includes("All") || roles.includes(currentRole);
+}
 function safeAttr(s){ return escapeHtml(String(s || "")); }
 function avatarHtml(u, fallbackName, cls=""){
   const url = u && u.avatarUrl;
@@ -884,8 +973,11 @@ function relativeTime(ts){
   const hr = Math.floor(min/60); if (hr < 24) return `${hr}h ago`;
   const day = Math.floor(hr/24); return day < 7 ? `${day}d ago` : ts.toDate().toLocaleDateString();
 }
+function highlightMentions(escaped){ return escaped.replace(/(^|[^A-Za-z0-9_])@([A-Za-z0-9_]{3,20})\b/g, '$1<span class="mention">@$2</span>'); }
 function formatMessageText(s){
-  return escapeHtml(String(s || "")).replace(/(^|[^A-Za-z0-9_])@([A-Za-z0-9_]{3,20})\b/g, '$1<span class="mention">@$2</span>');
+  const raw=String(s||""); let out="",last=0; const re=/\[([A-Za-z0-9 .:'_+\-/]{2,60})\]/g; let m;
+  while((m=re.exec(raw))){ out+=highlightMentions(escapeHtml(raw.slice(last,m.index))); const item=m[1].trim(); const href="https://wiki.warframe.com/w/Special:Search?search="+encodeURIComponent(item); out+=`<a class="item-link" href="${safeAttr(href)}" target="_blank" rel="noopener noreferrer">[${escapeHtml(item)}]</a>`; last=m.index+m[0].length; }
+  out+=highlightMentions(escapeHtml(raw.slice(last))); return out;
 }
 function dateLabel(ts){
   if (!ts || !ts.toDate) return "Today";
@@ -901,10 +993,14 @@ function sameMessageGroup(a,b){
   return Math.abs(b.createdAt.toDate().getTime()-a.createdAt.toDate().getTime()) < 5*60*1000 && a.createdAt.toDate().toDateString()===b.createdAt.toDate().toDateString();
 }
 function selectNav(selector){
-  document.querySelectorAll('.channel-nav,#nav-squad-finder').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.channel-nav,#nav-squad-finder,#nav-hub').forEach(el=>el.classList.remove('active'));
   const el = document.querySelector(selector); if (el) el.classList.add('active');
 }
-function showChatPanel(){ $("chat-panel").classList.remove("hidden"); $("squad-panel").classList.add("hidden"); }
+function setMobileNav(which){ document.querySelectorAll('.mobile-nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.mobile===which)); }
+function showChatPanel(){ $("chat-panel").classList.remove("hidden"); $("squad-panel").classList.add("hidden"); $("hub-panel").classList.add("hidden"); setMobileNav("chat"); }
+function showHubPanel(){ $("chat-panel").classList.add("hidden"); $("squad-panel").classList.add("hidden"); $("hub-panel").classList.remove("hidden"); setMobileNav("hub"); }
+function clearHubListeners(){ hubUnsubs.forEach(fn=>{try{fn&&fn();}catch{}}); hubUnsubs=[]; }
+function setConnectionState(state,text){ const p=$("connection-pill"); if(!p)return; p.className=`connection-pill ${state}`; $("connection-text").textContent=text; }
 function clearReply(){
   replyingTo = null; $("reply-preview").classList.add("hidden");
 }
@@ -1031,6 +1127,7 @@ $("register-form").addEventListener("submit", async (e) => {
     return;
   }
   $("register-btn").disabled = true;
+  registrationInProgress = true;
   try {
     const email = username.toLowerCase() + FAKE_DOMAIN;
     const cred = await auth.createUserWithEmailAndPassword(email, password);
@@ -1045,13 +1142,20 @@ $("register-form").addEventListener("submit", async (e) => {
       status: "online",
       customStatus: "",
       role: "Recruit",
+      customRole: "",
+      approvalStatus: "pending",
+      loadout: {primary:"", secondary:"", melee:"", companion:"", focusSchool:""},
       isAdmin: false,
       banned: false,
       createdAt: FieldValue.serverTimestamp(),
       lastSeen: FieldValue.serverTimestamp()
     });
+    await auth.signOut();
+    showAuthError("Account created. A clan moderator must approve you before you can enter.");
   } catch (err) {
     showAuthError(friendlyAuthError(err));
+  } finally {
+    registrationInProgress = false;
     $("register-btn").disabled = false;
   }
 });
@@ -1061,9 +1165,15 @@ $("register-form").addEventListener("submit", async (e) => {
 ============================================================= */
 auth.onAuthStateChanged(async (user) => {
   if (user) {
+    if(registrationInProgress) return;
     currentUser = user;
-    const snap = await db.collection("users").doc(user.uid).get();
+    let snap = await db.collection("users").doc(user.uid).get();
+    if(!snap.exists){ await new Promise(r=>setTimeout(r,180)); snap=await db.collection("users").doc(user.uid).get(); }
     const data = snap.exists ? snap.data() : {username: user.email.split("@")[0]};
+    if(data.approvalStatus === "pending" || data.approvalStatus === "rejected") {
+      const rejected=data.approvalStatus === "rejected"; await auth.signOut(); setTimeout(()=>showAuthError(rejected?"Your clan application has not been approved.":"Your account is waiting for clan approval."),0); return;
+    }
+    currentUserData = data;
     currentUsername = data.username;
     currentRole = getRole(data);
     currentIsAdmin = data.isAdmin === true;
@@ -1071,16 +1181,15 @@ auth.onAuthStateChanged(async (user) => {
     // Live-watch my own user doc so an admin toggling my isAdmin/banned flag
     // takes effect immediately without needing to reload.
     if (unsubMe) unsubMe();
-    unsubMe = db.collection("users").doc(user.uid).onSnapshot((s) => {
+    unsubMe = db.collection("users").doc(user.uid).onSnapshot({includeMetadataChanges:true}, (s) => {
       const d = s.data();
+      setConnectionState(s.metadata.fromCache ? "cached" : "live", s.metadata.fromCache ? "Cached" : "Live");
       if (!d) return;
       if (d.banned === true) {
-        // Firestore rules already block this uid from writing anything;
-        // this just gets them off the screen and back to the login form.
-        alert("Your account has been suspended by an admin.");
-        auth.signOut();
-        return;
+        alert("Your account has been suspended by an admin."); auth.signOut(); return;
       }
+      if(d.approvalStatus === "pending" || d.approvalStatus === "rejected") { auth.signOut(); return; }
+      currentUserData = d;
       currentUsername = d.username || currentUsername;
       currentRole = getRole(d);
       currentIsAdmin = d.isAdmin === true;
@@ -1119,8 +1228,11 @@ function enterChatScreen(){
   subscribeRoster();
   subscribeDMMeta();
   subscribeNotifications();
+  subscribeChannelConfig();
   openClanChat();
   startHeartbeat();
+  startEventReminderLoop();
+  updateNetworkState();
  
   // re-check every second so the typing indicator clears itself once a timestamp
   // goes stale, even if no new Firestore snapshot arrives
@@ -1141,6 +1253,9 @@ function exitChatScreen(){
   if (unsubTyping) unsubTyping();
   if (unsubNotifications) { unsubNotifications(); unsubNotifications = null; }
   if (unsubSquads) { unsubSquads(); unsubSquads = null; }
+  if (unsubChannelConfig) { unsubChannelConfig(); unsubChannelConfig = null; }
+  clearHubListeners();
+  clearInterval(eventReminderTimer); eventReminderTimer=null;
   if (unsubMe) { unsubMe(); unsubMe = null; }
   stopHeartbeat();
   clearInterval(typingTickTimer);
@@ -1148,6 +1263,7 @@ function exitChatScreen(){
   dmMetaCache = {};
   typingCache = {};
   notificationsCache = [];
+  currentUserData = {};
   lastRenderedMsgs = [];
   editingMessageId = null;
   clearReply();
@@ -1191,10 +1307,17 @@ function subscribeRoster(){
  
 function renderRoster(){
   const list = $("roster-list");
-  const ids = Object.keys(usersCache).filter(id => id !== (currentUser && currentUser.uid));
-  $("member-count").textContent = Object.keys(usersCache).length;
+  const approvedIds = Object.keys(usersCache).filter(id=>isApprovedUser(usersCache[id]));
+  const ids = Object.keys(usersCache).filter(id => {
+    if(id === (currentUser && currentUser.uid)) return false; const u=usersCache[id];
+    if(!isApprovedUser(u) && !canModerate()) return false;
+    if(memberRoleFilter && getRole(u)!==memberRoleFilter) return false;
+    if(memberSearchTerm){const q=memberSearchTerm.toLowerCase();return String(u.username||"").toLowerCase().includes(q)||String(u.mainFrame||"").toLowerCase().includes(q)||String(u.customRole||"").toLowerCase().includes(q);}
+    return true;
+  });
+  $("member-count").textContent = approvedIds.length;
 
-  if (currentView !== "clan" && currentView !== "squads" && !(typeof currentView === "string" && currentView.startsWith("channel:"))) updateDMSubtitle(currentView);
+  if (currentView !== "clan" && currentView !== "squads" && !(typeof currentView === "string" && (currentView.startsWith("channel:") || currentView.startsWith("hub:")))) updateDMSubtitle(currentView);
 
   if (ids.length === 0) {
     list.innerHTML = '<div class="system-note" style="padding:14px 4px;">No other Tenno enlisted yet.</div>';
@@ -1220,7 +1343,7 @@ function renderRoster(){
       <div class="roster-item ${active}" data-uid="${uid}" style="${banned ? 'opacity:0.5;' : ''}">
         <div class="avatar roster-profile-trigger" title="View profile">${avatarHtml(u,u.username)}<div class="status-dot ${state}"></div></div>
         <div class="roster-item-info">
-          <div class="roster-item-name">${escapeHtml(u.username)} <span class="member-role">${escapeHtml(role)}</span>${banned ? ' <span style="color:var(--danger);font-size:10px;">(banned)</span>' : ''}</div>
+          <div class="roster-item-name">${escapeHtml(u.username)} <span class="member-role">${escapeHtml(u.customRole||role)}</span>${banned ? ' <span style="color:var(--danger);font-size:10px;">(banned)</span>' : ''}</div>
           <div class="roster-item-sub">${escapeHtml(statusText(u))}</div>
         </div>
         ${unread > 0 ? `<div class="unread-badge">${unread > 9 ? '9+' : unread}</div>` : ""}
@@ -1260,6 +1383,7 @@ function toggleBan(uid){
   const nextBanned = !(u.banned === true);
   if (!confirm(`${nextBanned ? 'Ban' : 'Unban'} ${u.username}?`)) return;
   db.collection("users").doc(uid).update({ banned: nextBanned })
+    .then(()=>writeAudit(nextBanned?"member.ban":"member.unban",uid,u.username,"Roster quick action"))
     .catch(err => alert("Action failed: " + (err.message || err)));
 }
  
@@ -1283,18 +1407,14 @@ function subscribeDMMeta(){
       qs.forEach(doc => { dmMetaCache[doc.id] = doc.data(); });
       renderRoster();
       // lastRead may have just changed for the thread we're looking at — refresh checkmarks
-      if (currentView !== "clan" && lastRenderedMsgs.length) renderMessages(lastRenderedMsgs);
+      if (currentView !== "clan" && currentView !== "squads" && !(typeof currentView === "string" && (currentView.startsWith("channel:") || currentView.startsWith("hub:"))) && lastRenderedMsgs.length) renderMessages(lastRenderedMsgs);
     });
 }
  
 /* ============================================================
    CLAN CHAT (public channel)
 ============================================================= */
-$("nav-clan-chat").addEventListener("click", () => {
-  openClanChat();
-  closeMobileRoster();
-});
- 
+
 function openClanChat(){
   currentView = "clan";
   showChatPanel(); clearReply(); selectNav('#nav-clan-chat');
@@ -1320,15 +1440,15 @@ function openClanChat(){
 }
 
 function openChannel(channelId){
-  const ch = CHANNELS[channelId]; if (!ch) return;
+  const ch = channelCache[channelId]; if (!ch || ch.archived || !channelAllows(ch,"read")) { toast("Channel unavailable","You do not have permission to view this channel."); return; }
   currentView = `channel:${channelId}`;
   showChatPanel(); clearReply(); selectNav(`[data-channel="${channelId}"]`);
   $("chat-title").textContent = ch.name;
   $("chat-subtitle").textContent = ch.subtitle;
   $("message-input").placeholder = `Message #${ch.name.toLowerCase()}…`;
-  const blocked = !!ch.staffOnly && !canPostAnnouncements();
+  const blocked = !channelAllows(ch,"post") || isMutedUser(currentUserData);
   $("message-input").disabled = blocked; $("send-btn").disabled = blocked;
-  if (blocked) $("message-input").placeholder = "Only Officers, Warlords and Founders can post announcements";
+  if (blocked) $("message-input").placeholder = isMutedUser(currentUserData) ? "You are temporarily muted" : "You do not have permission to post in this channel";
   renderRoster();
 
   if (unsubClanChat) { unsubClanChat(); unsubClanChat = null; }
@@ -1394,7 +1514,7 @@ function renderMessages(msgs){
     return;
   }
 
-  const inDM = currentView !== "clan" && currentView !== "squads" && !(typeof currentView === "string" && currentView.startsWith("channel:"));
+  const inDM = currentView !== "clan" && currentView !== "squads" && !(typeof currentView === "string" && (currentView.startsWith("channel:") || currentView.startsWith("hub:")));
   const dmMeta = inDM ? dmMetaCache[dmChatId(currentUser.uid, currentView)] : null;
   const otherLastRead = dmMeta && dmMeta.lastRead ? dmMeta.lastRead[currentView] : null;
   let lastDate = "";
@@ -1566,8 +1686,9 @@ $("composer-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const input = $("message-input");
   const text = input.value.trim();
-  if (!text || !currentUser || currentView === "squads") return;
-  if (typeof currentView === "string" && currentView === "channel:announcements" && !canPostAnnouncements()) return;
+  if (!text || !currentUser || currentView === "squads" || (typeof currentView === "string" && currentView.startsWith("hub:"))) return;
+  if(isMutedUser(currentUserData)){toast("You are muted","You cannot send messages until your temporary mute expires.");return;}
+  if (typeof currentView === "string" && currentView.startsWith("channel:") && !channelAllows(channelCache[currentView.slice(8)],"post")) return;
   input.value = ""; $("send-btn").disabled = true; clearTypingFlag();
   const replyTo = replyingTo ? {...replyingTo} : null; clearReply();
 
@@ -1595,7 +1716,7 @@ $("composer-form").addEventListener("submit", async (e) => {
   } catch (err) {
     alert("Message failed to send: " + (err.message || err));
   } finally {
-    $("send-btn").disabled = (currentView === "channel:announcements" && !canPostAnnouncements());
+    $("send-btn").disabled = isMutedUser(currentUserData) || (typeof currentView === "string" && currentView.startsWith("channel:") && !channelAllows(channelCache[currentView.slice(8)],"post"));
     input.focus();
   }
 });
@@ -1688,7 +1809,7 @@ $("message-input").addEventListener("input", () => {
 /* ============================================================
    CHANNEL NAVIGATION
 ============================================================= */
-document.querySelectorAll("[data-channel]").forEach(el=>el.addEventListener("click",()=>{openChannel(el.dataset.channel);closeMobileRoster();}));
+$("channel-list").addEventListener("click",e=>{const el=e.target.closest("[data-channel],[data-view],#nav-squad-finder,#nav-hub");if(!el)return;if(el.id==="nav-squad-finder")openSquadFinder();else if(el.id==="nav-hub")openHub("dashboard");else if(el.dataset.view==="clan")openClanChat();else if(el.dataset.channel)openChannel(el.dataset.channel);closeMobileRoster();});
 $("show-pins-btn").addEventListener("click",showPinnedMessages);
 $("pinned-strip").addEventListener("click",showPinnedMessages);
 $("cancel-reply").addEventListener("click",clearReply);
@@ -1697,32 +1818,44 @@ $("cancel-reply").addEventListener("click",clearReply);
    PROFILES / AVATARS / STATUS
 ============================================================= */
 function showProfile(uid){
-  const u=uid===currentUser.uid ? (usersCache[uid]||{}) : usersCache[uid];
+  const u=uid===currentUser.uid ? (usersCache[uid]||currentUserData||{}) : usersCache[uid];
   if(!u && uid!==currentUser.uid)return;
   const own=uid===currentUser.uid, role=getRole(u), joined=u&&u.createdAt&&u.createdAt.toDate?u.createdAt.toDate().toLocaleDateString([], {year:'numeric',month:'long',day:'numeric'}):"Unknown";
   const body=`
-    <div class="profile-top"><div class="profile-avatar" id="profile-avatar-preview">${avatarHtml(u,u?.username||currentUsername)}</div><div><div class="profile-name">${escapeHtml(u?.username||currentUsername)}</div><div class="profile-meta">${escapeHtml(role)} · Joined ${escapeHtml(joined)}</div>${!own?`<div class="profile-meta">${escapeHtml(statusText(u))}</div>`:''}</div></div>
+    <div class="profile-top"><div class="profile-avatar" id="profile-avatar-preview">${avatarHtml(u,u?.username||currentUsername)}</div><div><div class="profile-name">${escapeHtml(u?.username||currentUsername)}</div><div class="profile-meta">${escapeHtml(displayRole(u))} · Joined ${escapeHtml(joined)}</div>${!own?`<div class="profile-meta">${escapeHtml(statusText(u))}</div>`:''}</div></div>
     <div class="form-grid">
       <div class="field"><label>Main Warframe</label><input id="profile-frame" maxlength="30" value="${safeAttr(u?.mainFrame||'')}" ${own?'':'disabled'}></div>
       <div class="field"><label>Mastery Rank</label><input id="profile-mr" maxlength="12" value="${safeAttr(u?.masteryRank||'')}" placeholder="e.g. MR 18" ${own?'':'disabled'}></div>
       <div class="field"><label>Platform</label><select id="profile-platform" ${own?'':'disabled'}>${['','PC','PlayStation','Xbox','Nintendo Switch','Mobile'].map(v=>`<option ${String(u?.platform||'')===v?'selected':''}>${v}</option>`).join('')}</select></div>
       <div class="field"><label>Favourite Weapon</label><input id="profile-weapon" maxlength="40" value="${safeAttr(u?.favoriteWeapon||'')}" ${own?'':'disabled'}></div>
-      ${own?`<div class="field"><label>Status</label><select id="profile-status">${[['online','Online'],['away','Away'],['busy','Busy'],['invisible','Invisible']].map(([v,l])=>`<option value="${v}" ${String(u?.status||'online')===v?'selected':''}>${l}</option>`).join('')}</select></div><div class="field"><label>Custom Status</label><input id="profile-custom" maxlength="60" value="${safeAttr(u?.customStatus||'')}" placeholder="e.g. Farming relics"></div><div class="field form-span"><label>Profile picture URL / path</label><input type="text" id="profile-avatar-url" maxlength="500" value="${safeAttr(u?.avatarUrl||'')}" placeholder="e.g. avatars/revenant.png"><div class="field-hint">Use an image in your GitHub Pages site (for example avatars/revenant.png) or a direct HTTPS image URL. No Firebase Storage required.</div></div>`:''}
+      <div class="field"><label>Primary</label><input id="profile-primary" maxlength="40" value="${safeAttr(u?.loadout?.primary||'')}" ${own?'':'disabled'}></div>
+      <div class="field"><label>Secondary</label><input id="profile-secondary" maxlength="40" value="${safeAttr(u?.loadout?.secondary||'')}" ${own?'':'disabled'}></div>
+      <div class="field"><label>Melee</label><input id="profile-melee" maxlength="40" value="${safeAttr(u?.loadout?.melee||'')}" ${own?'':'disabled'}></div>
+      <div class="field"><label>Companion</label><input id="profile-companion" maxlength="40" value="${safeAttr(u?.loadout?.companion||'')}" ${own?'':'disabled'}></div>
+      <div class="field"><label>Focus School</label><input id="profile-focus" maxlength="30" value="${safeAttr(u?.loadout?.focusSchool||'')}" ${own?'':'disabled'}></div>
+      ${own?`<div class="field"><label>Status</label><select id="profile-status">${[['online','Online'],['away','Away'],['busy','Busy'],['invisible','Invisible']].map(([v,l])=>`<option value="${v}" ${String(u?.status||'online')===v?'selected':''}>${l}</option>`).join('')}</select></div><div class="field"><label>Custom Status</label><input id="profile-custom" maxlength="60" value="${safeAttr(u?.customStatus||'')}" placeholder="e.g. Farming relics"></div><div class="field"><label>Theme</label><select id="profile-theme">${[['void','Voidmark'],['orokin','Orokin'],['corpus','Corpus'],['grineer','Grineer'],['infested','Infested']].map(([v,l])=>`<option value="${v}" ${(document.body.dataset.theme||'void')===v?'selected':''}>${l}</option>`).join('')}</select></div><div class="field form-span"><label>Profile picture URL / path</label><input type="text" id="profile-avatar-url" maxlength="500" value="${safeAttr(u?.avatarUrl||'')}" placeholder="e.g. avatars/revenant.png"><div class="field-hint">Use an image in your GitHub Pages site (for example avatars/revenant.png) or a direct HTTPS image URL. No Firebase Storage required.</div></div>`:''}
     </div>
-    <div class="modal-actions">${!own?`<button class="small-btn primary" id="profile-message">Message</button>`:''}${own?`<button class="small-btn primary" id="profile-save">Save Profile</button>`:''}</div>`;
+    <div class="modal-actions">${!own?`<button class="small-btn primary" id="profile-message">Message</button>`:''}${own?`<button class="small-btn" id="profile-warnings">Warnings</button>${canModerate()?'<button class="small-btn" id="profile-admin">Clan Management</button>':''}<button class="small-btn" id="profile-install">Install App</button><button class="small-btn primary" id="profile-save">Save Profile</button>`:''}</div>`;
   openModal(own?"Your Tenno Profile":"Tenno Profile",body);
   if(!own){$("profile-message").onclick=()=>{closeModal();openDM(uid);};return;}
+  $("profile-warnings").onclick=openMyWarnings;
+  if($("profile-admin"))$("profile-admin").onclick=openAdminPanel;
+  $("profile-install").onclick=promptInstall;
   $("profile-save").onclick=async()=>{
     const btn=$("profile-save");btn.disabled=true;
     try{
       let avatarUrl=$("profile-avatar-url").value.trim();
       if(avatarUrl && !(avatarUrl.startsWith("https://") || avatarUrl.startsWith("http://") || /^[A-Za-z0-9_./%+\-]+$/.test(avatarUrl))) throw new Error("Use a valid image URL or site-relative path such as avatars/revenant.png.");
-      await db.collection("users").doc(currentUser.uid).update({mainFrame:$("profile-frame").value.trim(),masteryRank:$("profile-mr").value.trim(),platform:$("profile-platform").value,favoriteWeapon:$("profile-weapon").value.trim(),status:$("profile-status").value,customStatus:$("profile-custom").value.trim(),avatarUrl,lastSeen:FieldValue.serverTimestamp()});
-      closeModal();toast("Profile updated","Your Voidmark profile has been saved.");
+      await db.collection("users").doc(currentUser.uid).update({mainFrame:$("profile-frame").value.trim(),masteryRank:$("profile-mr").value.trim(),platform:$("profile-platform").value,favoriteWeapon:$("profile-weapon").value.trim(),loadout:{primary:$("profile-primary").value.trim(),secondary:$("profile-secondary").value.trim(),melee:$("profile-melee").value.trim(),companion:$("profile-companion").value.trim(),focusSchool:$("profile-focus").value.trim()},status:$("profile-status").value,customStatus:$("profile-custom").value.trim(),avatarUrl,lastSeen:FieldValue.serverTimestamp()});
+      applyTheme($("profile-theme").value); closeModal();toast("Profile updated","Your Voidmark profile has been saved.");
     }catch(err){toast("Profile update failed",err.message);}finally{btn.disabled=false;}
   };
 }
 $("me-profile-btn").addEventListener("click",()=>currentUser&&showProfile(currentUser.uid));
+
+async function openMyWarnings(){
+  try{const qs=await db.collection("warnings").where("targetUid","==",currentUser.uid).limit(50).get(),arr=[];qs.forEach(d=>arr.push(d.data()));arr.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));openModal("Your Warnings",arr.length?arr.map(w=>`<div class="warning-card">${escapeHtml(w.reason||'Warning')}<div class="notification-time">${escapeHtml(w.issuedByUsername||'Staff')} · ${escapeHtml(formatFullDateTime(w.createdAt))}</div></div>`).join(''):'<div class="system-note">You have no clan warnings.</div>');}catch(err){toast("Warnings",err.message);}
+}
 
 /* ============================================================
    CLAN MANAGEMENT / RANKS
@@ -1730,15 +1863,11 @@ $("me-profile-btn").addEventListener("click",()=>currentUser&&showProfile(curren
 function openAdminPanel(){
   if(!canModerate())return;
   const ids=Object.keys(usersCache).filter(uid=>uid!==currentUser.uid);
-  const rows=ids.map(uid=>{const u=usersCache[uid],role=getRole(u);return `<div class="admin-user" data-uid="${uid}"><div><div class="name">${escapeHtml(u.username||'Tenno')}</div><div class="sub">${escapeHtml(u.banned?'Suspended':statusText(u))} · ${escapeHtml(role)}</div></div><select class="admin-role" ${canManageRanks()?'':'disabled'}>${ROLE_ORDER.map(r=>`<option ${r===role?'selected':''}>${r}</option>`).join('')}</select><button class="small-btn ${u.banned?'':'danger'} admin-ban">${u.banned?'Unban':'Ban'}</button><button class="small-btn admin-view">Profile</button></div>`;}).join('');
-  openModal("Clan Management",`<div style="font-size:11px;color:var(--text-lo);margin-bottom:12px">Moderators can manage suspensions. Warlords and Founders can also change clan ranks.</div>${rows||'<div class="system-note">No other members.</div>'}`,true);
-  $("modal-root").querySelectorAll(".admin-user").forEach(row=>{
-    const uid=row.dataset.uid,u=usersCache[uid];
-    const sel=row.querySelector(".admin-role");
-    if(sel)sel.onchange=async e=>{const role=e.target.value;if(!canManageRanks()){e.target.value=getRole(u);return;}if(role==="Founder"&&!confirm(`Promote ${u.username} to Founder?`)){e.target.value=getRole(u);return;}try{await db.collection("users").doc(uid).update({role});toast("Rank updated",`${u.username} → ${role}`);}catch(err){toast("Rank update failed",err.message);e.target.value=getRole(u);}};
-    row.querySelector(".admin-ban").onclick=async()=>{const next=!(u.banned===true);if(!confirm(`${next?'Ban':'Unban'} ${u.username}?`))return;try{await db.collection("users").doc(uid).update({banned:next});toast(next?"Member suspended":"Suspension lifted",u.username);}catch(err){toast("Action failed",err.message);}};
-    row.querySelector(".admin-view").onclick=()=>{closeModal();showProfile(uid);};
-  });
+  const pending=ids.filter(uid=>usersCache[uid].approvalStatus==="pending").length;
+  const rows=ids.map(uid=>{const u=usersCache[uid],role=getRole(u),muted=isMutedUser(u);return `<div class="admin-user" data-uid="${uid}"><div><div class="name">${escapeHtml(u.username||'Tenno')}</div><div class="sub">${u.approvalStatus==='pending'?'Awaiting approval · ':''}${escapeHtml(u.banned?'Suspended':muted?'Muted':statusText(u))} · ${escapeHtml(displayRole(u))}</div></div><span class="tag ${u.approvalStatus==='pending'?'gold':''}">${escapeHtml(role)}</span><button class="small-btn primary admin-manage">Manage</button><button class="small-btn admin-view">Profile</button></div>`;}).join('');
+  openModal("Clan Management",`<div class="hub-toolbar"><button class="small-btn primary" id="admin-recruits">Pending recruits (${pending})</button>${canManageChannels()?'<button class="small-btn" id="admin-channels">Channels & permissions</button>':''}<button class="small-btn" id="admin-audit">Audit log</button></div><div style="font-size:11px;color:var(--text-lo);margin-bottom:12px">Ranks control core permissions. Custom roles are display titles only.</div>${rows||'<div class="system-note">No other members.</div>'}`,true);
+  $("admin-recruits").onclick=openRecruitApprovals; if($("admin-channels"))$("admin-channels").onclick=openChannelManager; $("admin-audit").onclick=openAuditLog;
+  $("modal-root").querySelectorAll(".admin-user").forEach(row=>{const uid=row.dataset.uid;row.querySelector(".admin-manage").onclick=()=>openManageMember(uid);row.querySelector(".admin-view").onclick=()=>{closeModal();showProfile(uid);};});
 }
 $("admin-panel-btn").addEventListener("click",openAdminPanel);
 
@@ -1763,7 +1892,7 @@ function openNotifications(){
 }
 async function openNotification(id){
   const n=notificationsCache.find(x=>x.id===id);if(!n)return;db.collection("users").doc(currentUser.uid).collection("notifications").doc(id).update({read:true}).catch(()=>{});closeModal();
-  if(n.viewType==="dm")openDM(n.viewId);else if(n.viewType==="channel"){n.viewId==="clan"?openClanChat():openChannel(n.viewId);}else if(n.viewType==="squads")openSquadFinder();
+  if(n.viewType==="dm")openDM(n.viewId);else if(n.viewType==="channel"){n.viewId==="clan"?openClanChat():openChannel(n.viewId);}else if(n.viewType==="squads")openSquadFinder();else if(n.viewType==="hub")openHub(n.viewId||"dashboard");else if(n.viewType==="profile")showProfile(n.viewId||currentUser.uid);
   if(n.messageId)setTimeout(()=>jumpToMessage(n.messageId),550);
 }
 $("notifications-btn").addEventListener("click",openNotifications);
@@ -1772,7 +1901,7 @@ $("notifications-btn").addEventListener("click",openNotifications);
    SQUAD FINDER
 ============================================================= */
 function openSquadFinder(){
-  currentView="squads";clearReply();selectNav('#nav-squad-finder');$("chat-panel").classList.add("hidden");$("squad-panel").classList.remove("hidden");
+  currentView="squads";clearReply();selectNav('#nav-squad-finder');$("chat-panel").classList.add("hidden");$("hub-panel").classList.add("hidden");$("squad-panel").classList.remove("hidden");setMobileNav("squads");
   if(unsubClanChat){unsubClanChat();unsubClanChat=null;}if(unsubChannel){unsubChannel();unsubChannel=null;}if(unsubDM){unsubDM();unsubDM=null;}if(unsubTyping){unsubTyping();unsubTyping=null;}
   subscribeSquads();renderRoster();closeMobileRoster();
 }
@@ -1782,17 +1911,154 @@ function subscribeSquads(){
 }
 function renderSquads(arr){
   if(!arr.length){$("squad-grid").innerHTML='<div class="system-note">No squads posted yet. Create one when you need clanmates.</div>';return;}
-  $("squad-grid").innerHTML=arr.map(s=>{const members=Array.isArray(s.members)?s.members:[],joined=members.includes(currentUser.uid),owner=s.creatorUid===currentUser.uid,closed=s.status==="closed",capacity=Math.max(1,Number(s.slots)||4);return `<div class="squad-card ${closed?'closed':''}" data-id="${s.id}"><h3>${escapeHtml(s.mission||'Squad')}</h3><div class="squad-meta">Posted by ${escapeHtml(s.creatorUsername||'Unknown')} · ${escapeHtml(relativeTime(s.createdAt))}</div><div class="squad-details"><div class="squad-kv"><span>Location / Node</span><b>${escapeHtml(s.node||'Any')}</b></div><div class="squad-kv"><span>Mode</span><b>${escapeHtml(s.mode||'Normal')}</b></div><div class="squad-kv"><span>Players</span><b>${members.length}/${capacity}</b></div><div class="squad-kv"><span>Status</span><b>${closed?'Closed':'Open'}</b></div></div><div class="squad-note">${escapeHtml(s.note||'No extra notes.')}</div><div class="squad-members">Members: ${escapeHtml(members.map(uid=>uid===currentUser.uid?currentUsername:(usersCache[uid]&&usersCache[uid].username)||'Tenno').join(', ')||'None yet')}</div><div class="squad-actions">${owner?`<button class="small-btn primary squad-toggle">${closed?'Reopen':'Close Squad'}</button><button class="small-btn danger squad-delete">Delete</button>`:`<button class="small-btn primary squad-join" ${closed&&!joined?'disabled':''}>${joined?'Leave Squad':members.length>=capacity?'Full':'Join Squad'}</button>`}</div></div>`;}).join('');
+  $("squad-grid").innerHTML=arr.map(s=>{const members=Array.isArray(s.members)?s.members:[],joined=members.includes(currentUser.uid),owner=s.creatorUid===currentUser.uid,closed=s.status==="closed",capacity=Math.max(1,Number(s.slots)||4);return `<div class="squad-card ${closed?'closed':''}" data-id="${s.id}"><h3>${escapeHtml(s.mission||'Squad')}</h3><div class="squad-meta">Posted by ${escapeHtml(s.creatorUsername||'Unknown')} · ${escapeHtml(relativeTime(s.createdAt))}</div><div class="squad-details"><div class="squad-kv"><span>Location / Node</span><b>${escapeHtml(s.node||'Any')}</b></div><div class="squad-kv"><span>Mode</span><b>${escapeHtml(s.mode||'Normal')}</b></div>${s.kind==='relic'?`<div class="squad-kv"><span>Relic</span><b>${escapeHtml(s.relic||'Any')}</b></div><div class="squad-kv"><span>Refinement</span><b>${escapeHtml(s.refinement||'Any')}</b></div>`:''}<div class="squad-kv"><span>Players</span><b>${members.length}/${capacity}</b></div><div class="squad-kv"><span>Status</span><b>${closed?'Closed':'Open'}</b></div></div><div class="squad-note">${escapeHtml(s.note||'No extra notes.')}</div><div class="squad-members">Members: ${escapeHtml(members.map(uid=>uid===currentUser.uid?currentUsername:(usersCache[uid]&&usersCache[uid].username)||'Tenno').join(', ')||'None yet')}</div><div class="squad-actions">${owner?`<button class="small-btn primary squad-toggle">${closed?'Reopen':'Close Squad'}</button><button class="small-btn danger squad-delete">Delete</button>`:`<button class="small-btn primary squad-join" ${closed&&!joined?'disabled':''}>${joined?'Leave Squad':members.length>=capacity?'Full':'Join Squad'}</button>`}</div></div>`;}).join('');
   $("squad-grid").querySelectorAll(".squad-card").forEach(card=>{const id=card.dataset.id,s=arr.find(x=>x.id===id);const join=card.querySelector(".squad-join");if(join)join.onclick=()=>toggleSquadMembership(s);const toggle=card.querySelector(".squad-toggle");if(toggle)toggle.onclick=()=>db.collection("squads").doc(id).update({status:s.status==="closed"?"open":"closed"}).catch(err=>toast("Squad update failed",err.message));const del=card.querySelector(".squad-delete");if(del)del.onclick=()=>{if(confirm("Delete this squad post?"))db.collection("squads").doc(id).delete().catch(err=>toast("Delete failed",err.message));};});
 }
 async function toggleSquadMembership(s){
   try{let joinedNow=false;await db.runTransaction(async tx=>{const ref=db.collection("squads").doc(s.id),snap=await tx.get(ref);if(!snap.exists)throw new Error("Squad no longer exists.");const d=snap.data(),members=Array.isArray(d.members)?[...d.members]:[],me=members.indexOf(currentUser.uid),capacity=Math.max(1,Number(d.slots)||4);if(me>=0){members.splice(me,1);joinedNow=false;}else{if(d.status==="closed")throw new Error("This squad is closed.");if(members.length>=capacity)throw new Error("This squad is full.");members.push(currentUser.uid);joinedNow=true;}tx.update(ref,{members});});if(joinedNow&&s.creatorUid!==currentUser.uid)createNotification(s.creatorUid,{type:"squad",title:`${currentUsername} joined your squad`,text:s.mission||"Squad Finder",fromUid:currentUser.uid,viewType:"squads",viewId:"squads"});}catch(err){toast("Squad update failed",err.message);}
 }
 function openCreateSquad(){
-  openModal("Create Squad",`<div class="form-grid"><div class="field form-span"><label>Mission / Activity</label><input id="sq-mission" maxlength="60" placeholder="e.g. Steel Path Omnia Fissure"></div><div class="field"><label>Node / Location</label><input id="sq-node" maxlength="50" placeholder="e.g. Lua / Circulus"></div><div class="field"><label>Mode</label><select id="sq-mode"><option>Normal</option><option>Steel Path</option><option>Railjack</option><option>Open World</option><option>Relic</option><option>Archon Hunt</option><option>Other</option></select></div><div class="field"><label>Squad Size</label><select id="sq-slots"><option value="2">2</option><option value="3">3</option><option value="4" selected>4</option><option value="8">8</option></select></div><div class="field form-span"><label>Notes</label><textarea id="sq-note" rows="3" maxlength="180" placeholder="Requirements, relics, frames, etc."></textarea></div></div><div class="modal-actions"><button class="small-btn" id="sq-cancel">Cancel</button><button class="small-btn primary" id="sq-create">Create Squad</button></div>`);
-  $("sq-cancel").onclick=closeModal;$("sq-create").onclick=async()=>{const mission=$("sq-mission").value.trim();if(!mission){toast("Squad","Enter a mission or activity.");return;}try{await db.collection("squads").add({creatorUid:currentUser.uid,creatorUsername:currentUsername,mission,node:$("sq-node").value.trim(),mode:$("sq-mode").value,slots:Number($("sq-slots").value),note:$("sq-note").value.trim(),members:[currentUser.uid],status:"open",createdAt:FieldValue.serverTimestamp()});closeModal();toast("Squad posted",mission);}catch(err){toast("Could not create squad",err.message);}};
+  openModal("Create Squad",`<div class="form-grid"><div class="field"><label>Squad type</label><select id="sq-kind"><option value="general">General Squad</option><option value="relic">Relic Squad</option></select></div><div class="field"><label>Mission / Activity</label><input id="sq-mission" maxlength="60" placeholder="e.g. Steel Path Omnia Fissure"></div><div class="field"><label>Node / Location</label><input id="sq-node" maxlength="50" placeholder="e.g. Lua / Circulus"></div><div class="field"><label>Mode</label><select id="sq-mode"><option>Normal</option><option>Steel Path</option><option>Railjack</option><option>Open World</option><option>Relic</option><option>Archon Hunt</option><option>Other</option></select></div><div class="field relic-field hidden"><label>Relic</label><input id="sq-relic" maxlength="50" placeholder="e.g. Axi A18"></div><div class="field relic-field hidden"><label>Refinement</label><select id="sq-refinement"><option>Intact</option><option>Exceptional</option><option>Flawless</option><option>Radiant</option></select></div><div class="field"><label>Squad Size</label><select id="sq-slots"><option value="2">2</option><option value="3">3</option><option value="4" selected>4</option><option value="8">8</option></select></div><div class="field form-span"><label>Notes</label><textarea id="sq-note" rows="3" maxlength="180" placeholder="Requirements, relics, frames, etc."></textarea></div></div><div class="modal-actions"><button class="small-btn" id="sq-cancel">Cancel</button><button class="small-btn primary" id="sq-create">Create Squad</button></div>`);
+  $("sq-kind").onchange=()=>document.querySelectorAll('.relic-field').forEach(el=>el.classList.toggle('hidden',$("sq-kind").value!=="relic"));
+  $("sq-cancel").onclick=closeModal;$("sq-create").onclick=async()=>{const mission=$("sq-mission").value.trim();if(!mission){toast("Squad","Enter a mission or activity.");return;}try{const kind=$("sq-kind").value;await db.collection("squads").add({creatorUid:currentUser.uid,creatorUsername:currentUsername,kind,mission,node:$("sq-node").value.trim(),mode:$("sq-mode").value,slots:Number($("sq-slots").value),relic:kind==='relic'?$("sq-relic").value.trim():"",refinement:kind==='relic'?$("sq-refinement").value:"",note:$("sq-note").value.trim(),members:[currentUser.uid],status:"open",createdAt:FieldValue.serverTimestamp()});closeModal();toast("Squad posted",mission);}catch(err){toast("Could not create squad",err.message);}};
 }
-$("nav-squad-finder").addEventListener("click",openSquadFinder);$("create-squad-btn").addEventListener("click",openCreateSquad);
+$("create-squad-btn").addEventListener("click",openCreateSquad);
+
+
+/* ============================================================
+   DYNAMIC CHANNELS / PERMISSIONS
+============================================================= */
+function subscribeChannelConfig(){
+  if(unsubChannelConfig)unsubChannelConfig();
+  unsubChannelConfig=db.collection("channels").onSnapshot(qs=>{
+    channelCache=Object.fromEntries(Object.entries(DEFAULT_CHANNELS).map(([k,v])=>[k,{id:k,...v}]));
+    qs.forEach(doc=>{const d=doc.data();channelCache[doc.id]={...(channelCache[doc.id]||{}),id:doc.id,...d};});
+    renderChannelNav();
+    if(typeof currentView==="string"&&currentView.startsWith("channel:")){const id=currentView.slice(8);if(!channelAllows(channelCache[id],"read"))openClanChat();}
+  },err=>console.warn("Channel config failed",err));
+}
+function renderChannelNav(){
+  const visible=Object.values(channelCache).filter(ch=>!ch.archived&&channelAllows(ch,"read")).sort((a,b)=>(Number(a.order)||50)-(Number(b.order)||50)||String(a.name||a.id).localeCompare(String(b.name||b.id)));
+  $("channel-list").innerHTML=`<div class="roster-header" style="border:0;padding:4px 10px 7px;">Channels</div><div class="roster-nav-item channel-nav ${currentView==='clan'?'active':''}" id="nav-clan-chat" data-view="clan"><div class="channel-symbol">#</div> Clan Comms</div>${visible.map(ch=>`<div class="roster-nav-item channel-nav ${currentView===`channel:${ch.id}`?'active':''}" data-channel="${safeAttr(ch.id)}"><div class="channel-symbol">${ch.id==='announcements'?'◆':'#'}</div>${escapeHtml(ch.name||ch.id)}${!(ch.postRoles||[]).includes('All')?'<span style="margin-left:auto;color:var(--gold);font-size:9px;">LOCKED</span>':''}</div>`).join('')}<div class="roster-nav-item ${typeof currentView==='string'&&currentView.startsWith('hub:')?'active':''}" id="nav-hub"><div class="channel-symbol">◈</div> Clan Hub</div><div class="roster-nav-item ${currentView==='squads'?'active':''}" id="nav-squad-finder"><div class="channel-symbol">⚔</div> Squad Finder</div>`;
+}
+function rolesChecks(name,selected){return `<div class="check-grid">${['All',...ROLE_ORDER].map(r=>`<label><input type="checkbox" name="${name}" value="${r}" ${(selected||[]).includes(r)?'checked':''}> ${r}</label>`).join('')}</div>`;}
+function selectedChecks(name){return [...$("modal-body").querySelectorAll(`input[name="${name}"]:checked`)].map(x=>x.value);}
+function openChannelManager(){
+  if(!canManageChannels())return;
+  const rows=Object.values(channelCache).map(ch=>`<div class="hub-row"><div><div class="hub-row-title">${escapeHtml(ch.name||ch.id)}</div><div class="hub-row-sub">${escapeHtml(ch.subtitle||'No topic')} · ${ch.archived?'Deleted/hidden':'Active'}</div></div><div class="hub-row-actions"><button class="small-btn channel-edit" data-id="${safeAttr(ch.id)}">Edit</button>${ch.archived?`<button class="small-btn channel-restore" data-id="${safeAttr(ch.id)}">Restore</button>`:`<button class="small-btn danger channel-delete" data-id="${safeAttr(ch.id)}">Delete</button>`}</div></div>`).join('');
+  openModal("Channels & Permissions",`<div class="hub-toolbar"><button class="small-btn primary" id="channel-new">+ New Channel</button><div class="spacer"></div><span style="font-size:10px;color:var(--text-lo)">Permissions use core clan ranks.</span></div><div class="hub-list">${rows}</div>`,true);
+  $("channel-new").onclick=()=>openChannelEditor();$("modal-body").querySelectorAll('.channel-edit').forEach(b=>b.onclick=()=>openChannelEditor(b.dataset.id));$("modal-body").querySelectorAll('.channel-delete').forEach(b=>b.onclick=()=>archiveChannel(b.dataset.id,true));$("modal-body").querySelectorAll('.channel-restore').forEach(b=>b.onclick=()=>archiveChannel(b.dataset.id,false));
+}
+function openChannelEditor(id=null){
+  const ch=id?channelCache[id]:{name:'',subtitle:'',readRoles:['All'],postRoles:['All'],order:50};
+  openModal(id?"Edit Channel":"Create Channel",`<div class="form-grid"><div class="field"><label>Name</label><input id="ch-name" maxlength="28" value="${safeAttr(ch.name||'')}"></div><div class="field"><label>Channel ID</label><input id="ch-id" maxlength="28" value="${safeAttr(id||'')}" ${id?'disabled':''} placeholder="e.g. fashion-frame"></div><div class="field form-span"><label>Topic / description</label><input id="ch-topic" maxlength="100" value="${safeAttr(ch.subtitle||'')}"></div><div class="field form-span"><label>Who can read</label>${rolesChecks('ch-read',ch.readRoles||['All'])}</div><div class="field form-span"><label>Who can post</label>${rolesChecks('ch-post',ch.postRoles||['All'])}</div></div><div class="modal-actions"><button class="small-btn" id="ch-cancel">Cancel</button><button class="small-btn primary" id="ch-save">Save</button></div>`);
+  $("ch-cancel").onclick=openChannelManager;$("ch-save").onclick=async()=>{let cid=(id||$("ch-id").value.trim().toLowerCase().replace(/[^a-z0-9-]/g,'-').replace(/-+/g,'-')).replace(/^-|-$/g,'');const name=$("ch-name").value.trim(),readRoles=selectedChecks('ch-read'),postRoles=selectedChecks('ch-post');if(!cid||!name||!readRoles.length||!postRoles.length){toast("Channel","Name, ID and permissions are required.");return;}if(!id&&['clan','hub','squads'].includes(cid)){toast("Channel","That channel ID is reserved.");return;}try{await db.collection('channels').doc(cid).set({name,subtitle:$("ch-topic").value.trim(),readRoles,postRoles,order:Number(ch.order)||50,archived:false,updatedAt:FieldValue.serverTimestamp(),updatedBy:currentUser.uid},{merge:true});await writeAudit(id?'channel.edit':'channel.create','',name,`#${cid}`);openChannelManager();}catch(err){toast("Channel save failed",err.message);}};
+}
+async function archiveChannel(id,archived){const ch=channelCache[id];if(!ch)return;if(!confirm(`${archived?'Delete/hide':'Restore'} #${ch.name||id}?${archived?' Existing messages will be kept in Firestore.':''}`))return;try{await db.collection('channels').doc(id).set({name:ch.name||id,subtitle:ch.subtitle||'',readRoles:ch.readRoles||['All'],postRoles:ch.postRoles||['All'],archived,updatedAt:FieldValue.serverTimestamp(),updatedBy:currentUser.uid},{merge:true});await writeAudit(archived?'channel.delete':'channel.restore','',ch.name||id,id);openChannelManager();}catch(err){toast("Channel update failed",err.message);}}
+
+/* ============================================================
+   ADMIN: APPROVALS / NOTES / WARNINGS / MUTES / AUDIT / CUSTOM ROLE
+============================================================= */
+async function writeAudit(action,targetUid="",targetName="",detail=""){
+  if(!canModerate())return;try{await db.collection("auditLogs").add({action,targetUid,targetName,detail,actorUid:currentUser.uid,actorUsername:currentUsername,createdAt:FieldValue.serverTimestamp()});}catch(err){console.warn("Audit log failed",err);}
+}
+function openRecruitApprovals(){
+  const pending=Object.entries(usersCache).filter(([,u])=>u.approvalStatus==="pending"||u.approvalStatus==="rejected");
+  openModal("Recruit Approvals",pending.length?`<div class="hub-list">${pending.map(([uid,u])=>`<div class="hub-row" data-uid="${uid}"><div><div class="hub-row-title">${escapeHtml(u.username||'Tenno')}</div><div class="hub-row-sub">${escapeHtml(u.mainFrame||'No main Warframe')} · ${u.approvalStatus==='rejected'?'Rejected':'Waiting for approval'}</div></div><div class="hub-row-actions"><button class="small-btn primary approve">Approve</button><button class="small-btn danger reject">Reject</button></div></div>`).join('')}</div>`:'<div class="system-note">No pending recruits.</div>');
+  $("modal-body").querySelectorAll('[data-uid]').forEach(r=>{const uid=r.dataset.uid,u=usersCache[uid];r.querySelector('.approve').onclick=()=>setApproval(uid,u,'approved');r.querySelector('.reject').onclick=()=>setApproval(uid,u,'rejected');});
+}
+async function setApproval(uid,u,status){try{await db.collection('users').doc(uid).update({approvalStatus:status});await writeAudit(`recruit.${status}`,uid,u.username,status);toast("Recruit updated",`${u.username}: ${status}`);openRecruitApprovals();}catch(err){toast("Approval failed",err.message);}}
+async function openManageMember(uid){
+  const u=usersCache[uid];if(!u)return;
+  let notes=[],warnings=[];try{const [n,w]=await Promise.all([db.collection('memberNotes').doc(uid).collection('notes').orderBy('createdAt','desc').limit(20).get(),db.collection('warnings').where('targetUid','==',uid).limit(20).get()]);n.forEach(d=>notes.push({id:d.id,...d.data()}));w.forEach(d=>warnings.push({id:d.id,...d.data()}));}catch(err){console.warn(err);}
+  const mutedUntil=u.mutedUntil&&u.mutedUntil.toDate?u.mutedUntil.toDate():null;
+  openModal(`Manage ${u.username}`,`<div class="form-grid"><div class="field"><label>Core rank</label><select id="manage-role" ${canManageRanks()?'':'disabled'}>${ROLE_ORDER.map(r=>`<option ${r===getRole(u)?'selected':''}>${r}</option>`).join('')}</select></div><div class="field"><label>Custom role/title</label><input id="manage-custom-role" maxlength="30" value="${safeAttr(u.customRole||'')}" ${canManageRanks()?'':'disabled'} placeholder="e.g. Architect"></div><div class="field"><label>Approval</label><select id="manage-approval"><option value="approved" ${u.approvalStatus!=='pending'&&u.approvalStatus!=='rejected'?'selected':''}>Approved</option><option value="pending" ${u.approvalStatus==='pending'?'selected':''}>Pending</option><option value="rejected" ${u.approvalStatus==='rejected'?'selected':''}>Rejected</option></select></div><div class="field"><label>Temporary mute</label><select id="manage-mute"><option value="0">Not muted / unmute</option><option value="10">10 minutes</option><option value="60">1 hour</option><option value="1440">24 hours</option><option value="10080">7 days</option></select><div class="field-hint">${mutedUntil&&mutedUntil>Date.now()?`Currently muted until ${mutedUntil.toLocaleString()}`:'Not currently muted'}</div></div></div><div class="modal-actions"><button class="small-btn ${u.banned?'':'danger'}" id="manage-ban">${u.banned?'Unban':'Ban'}</button><button class="small-btn primary" id="manage-save">Save Member</button></div><div class="admin-section-title">Private staff notes</div><div class="field"><textarea id="new-note" maxlength="500" rows="2" placeholder="Add a private staff note…"></textarea><button class="small-btn" id="add-note" style="margin-top:6px">Add note</button></div>${notes.map(n=>`<div class="note-card">${escapeHtml(n.text||'')}<div class="notification-time">${escapeHtml(n.authorUsername||'Staff')} · ${escapeHtml(relativeTime(n.createdAt))}</div></div>`).join('')||'<div class="hub-row-sub">No staff notes.</div>'}<div class="admin-section-title">Warnings</div><div class="field"><textarea id="warning-reason" maxlength="300" rows="2" placeholder="Warning reason…"></textarea><button class="small-btn danger" id="issue-warning" style="margin-top:6px">Issue warning</button></div>${warnings.map(w=>`<div class="warning-card">${escapeHtml(w.reason||'Warning')}<div class="notification-time">${escapeHtml(w.issuedByUsername||'Staff')} · ${escapeHtml(relativeTime(w.createdAt))}</div></div>`).join('')||'<div class="hub-row-sub">No warnings.</div>'}`,true);
+  $("manage-save").onclick=async()=>{try{const patch={approvalStatus:$("manage-approval").value};if(canManageRanks()){patch.role=$("manage-role").value;patch.customRole=$("manage-custom-role").value.trim();}const mins=Number($("manage-mute").value);patch.mutedUntil=mins?firebase.firestore.Timestamp.fromDate(new Date(Date.now()+mins*60000)):null;await db.collection('users').doc(uid).update(patch);await writeAudit('member.update',uid,u.username,`role=${patch.role||getRole(u)}, approval=${patch.approvalStatus}, mute=${mins}m`);toast("Member updated",u.username);closeModal();}catch(err){toast("Member update failed",err.message);}};
+  $("manage-ban").onclick=async()=>{const next=!u.banned;if(!confirm(`${next?'Ban':'Unban'} ${u.username}?`))return;try{await db.collection('users').doc(uid).update({banned:next});await writeAudit(next?'member.ban':'member.unban',uid,u.username,'');toast(next?'Member suspended':'Suspension lifted',u.username);closeModal();}catch(err){toast("Action failed",err.message);}};
+  $("add-note").onclick=async()=>{const text=$("new-note").value.trim();if(!text)return;try{await db.collection('memberNotes').doc(uid).collection('notes').add({text,authorUid:currentUser.uid,authorUsername:currentUsername,createdAt:FieldValue.serverTimestamp()});await writeAudit('member.note',uid,u.username,text.slice(0,80));openManageMember(uid);}catch(err){toast("Note failed",err.message);}};
+  $("issue-warning").onclick=async()=>{const reason=$("warning-reason").value.trim();if(!reason)return;try{await db.collection('warnings').add({targetUid:uid,targetUsername:u.username,reason,issuedByUid:currentUser.uid,issuedByUsername:currentUsername,createdAt:FieldValue.serverTimestamp()});await createNotification(uid,{type:'warning',title:'Clan warning',text:reason,fromUid:currentUser.uid,viewType:'profile',viewId:uid});await writeAudit('member.warning',uid,u.username,reason.slice(0,100));openManageMember(uid);}catch(err){toast("Warning failed",err.message);}};
+}
+async function openAuditLog(){try{const qs=await db.collection('auditLogs').orderBy('createdAt','desc').limit(100).get();let arr=[];qs.forEach(d=>arr.push(d.data()));openModal('Admin Audit Log',arr.length?arr.map(a=>`<div class="audit-card"><b>${escapeHtml(a.actorUsername||'Staff')}</b> · ${escapeHtml(a.action||'action')} ${a.targetName?`→ <b>${escapeHtml(a.targetName)}</b>`:''}<div class="hub-row-sub">${escapeHtml(a.detail||'')}</div><div class="notification-time">${escapeHtml(formatFullDateTime(a.createdAt))}</div></div>`).join(''):'<div class="system-note">No audit events yet.</div>',true);}catch(err){toast("Audit log",err.message);}}
+
+/* ============================================================
+   CLAN HUB
+============================================================= */
+const HUB_META={dashboard:["Clan Hub","At-a-glance clan activity and operations"],dojo:["Dojo Tracker","Rooms, decorations and dojo work"],research:["Research Tracker","Track clan research progress"],resources:["Resource Board","Targets and clan donations"],treasury:["Treasury Log","Member contribution history"],builds:["Build Library","Share and rate clan builds"],farming:["Farming Board","Ask clanmates for farming help"],polls:["Clan Polls","Vote on clan decisions"],calendar:["Clan Calendar","Events, attendance and reminders"],objectives:["Clan Objectives","Daily and weekly shared goals"],statistics:["Clan Statistics","Membership and hub activity"]};
+function openHub(tab="dashboard"){
+  currentHubTab=HUB_META[tab]?tab:"dashboard";currentView=`hub:${currentHubTab}`;clearReply();selectNav('#nav-hub');showHubPanel();
+  if(unsubClanChat){unsubClanChat();unsubClanChat=null;}if(unsubChannel){unsubChannel();unsubChannel=null;}if(unsubDM){unsubDM();unsubDM=null;}if(unsubTyping){unsubTyping();unsubTyping=null;}if(unsubSquads){unsubSquads();unsubSquads=null;}clearHubListeners();
+  $("hub-tabs").querySelectorAll('.hub-tab').forEach(b=>b.classList.toggle('active',b.dataset.hubTab===currentHubTab));const [title,sub]=HUB_META[currentHubTab];$("hub-title").textContent=title;$("hub-subtitle").textContent=sub;$("hub-content").innerHTML='<div class="system-note">Loading…</div>';loadHubTab(currentHubTab);renderRoster();closeMobileRoster();
+}
+function loadHubTab(tab){clearHubListeners();({dashboard:renderDashboard,dojo:renderDojo,research:renderResearch,resources:renderResources,treasury:renderTreasury,builds:renderBuilds,farming:renderFarming,polls:renderPolls,calendar:renderCalendar,objectives:renderObjectives,statistics:renderStatistics}[tab]||renderDashboard)();}
+$("hub-tabs").addEventListener('click',e=>{const b=e.target.closest('[data-hub-tab]');if(b)openHub(b.dataset.hubTab);});$("hub-refresh-btn").onclick=()=>loadHubTab(currentHubTab);
+function hubError(err){$("hub-content").innerHTML=`<div class="system-note error">${escapeHtml(err.message||String(err))}</div>`;}
+function pct(current,target){return Math.max(0,Math.min(100,target?Math.round(current/target*100):0));}
+function progressHtml(current,target){const p=pct(current,target);return `<div class="progress-track"><div class="progress-fill" style="width:${p}%"></div></div><div class="progress-copy">${Number(current||0).toLocaleString()} / ${Number(target||0).toLocaleString()} · ${p}%</div>`;}
+function canEditOps(){return canModerate();}
+function activityClass(u){if(!u?.lastSeen?.toDate)return 'old';const d=Date.now()-u.lastSeen.toDate().getTime();return d<86400000?'today':d<7*86400000?'week':'old';}
+async function renderDashboard(){try{const [sq,ev,obj,polls,farms]=await Promise.all([db.collection('squads').limit(30).get(),db.collection('events').limit(40).get(),db.collection('objectives').limit(30).get(),db.collection('polls').limit(30).get(),db.collection('farmRequests').limit(30).get()]);const members=Object.values(usersCache),online=members.filter(u=>effectiveStatus(u)!=='offline').length,activeWeek=members.filter(u=>activityClass(u)!=='old').length,openSquads=sq.docs.filter(d=>d.data().status!=='closed').length,upcoming=ev.docs.map(d=>({id:d.id,...d.data()})).filter(e=>nextEventDate(e)&&nextEventDate(e)>new Date()).sort((a,b)=>nextEventDate(a)-nextEventDate(b)).slice(0,4),activeObj=obj.docs.map(d=>({id:d.id,...d.data()})).filter(o=>!objectiveExpired(o)).slice(0,4),openPolls=polls.docs.filter(d=>!pollClosed(d.data())).length,openFarms=farms.docs.filter(d=>d.data().status!=='closed').length;$("hub-content").innerHTML=`<div class="dashboard-grid"><div class="hub-card span-3"><div class="metric">${members.length}</div><div class="metric-label">Members</div></div><div class="hub-card span-3"><div class="metric">${online}</div><div class="metric-label">Online now</div></div><div class="hub-card span-3"><div class="metric">${openSquads}</div><div class="metric-label">Open squads</div></div><div class="hub-card span-3"><div class="metric">${activeWeek}</div><div class="metric-label">Active this week</div></div><div class="hub-card span-6"><h3>Upcoming events</h3>${upcoming.length?upcoming.map(e=>`<div class="hub-row"><div><div class="hub-row-title">${escapeHtml(e.title||'Event')}</div><div class="hub-row-sub">${escapeHtml(nextEventDate(e).toLocaleString())}${e.repeat&&e.repeat!=='none'?` · ${escapeHtml(e.repeat)}`:''}</div></div><span class="tag gold">${Object.keys(e.attendees||{}).length} attending</span></div>`).join(''):'<div class="hub-row-sub">No upcoming events.</div>'}</div><div class="hub-card span-6"><h3>Active objectives</h3>${activeObj.length?activeObj.map(o=>{const c=sumMap(o.contributors);return `<div style="margin:8px 0"><div class="hub-row-title">${escapeHtml(o.title||'Objective')}</div>${progressHtml(c,o.target)}</div>`;}).join(''):'<div class="hub-row-sub">No active objectives.</div>'}</div><div class="hub-card span-4"><div class="metric-small">${openPolls}</div><div class="metric-label">Open polls</div></div><div class="hub-card span-4"><div class="metric-small">${openFarms}</div><div class="metric-label">Farming requests</div></div><div class="hub-card span-4"><div class="metric-small">${Object.values(channelCache).filter(c=>!c.archived&&channelAllows(c,'read')).length+1}</div><div class="metric-label">Visible channels</div></div></div>`;}catch(err){hubError(err);}}
+
+async function renderDojo(){try{const qs=await db.collection('dojoProjects').orderBy('createdAt','desc').limit(100).get(),arr=[];qs.forEach(d=>arr.push({id:d.id,...d.data()}));$("hub-content").innerHTML=`<div class="hub-toolbar"><span class="tag gold">${arr.length} projects</span><div class="spacer"></div>${canEditOps()?'<button class="small-btn primary" id="dojo-add">+ Add dojo project</button>':''}</div><div class="hub-list">${arr.map(x=>`<div class="hub-row"><div><div class="hub-row-title">${escapeHtml(x.name||'Dojo project')} <span class="tag ${x.status==='Complete'?'good':'gold'}">${escapeHtml(x.status||'Planned')}</span></div><div class="hub-row-sub">${escapeHtml(x.type||'Room / Decoration')} · ${escapeHtml(x.notes||'No notes')}</div>${progressHtml(Number(x.progress)||0,100)}</div>${canEditOps()?`<div class="hub-row-actions"><button class="small-btn dojo-edit" data-id="${x.id}">Edit</button><button class="small-btn danger dojo-del" data-id="${x.id}">Delete</button></div>`:''}</div>`).join('')||'<div class="system-note">No dojo projects yet.</div>'}</div>`;if($("dojo-add"))$("dojo-add").onclick=()=>editDojo();document.querySelectorAll('.dojo-edit').forEach(b=>b.onclick=()=>editDojo(arr.find(x=>x.id===b.dataset.id)));document.querySelectorAll('.dojo-del').forEach(b=>b.onclick=()=>deleteOpsDoc('dojoProjects',b.dataset.id,'dojo.delete'));}catch(err){hubError(err);}}
+function editDojo(x=null){openOpsEditor(x?'Edit Dojo Project':'Add Dojo Project',[['name','Name',x?.name||''],['type','Type',x?.type||'Room'],['status','Status',x?.status||'Planned','select',['Planned','Building','Decorating','Complete','Paused']],['progress','Progress %',x?.progress??0,'number'],['notes','Notes',x?.notes||'','textarea']],async v=>{await saveOpsDoc('dojoProjects',x?.id,{name:v.name,type:v.type,status:v.status,progress:Math.max(0,Math.min(100,Number(v.progress)||0)),notes:v.notes},x?'dojo.edit':'dojo.create');openHub('dojo');});}
+
+async function renderResearch(){try{const qs=await db.collection('researchProjects').orderBy('createdAt','desc').limit(100).get(),arr=[];qs.forEach(d=>arr.push({id:d.id,...d.data()}));$("hub-content").innerHTML=`<div class="hub-toolbar"><div class="spacer"></div>${canEditOps()?'<button class="small-btn primary" id="research-add">+ Add research</button>':''}</div><div class="hub-list">${arr.map(x=>`<div class="hub-row"><div><div class="hub-row-title">${escapeHtml(x.name||'Research')} <span class="tag ${x.status==='Complete'?'good':'gold'}">${escapeHtml(x.status||'Needed')}</span></div><div class="hub-row-sub">${escapeHtml(x.lab||'Lab')} · ${escapeHtml(x.notes||'')}</div>${progressHtml(Number(x.progress)||0,100)}</div>${canEditOps()?`<div class="hub-row-actions"><button class="small-btn research-edit" data-id="${x.id}">Edit</button><button class="small-btn danger research-del" data-id="${x.id}">Delete</button></div>`:''}</div>`).join('')||'<div class="system-note">No research tracked yet.</div>'}</div>`;if($("research-add"))$("research-add").onclick=()=>editResearch();document.querySelectorAll('.research-edit').forEach(b=>b.onclick=()=>editResearch(arr.find(x=>x.id===b.dataset.id)));document.querySelectorAll('.research-del').forEach(b=>b.onclick=()=>deleteOpsDoc('researchProjects',b.dataset.id,'research.delete'));}catch(err){hubError(err);}}
+function editResearch(x=null){openOpsEditor(x?'Edit Research':'Add Research',[['name','Research item',x?.name||''],['lab','Lab / room',x?.lab||''],['status','Status',x?.status||'Needed','select',['Needed','In Progress','Complete']],['progress','Progress %',x?.progress??0,'number'],['notes','Notes',x?.notes||'','textarea']],async v=>{await saveOpsDoc('researchProjects',x?.id,{name:v.name,lab:v.lab,status:v.status,progress:Math.max(0,Math.min(100,Number(v.progress)||0)),notes:v.notes},x?'research.edit':'research.create');openHub('research');});}
+
+async function renderResources(){try{const [g,d]=await Promise.all([db.collection('resourceGoals').orderBy('name').limit(100).get(),db.collection('treasuryDonations').limit(500).get()]),goals=[],don=[];g.forEach(x=>goals.push({id:x.id,...x.data()}));d.forEach(x=>don.push(x.data()));$("hub-content").innerHTML=`<div class="hub-toolbar"><div class="spacer"></div>${canEditOps()?'<button class="small-btn primary" id="resource-add">+ Resource target</button>':''}<button class="small-btn" id="resource-donate">Record donation</button></div><div class="dashboard-grid">${goals.map(x=>{const total=don.filter(y=>String(y.resource||'').toLowerCase()===String(x.name||'').toLowerCase()).reduce((a,b)=>a+(Number(b.amount)||0),0);return `<div class="hub-card span-4"><h3>${escapeHtml(x.name||'Resource')}</h3><div class="hub-card-sub">${escapeHtml(x.notes||'Clan resource target')}</div>${progressHtml(total,Number(x.target)||0)}${canEditOps()?`<div class="hub-row-actions" style="margin-top:8px"><button class="small-btn resource-edit" data-id="${x.id}">Edit</button></div>`:''}</div>`;}).join('')||'<div class="hub-card span-12"><div class="system-note">No resource targets yet.</div></div>'}</div>`;if($("resource-add"))$("resource-add").onclick=()=>editResourceGoal();$("resource-donate").onclick=recordDonation;document.querySelectorAll('.resource-edit').forEach(b=>b.onclick=()=>editResourceGoal(goals.find(x=>x.id===b.dataset.id)));}catch(err){hubError(err);}}
+function editResourceGoal(x=null){openOpsEditor(x?'Edit Resource Target':'Add Resource Target',[['name','Resource',x?.name||''],['target','Target amount',x?.target||0,'number'],['notes','Notes',x?.notes||'','textarea']],async v=>{await saveOpsDoc('resourceGoals',x?.id,{name:v.name,target:Math.max(1,Number(v.target)||1),notes:v.notes},x?'resource.edit':'resource.create');openHub('resources');});}
+function recordDonation(){openOpsEditor('Record Donation',[['resource','Resource',''],['amount','Amount',1,'number'],['note','Note','','textarea']],async v=>{await db.collection('treasuryDonations').add({uid:currentUser.uid,username:currentUsername,resource:v.resource,amount:Math.max(1,Number(v.amount)||1),note:v.note,createdAt:FieldValue.serverTimestamp()});toast('Donation recorded',`${v.amount} ${v.resource}`);openHub(currentHubTab==='treasury'?'treasury':'resources');});}
+async function renderTreasury(){try{const qs=await db.collection('treasuryDonations').orderBy('createdAt','desc').limit(200).get(),arr=[];qs.forEach(d=>arr.push({id:d.id,...d.data()}));$("hub-content").innerHTML=`<div class="hub-toolbar"><span class="tag gold">${arr.length} recent entries</span><div class="spacer"></div><button class="small-btn primary" id="treasury-add">+ Record donation</button></div><div class="hub-list">${arr.map(x=>`<div class="hub-row"><div><div class="hub-row-title">${Number(x.amount||0).toLocaleString()} ${escapeHtml(x.resource||'Resource')}</div><div class="hub-row-sub">${escapeHtml(x.username||'Tenno')} · ${escapeHtml(relativeTime(x.createdAt))}${x.note?` · ${escapeHtml(x.note)}`:''}</div></div>${canModerate()?`<button class="small-btn danger treasury-del" data-id="${x.id}">Delete</button>`:''}</div>`).join('')||'<div class="system-note">No donations recorded.</div>'}</div>`;$("treasury-add").onclick=recordDonation;document.querySelectorAll('.treasury-del').forEach(b=>b.onclick=()=>deleteOpsDoc('treasuryDonations',b.dataset.id,'treasury.delete'));}catch(err){hubError(err);}}
+
+async function renderBuilds(){try{const qs=await db.collection('buildLibrary').orderBy('createdAt','desc').limit(100).get(),arr=[];qs.forEach(d=>arr.push({id:d.id,...d.data()}));$("hub-content").innerHTML=`<div class="hub-toolbar"><div class="spacer"></div><button class="small-btn primary" id="build-add">+ Share build</button></div><div class="hub-list">${arr.map(x=>{const ratings=x.ratings||{},vals=Object.values(ratings).map(Number).filter(n=>n>=1&&n<=5),avg=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length):0,mine=Number(ratings[currentUser.uid])||0;return `<div class="hub-row"><div><div class="hub-row-title">${escapeHtml(x.title||x.itemName||'Build')} <span class="tag gold">${escapeHtml(x.itemType||'Build')}</span></div><div class="hub-row-sub">${escapeHtml(x.itemName||'')} · by ${escapeHtml(x.username||'Tenno')}</div><div style="font-size:11px;margin-top:7px;white-space:pre-wrap">${formatMessageText(x.details||'')}</div><div class="rating-stars" data-id="${x.id}">${[1,2,3,4,5].map(n=>`<button class="rating-star ${n<=mine?'on':''}" data-rating="${n}" title="Rate ${n}/5">★</button>`).join('')} <span class="hub-row-sub">${avg?avg.toFixed(1):'No ratings'} (${vals.length})</span></div></div><div class="hub-row-actions">${x.uid===currentUser.uid||canModerate()?`<button class="small-btn danger build-del" data-id="${x.id}">Delete</button>`:''}</div></div>`;}).join('')||'<div class="system-note">No builds shared yet.</div>'}</div>`;$("build-add").onclick=createBuild;document.querySelectorAll('.rating-star').forEach(b=>b.onclick=()=>rateBuild(b.closest('[data-id]').dataset.id,Number(b.dataset.rating)));document.querySelectorAll('.build-del').forEach(b=>b.onclick=()=>deleteOpsDoc('buildLibrary',b.dataset.id,'build.delete'));}catch(err){hubError(err);}}
+function createBuild(){openOpsEditor('Share Build',[['title','Build title',''],['itemType','Type','Warframe','select',['Warframe','Primary','Secondary','Melee','Companion','Archwing','Other']],['itemName','Warframe / weapon / item',''],['details','Build details / mods','','textarea']],async v=>{await db.collection('buildLibrary').add({uid:currentUser.uid,username:currentUsername,title:v.title,itemType:v.itemType,itemName:v.itemName,details:v.details,ratings:{},createdAt:FieldValue.serverTimestamp()});toast('Build shared',v.title);openHub('builds');});}
+async function rateBuild(id,rating){try{const ref=db.collection('buildLibrary').doc(id);await db.runTransaction(async tx=>{const snap=await tx.get(ref);if(!snap.exists)return;const ratings={...(snap.data().ratings||{})};ratings[currentUser.uid]=rating;tx.update(ref,{ratings});});renderBuilds();}catch(err){toast('Rating failed',err.message);}}
+
+async function renderFarming(){try{const qs=await db.collection('farmRequests').orderBy('createdAt','desc').limit(100).get(),arr=[];qs.forEach(d=>arr.push({id:d.id,...d.data()}));$("hub-content").innerHTML=`<div class="hub-toolbar"><div class="spacer"></div><button class="small-btn primary" id="farm-add">+ Farming request</button></div><div class="hub-list">${arr.map(x=>{const helpers=Array.isArray(x.helpers)?x.helpers:[],mine=helpers.includes(currentUser.uid);return `<div class="hub-row"><div><div class="hub-row-title">${escapeHtml(x.resource||'Farm request')} <span class="tag ${x.status==='closed'?'bad':'good'}">${escapeHtml(x.status||'open')}</span></div><div class="hub-row-sub">${escapeHtml(x.username||'Tenno')} · ${escapeHtml(x.location||'Any location')} · ${helpers.length} helping</div><div style="font-size:11px;margin-top:5px">${escapeHtml(x.note||'')}</div></div><div class="hub-row-actions">${x.uid===currentUser.uid?`<button class="small-btn farm-close" data-id="${x.id}">${x.status==='closed'?'Reopen':'Close'}</button>`:`<button class="small-btn primary farm-help" data-id="${x.id}">${mine?'Stop helping':'I can help'}</button>`}${x.uid===currentUser.uid||canModerate()?`<button class="small-btn danger farm-del" data-id="${x.id}">Delete</button>`:''}</div></div>`;}).join('')||'<div class="system-note">No farming requests.</div>'}</div>`;$("farm-add").onclick=createFarmRequest;document.querySelectorAll('.farm-help').forEach(b=>b.onclick=()=>toggleFarmHelp(arr.find(x=>x.id===b.dataset.id)));document.querySelectorAll('.farm-close').forEach(b=>b.onclick=()=>{const x=arr.find(v=>v.id===b.dataset.id);db.collection('farmRequests').doc(x.id).update({status:x.status==='closed'?'open':'closed'}).catch(e=>toast('Update failed',e.message));});document.querySelectorAll('.farm-del').forEach(b=>b.onclick=()=>deleteOpsDoc('farmRequests',b.dataset.id,'farm.delete'));}catch(err){hubError(err);}}
+function createFarmRequest(){openOpsEditor('Farming Request',[['resource','Resource / item',''],['location','Mission / location',''],['note','Notes','','textarea']],async v=>{await db.collection('farmRequests').add({uid:currentUser.uid,username:currentUsername,resource:v.resource,location:v.location,note:v.note,status:'open',helpers:[],createdAt:FieldValue.serverTimestamp()});openHub('farming');});}
+async function toggleFarmHelp(x){try{const ref=db.collection('farmRequests').doc(x.id);let joined=false;await db.runTransaction(async tx=>{const snap=await tx.get(ref);if(!snap.exists)return;const h=[...(snap.data().helpers||[])],i=h.indexOf(currentUser.uid);if(i>=0)h.splice(i,1);else{h.push(currentUser.uid);joined=true;}tx.update(ref,{helpers:h});});if(joined&&x.uid!==currentUser.uid)createNotification(x.uid,{type:'farm',title:`${currentUsername} can help`,text:x.resource||'Farming request',fromUid:currentUser.uid,viewType:'hub',viewId:'farming'});renderFarming();}catch(err){toast('Farming request',err.message);}}
+
+function pollClosed(p){if(p.closed)return true;return !!(p.closesAt&&p.closesAt.toDate&&p.closesAt.toDate().getTime()<=Date.now());}
+async function renderPolls(){try{const qs=await db.collection('polls').orderBy('createdAt','desc').limit(100).get(),arr=[];qs.forEach(d=>arr.push({id:d.id,...d.data()}));$("hub-content").innerHTML=`<div class="hub-toolbar"><div class="spacer"></div><button class="small-btn primary" id="poll-add">+ New poll</button></div><div class="hub-list">${arr.map(p=>renderPollCard(p)).join('')||'<div class="system-note">No polls yet.</div>'}</div>`;$("poll-add").onclick=createPoll;document.querySelectorAll('.poll-vote').forEach(b=>b.onclick=()=>submitPoll(arr.find(x=>x.id===b.dataset.id)));document.querySelectorAll('.poll-close').forEach(b=>b.onclick=()=>db.collection('polls').doc(b.dataset.id).update({closed:true}).then(renderPolls).catch(e=>toast('Poll',e.message)));document.querySelectorAll('.poll-del').forEach(b=>b.onclick=()=>deleteOpsDoc('polls',b.dataset.id,'poll.delete'));}catch(err){hubError(err);}}
+function renderPollCard(p){
+  const options=Array.isArray(p.options)?p.options:[],votes=p.votes||{},closed=pollClosed(p),eligible=p.eligible!=="staff"||canModerate(),mineRaw=votes[currentUser.uid],mine=Array.isArray(mineRaw)?mineRaw.map(Number):mineRaw!=null?[Number(mineRaw)]:[],total=Object.keys(votes).length;
+  const optionHtml=options.map((o,i)=>{const voters=Object.entries(votes).filter(([,v])=>Array.isArray(v)?v.map(Number).includes(i):Number(v)===i).map(([uid])=>usersCache[uid]?.username||'Tenno'),c=voters.length,pc=total?Math.round(c/total*100):0,control=p.multiple?'checkbox':'radio';if(!closed&&eligible)return `<label class="poll-check"><input type="${control}" name="poll-${p.id}" value="${i}" ${mine.includes(i)?'checked':''}> <span style="flex:1">${escapeHtml(o)}</span><span class="tag">${c}</span></label>${!p.anonymous&&voters.length?`<div class="hub-row-sub" style="margin-left:22px">${escapeHtml(voters.join(', '))}</div>`:''}`;return `<div class="poll-option"><div class="poll-bar"><div class="poll-bar-fill" style="width:${pc}%"></div><div class="poll-bar-label"><span>${escapeHtml(o)}</span><span>${c} · ${pc}%</span></div></div>${!p.anonymous&&voters.length?`<div class="hub-row-sub">${escapeHtml(voters.join(', '))}</div>`:''}</div>`;}).join('');
+  return `<div class="hub-row"><div><div class="hub-row-title">${escapeHtml(p.question||'Poll')} ${p.anonymous?'<span class="tag">Anonymous</span>':''} ${p.multiple?'<span class="tag">Multiple choice</span>':''} ${p.eligible==='staff'?'<span class="tag gold">Staff only</span>':''}</div><div class="hub-row-sub">by ${escapeHtml(p.username||'Tenno')} · ${closed?'Closed':p.closesAt&&p.closesAt.toDate?`closes ${p.closesAt.toDate().toLocaleString()}`:'No deadline'} · ${total} voters</div>${optionHtml}${!closed&&eligible?`<button class="small-btn primary poll-vote" data-id="${p.id}" style="margin-top:6px">Submit vote</button>`:!eligible?'<div class="hub-row-sub">Only staff may vote in this poll.</div>':''}</div><div class="hub-row-actions">${(p.uid===currentUser.uid||canModerate())&&!closed?`<button class="small-btn poll-close" data-id="${p.id}">Close</button>`:''}${p.uid===currentUser.uid||canModerate()?`<button class="small-btn danger poll-del" data-id="${p.id}">Delete</button>`:''}</div></div>`;
+}
+function createPoll(){openModal('New Poll',`<div class="form-grid"><div class="field form-span"><label>Question</label><input id="poll-q" maxlength="120"></div><div class="field form-span"><label>Options (one per line, 2–8)</label><textarea id="poll-options" rows="5" maxlength="500"></textarea></div><div class="field"><label>Closes</label><input id="poll-close-at" type="datetime-local"></div><div class="field"><label>Eligible voters</label><select id="poll-eligible"><option value="all">Everyone</option><option value="staff">Staff only</option></select></div><label class="poll-check"><input id="poll-multiple" type="checkbox"> Allow multiple answers</label><label class="poll-check"><input id="poll-anon" type="checkbox"> Anonymous results</label></div><div class="modal-actions"><button class="small-btn" id="poll-cancel">Cancel</button><button class="small-btn primary" id="poll-save">Create Poll</button></div>`);$("poll-cancel").onclick=closeModal;$("poll-save").onclick=async()=>{const q=$("poll-q").value.trim(),options=$("poll-options").value.split('\n').map(x=>x.trim()).filter(Boolean).slice(0,8);if(!q||options.length<2){toast('Poll','Enter a question and at least 2 options.');return;}const dt=$("poll-close-at").value;try{await db.collection('polls').add({uid:currentUser.uid,username:currentUsername,question:q,options,multiple:$("poll-multiple").checked,anonymous:$("poll-anon").checked,eligible:$("poll-eligible").value,votes:{},closed:false,closesAt:dt?firebase.firestore.Timestamp.fromDate(new Date(dt)):null,createdAt:FieldValue.serverTimestamp()});closeModal();openHub('polls');}catch(err){toast('Poll failed',err.message);}};}
+async function submitPoll(p){if(pollClosed(p))return;let choices=[...document.querySelectorAll(`input[name="poll-${CSS.escape(p.id)}"]:checked`)].map(x=>Number(x.value));if(!choices.length){toast('Poll','Choose an option first.');return;}if(!p.multiple)choices=choices.slice(0,1);try{const ref=db.collection('polls').doc(p.id);await db.runTransaction(async tx=>{const snap=await tx.get(ref);if(!snap.exists)return;const d=snap.data();if(pollClosed(d))throw new Error('Poll is closed.');const votes={...(d.votes||{})};votes[currentUser.uid]=p.multiple?choices:choices[0];tx.update(ref,{votes});});renderPolls();}catch(err){toast('Vote failed',err.message);}}
+
+function nextEventDate(e){if(!e.startAt||!e.startAt.toDate)return null;let d=e.startAt.toDate(),now=new Date();if(!e.repeat||e.repeat==='none'||d>=now)return d;const n=new Date(d);if(e.repeat==='daily'){const days=Math.ceil((now-n)/86400000);n.setDate(n.getDate()+Math.max(0,days));}else if(e.repeat==='weekly'){const weeks=Math.ceil((now-n)/(7*86400000));n.setDate(n.getDate()+Math.max(0,weeks)*7);}else if(e.repeat==='monthly'){while(n<now)n.setMonth(n.getMonth()+1);}return n;}
+async function renderCalendar(){try{const qs=await db.collection('events').orderBy('startAt','asc').limit(100).get(),arr=[];qs.forEach(d=>arr.push({id:d.id,...d.data()}));arr.sort((a,b)=>(nextEventDate(a)||0)-(nextEventDate(b)||0));$("hub-content").innerHTML=`<div class="hub-toolbar"><span class="hub-row-sub">Reminders work while the app is open.</span><div class="spacer"></div>${canModerate()?'<button class="small-btn primary" id="event-add">+ New event</button>':''}</div><div class="calendar-list">${arr.map(e=>{const d=nextEventDate(e),att=e.attendees||{},mine=att[currentUser.uid]||'';return `<div class="event-card"><div class="event-date">${d?escapeHtml(d.toLocaleString()):'No date'} ${e.repeat&&e.repeat!=='none'?`<span class="tag gold">Repeats ${escapeHtml(e.repeat)}</span>`:''}</div><div class="event-title">${escapeHtml(e.title||'Clan event')}</div><div class="event-meta">${escapeHtml(e.description||'')} · Reminder ${escapeHtml(e.reminder||'none')} · ${Object.values(att).filter(x=>x==='going').length} going</div><div class="attendance"><button class="small-btn event-rsvp ${mine==='going'?'primary':''}" data-id="${e.id}" data-rsvp="going">Going</button><button class="small-btn event-rsvp" data-id="${e.id}" data-rsvp="maybe">Maybe</button><button class="small-btn event-rsvp" data-id="${e.id}" data-rsvp="cant">Can't go</button>${canModerate()?`<button class="small-btn danger event-del" data-id="${e.id}">Delete</button>`:''}</div></div>`;}).join('')||'<div class="system-note">No clan events scheduled.</div>'}</div>`;if($("event-add"))$("event-add").onclick=createEvent;document.querySelectorAll('.event-rsvp').forEach(b=>b.onclick=()=>rsvpEvent(b.dataset.id,b.dataset.rsvp));document.querySelectorAll('.event-del').forEach(b=>b.onclick=()=>deleteOpsDoc('events',b.dataset.id,'event.delete'));}catch(err){hubError(err);}}
+function createEvent(){openModal('Create Clan Event',`<div class="form-grid"><div class="field form-span"><label>Event title</label><input id="event-title" maxlength="80"></div><div class="field"><label>Start date/time</label><input id="event-start" type="datetime-local"></div><div class="field"><label>Repeat</label><select id="event-repeat"><option value="none">Does not repeat</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></div><div class="field"><label>Reminder</label><select id="event-reminder"><option value="none">None</option><option value="15m">15 minutes before</option><option value="1h">1 hour before</option><option value="1d">1 day before</option></select></div><div class="field form-span"><label>Description</label><textarea id="event-desc" rows="3" maxlength="300"></textarea></div></div><div class="modal-actions"><button class="small-btn" id="event-cancel">Cancel</button><button class="small-btn primary" id="event-save">Create Event</button></div>`);$("event-cancel").onclick=closeModal;$("event-save").onclick=async()=>{const title=$("event-title").value.trim(),dt=$("event-start").value;if(!title||!dt){toast('Event','Title and start time are required.');return;}try{await db.collection('events').add({title,description:$("event-desc").value.trim(),startAt:firebase.firestore.Timestamp.fromDate(new Date(dt)),repeat:$("event-repeat").value,reminder:$("event-reminder").value,attendees:{},createdBy:currentUser.uid,createdByUsername:currentUsername,createdAt:FieldValue.serverTimestamp()});await writeAudit('event.create','',title,dt);closeModal();openHub('calendar');}catch(err){toast('Event failed',err.message);}};}
+async function rsvpEvent(id,status){try{const ref=db.collection('events').doc(id);await db.runTransaction(async tx=>{const snap=await tx.get(ref);if(!snap.exists)return;const a={...(snap.data().attendees||{})};if(a[currentUser.uid]===status)delete a[currentUser.uid];else a[currentUser.uid]=status;tx.update(ref,{attendees:a});});renderCalendar();}catch(err){toast('RSVP failed',err.message);}}
+function reminderMs(v){return v==='15m'?900000:v==='1h'?3600000:v==='1d'?86400000:0;}
+function startEventReminderLoop(){clearInterval(eventReminderTimer);checkEventReminders();eventReminderTimer=setInterval(checkEventReminders,60000);}
+async function checkEventReminders(){if(!currentUser||!navigator.onLine)return;try{const qs=await db.collection('events').limit(100).get(),now=Date.now();qs.forEach(doc=>{const e=doc.data(),d=nextEventDate(e),lead=reminderMs(e.reminder);if(!d||!lead)return;const delta=d.getTime()-now;if(delta>0&&delta<=lead){const key=`vd-reminder:${doc.id}:${d.toISOString()}:${e.reminder}`;if(localStorage.getItem(key))return;localStorage.setItem(key,'1');const title=`Upcoming: ${e.title||'Clan event'}`,body=`Starts ${d.toLocaleString()}`;toast(title,body);if(typeof Notification!=='undefined'&&Notification.permission==='granted')try{new Notification(title,{body});}catch{}}});}catch{}}
+
+function sumMap(m){return Object.values(m||{}).reduce((a,b)=>a+(Number(b)||0),0);}
+function objectiveExpired(o){if(!o.endsAt||!o.endsAt.toDate)return false;return o.endsAt.toDate().getTime()<Date.now();}
+async function renderObjectives(){try{const qs=await db.collection('objectives').orderBy('createdAt','desc').limit(100).get(),arr=[];qs.forEach(d=>arr.push({id:d.id,...d.data()}));$("hub-content").innerHTML=`<div class="hub-toolbar"><div class="spacer"></div>${canModerate()?'<button class="small-btn primary" id="obj-add">+ New objective</button>':''}</div><div class="hub-list">${arr.map(o=>{const total=sumMap(o.contributors),mine=Number((o.contributors||{})[currentUser.uid])||0;return `<div class="hub-row"><div><div class="hub-row-title">${escapeHtml(o.title||'Objective')} <span class="tag gold">${escapeHtml(o.cadence||'weekly')}</span>${objectiveExpired(o)?'<span class="tag bad">Ended</span>':''}</div><div class="hub-row-sub">${escapeHtml(o.description||'')} · Your contribution: ${mine.toLocaleString()}</div>${progressHtml(total,Number(o.target)||0)}</div><div class="hub-row-actions">${!objectiveExpired(o)?`<button class="small-btn primary obj-contrib" data-id="${o.id}">Add progress</button>`:''}${canModerate()?`<button class="small-btn danger obj-del" data-id="${o.id}">Delete</button>`:''}</div></div>`;}).join('')||'<div class="system-note">No objectives.</div>'}</div>`;if($("obj-add"))$("obj-add").onclick=createObjective;document.querySelectorAll('.obj-contrib').forEach(b=>b.onclick=()=>contributeObjective(b.dataset.id));document.querySelectorAll('.obj-del').forEach(b=>b.onclick=()=>deleteOpsDoc('objectives',b.dataset.id,'objective.delete'));}catch(err){hubError(err);}}
+function createObjective(){openOpsEditor('Create Objective',[['title','Objective',''],['cadence','Cadence','Weekly','select',['Daily','Weekly']],['target','Target',100,'number'],['description','Description','','textarea']],async v=>{const days=v.cadence==='Daily'?1:7;await db.collection('objectives').add({title:v.title,cadence:v.cadence,target:Math.max(1,Number(v.target)||1),description:v.description,contributors:{},createdBy:currentUser.uid,createdAt:FieldValue.serverTimestamp(),endsAt:firebase.firestore.Timestamp.fromDate(new Date(Date.now()+days*86400000))});await writeAudit('objective.create','',v.title,v.cadence);openHub('objectives');});}
+async function contributeObjective(id){const raw=prompt('How much progress did you contribute?','1'),n=Number(raw);if(!Number.isFinite(n)||n<=0)return;try{const ref=db.collection('objectives').doc(id);await db.runTransaction(async tx=>{const snap=await tx.get(ref);if(!snap.exists)return;const c={...(snap.data().contributors||{})};c[currentUser.uid]=(Number(c[currentUser.uid])||0)+n;tx.update(ref,{contributors:c});});renderObjectives();}catch(err){toast('Objective',err.message);}}
+
+async function renderStatistics(){try{const collections=['squads','buildLibrary','farmRequests','polls','events','treasuryDonations','dojoProjects','researchProjects'];const snaps=await Promise.all(collections.map(c=>db.collection(c).limit(500).get())),members=Object.values(usersCache),today=members.filter(u=>activityClass(u)==='today').length,week=members.filter(u=>activityClass(u)!=='old').length,roles={};members.forEach(u=>roles[getRole(u)]=(roles[getRole(u)]||0)+1);$("hub-content").innerHTML=`<div class="stat-grid"><div class="stat-box"><div class="metric">${members.length}</div><div class="metric-label">Members</div></div><div class="stat-box"><div class="metric">${today}</div><div class="metric-label">Active 24h</div></div><div class="stat-box"><div class="metric">${week}</div><div class="metric-label">Active 7d</div></div>${collections.map((c,i)=>`<div class="stat-box"><div class="metric">${snaps[i].size}</div><div class="metric-label">${escapeHtml(c.replace(/([A-Z])/g,' $1'))}</div></div>`).join('')}</div><div class="dashboard-grid" style="margin-top:12px"><div class="hub-card span-6"><h3>Clan ranks</h3>${ROLE_ORDER.map(r=>`<div class="hub-row"><div class="hub-row-title">${r}</div><span class="tag gold">${roles[r]||0}</span></div>`).join('')}</div><div class="hub-card span-6"><h3>Member activity</h3>${Object.values(usersCache).sort((a,b)=>(b.lastSeen?.seconds||0)-(a.lastSeen?.seconds||0)).slice(0,20).map(u=>`<div class="hub-row"><div><div class="hub-row-title"><span class="activity-dot ${activityClass(u)}"></span>${escapeHtml(u.username||'Tenno')}</div><div class="hub-row-sub">${escapeHtml(formatLastSeen(u.lastSeen))} · ${escapeHtml(displayRole(u))}</div></div></div>`).join('')}</div></div>`;}catch(err){hubError(err);}}
+
+function openOpsEditor(title,fields,onSave){const html=fields.map(f=>{const [id,label,val,type='text',opts=[]]=f;if(type==='textarea')return `<div class="field form-span"><label>${escapeHtml(label)}</label><textarea id="op-${id}" rows="3" maxlength="500">${escapeHtml(String(val??''))}</textarea></div>`;if(type==='select')return `<div class="field"><label>${escapeHtml(label)}</label><select id="op-${id}">${opts.map(o=>`<option ${String(o)===String(val)?'selected':''}>${escapeHtml(String(o))}</option>`).join('')}</select></div>`;return `<div class="field"><label>${escapeHtml(label)}</label><input id="op-${id}" type="${type}" value="${safeAttr(val??'')}" ${type==='number'?'min="0"':''}></div>`;}).join('');openModal(title,`<div class="form-grid">${html}</div><div class="modal-actions"><button class="small-btn" id="op-cancel">Cancel</button><button class="small-btn primary" id="op-save">Save</button></div>`);$("op-cancel").onclick=closeModal;$("op-save").onclick=async()=>{const vals={};fields.forEach(f=>vals[f[0]]=$(`op-${f[0]}`).value);try{$("op-save").disabled=true;await onSave(vals);closeModal();}catch(err){toast('Save failed',err.message);$("op-save").disabled=false;}};}
+async function saveOpsDoc(collection,id,data,auditAction){const ref=id?db.collection(collection).doc(id):db.collection(collection).doc();const payload={...data,updatedAt:FieldValue.serverTimestamp(),updatedBy:currentUser.uid};if(!id)payload.createdAt=FieldValue.serverTimestamp();await ref.set(payload,{merge:true});await writeAudit(auditAction,'',data.name||data.title||collection,id||ref.id);}
+async function deleteOpsDoc(collection,id,action){if(!confirm('Delete this entry?'))return;try{await db.collection(collection).doc(id).delete();await writeAudit(action,'','',id);loadHubTab(currentHubTab);}catch(err){toast('Delete failed',err.message);}}
+
+/* ============================================================
+   MEMBER SEARCH / THEMES / MOBILE / INSTALL / OFFLINE
+============================================================= */
+$("member-search").addEventListener('input',e=>{memberSearchTerm=e.target.value.trim();renderRoster();});$("member-role-filter").addEventListener('change',e=>{memberRoleFilter=e.target.value;renderRoster();});
+function applyTheme(theme){const valid=['void','orokin','corpus','grineer','infested'];theme=valid.includes(theme)?theme:'void';document.body.dataset.theme=theme;localStorage.setItem('vd-theme',theme);}
+applyTheme(localStorage.getItem('vd-theme')||'void');
+$("theme-btn").onclick=()=>{const cur=document.body.dataset.theme||'void';openModal('Appearance',`<div class="field"><label>Clan theme</label><select id="theme-select">${[['void','Voidmark'],['orokin','Orokin'],['corpus','Corpus'],['grineer','Grineer'],['infested','Infested']].map(([v,l])=>`<option value="${v}" ${v===cur?'selected':''}>${l}</option>`).join('')}</select></div><div class="install-hint">Theme is saved on this device.</div><div class="modal-actions"><button class="small-btn primary" id="theme-save">Apply</button></div>`);$("theme-save").onclick=()=>{applyTheme($("theme-select").value);closeModal();};};
+$("mobile-nav").addEventListener('click',e=>{const b=e.target.closest('[data-mobile]');if(!b)return;const v=b.dataset.mobile;if(v==='hub')openHub('dashboard');else if(v==='chat')openClanChat();else if(v==='squads')openSquadFinder();else if(v==='members'){setMobileNav('members');$("roster-panel").classList.add('open');$("roster-backdrop").classList.add('open');setTimeout(()=>$("member-search").focus(),100);}else if(v==='profile')showProfile(currentUser.uid);});
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;$("install-btn").classList.remove('hidden');});window.addEventListener('appinstalled',()=>{$("install-btn").classList.add('hidden');deferredInstallPrompt=null;toast('Installed','Voidmark Dynasty was added to your device.');});async function promptInstall(){if(!deferredInstallPrompt){toast('Install','Use your browser menu and choose Install/Add to Home Screen.');return;}deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;$("install-btn").classList.add('hidden');}$("install-btn").onclick=promptInstall;
+function updateNetworkState(){const online=navigator.onLine;$("offline-overlay").classList.toggle('hidden',online);if(!online)setConnectionState('offline','Offline');else setConnectionState('cached','Connecting');}
+window.addEventListener('online',()=>{updateNetworkState();touchPresence();});window.addEventListener('offline',updateNetworkState);$("offline-retry").onclick=()=>{updateNetworkState();if(navigator.onLine)location.reload();};updateNetworkState();
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(err=>console.warn('Service worker',err)));
 
 /* ============================================================
    MODAL CLOSE / ESCAPE
