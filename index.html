@@ -600,13 +600,15 @@ const TYPING_TIMEOUT_MS = 5000;   // how long a typing timestamp is considered "
  
 let currentUser = null;      // firebase auth user
 let currentUsername = null;
+let currentIsAdmin = false;  // mirrors users/{me}.isAdmin, kept live via unsubMe
 let currentView = "clan";    // "clan" or a uid for DM
-let usersCache = {};         // uid -> {username, mainFrame, lastSeen}
+let usersCache = {};         // uid -> {username, mainFrame, lastSeen, isAdmin, banned}
 let dmMetaCache = {};        // chatId -> {participants, unread, lastRead}
 let unsubClanChat = null;
 let unsubDM = null;
 let unsubDMMeta = null;
 let unsubTyping = null;
+let unsubMe = null;          // live listener on my own users/{uid} doc (admin flag + ban check)
 let heartbeatTimer = null;
 let tickTimer = null;
 let typingTickTimer = null;
@@ -751,9 +753,33 @@ auth.onAuthStateChanged(async (user) => {
     const snap = await db.collection("users").doc(user.uid).get();
     const data = snap.exists ? snap.data() : {username: user.email.split("@")[0]};
     currentUsername = data.username;
+    currentIsAdmin = data.isAdmin === true;
+ 
+    // Live-watch my own user doc so an admin toggling my isAdmin/banned flag
+    // takes effect immediately without needing to reload.
+    if (unsubMe) unsubMe();
+    unsubMe = db.collection("users").doc(user.uid).onSnapshot((s) => {
+      const d = s.data();
+      if (!d) return;
+      if (d.banned === true) {
+        // Firestore rules already block this uid from writing anything;
+        // this just gets them off the screen and back to the login form.
+        alert("Your account has been suspended by an admin.");
+        auth.signOut();
+        return;
+      }
+      currentUsername = d.username || currentUsername;
+      currentIsAdmin = d.isAdmin === true;
+      if (currentUser) $("me-username").textContent = currentUsername;
+      // admin status can change which action buttons render on messages/roster
+      if (lastRenderedMsgs.length) renderMessages(lastRenderedMsgs);
+      renderRoster();
+    });
+ 
     enterChatScreen();
   } else {
     currentUser = null;
+    currentIsAdmin = false;
     exitChatScreen();
   }
 });
@@ -791,6 +817,7 @@ function exitChatScreen(){
   if (unsubDM) unsubDM();
   if (unsubDMMeta) unsubDMMeta();
   if (unsubTyping) unsubTyping();
+  if (unsubMe) { unsubMe(); unsubMe = null; }
   stopHeartbeat();
   clearInterval(typingTickTimer);
   usersCache = {};
@@ -855,23 +882,61 @@ function renderRoster(){
     const meta = dmMetaCache[chatId];
     const unread = meta && meta.unread && meta.unread[currentUser.uid] ? meta.unread[currentUser.uid] : 0;
     const active = currentView === uid ? "active" : "";
+    const banned = u.banned === true;
+    const banBtn = currentIsAdmin ? `
+        <button type="button" class="btn-ghost roster-ban-btn" data-uid="${uid}"
+          title="${banned ? 'Lift suspension' : 'Suspend this user'}"
+          style="flex:none;padding:4px 8px;font-size:11px;${banned ? 'border-color:var(--online);color:var(--online);' : 'border-color:var(--danger);color:var(--danger);'}">
+          ${banned ? 'Unban' : 'Ban'}
+        </button>` : "";
     return `
-      <div class="roster-item ${active}" data-uid="${uid}">
+      <div class="roster-item ${active}" data-uid="${uid}" style="${banned ? 'opacity:0.5;' : ''}">
         <div class="avatar">${escapeHtml(initials(u.username))}<div class="status-dot ${online ? 'online':''}"></div></div>
         <div class="roster-item-info">
-          <div class="roster-item-name">${escapeHtml(u.username)}</div>
+          <div class="roster-item-name">${escapeHtml(u.username)}${u.isAdmin ? ' <span style="color:var(--gold);font-size:10px;">★</span>' : ''}${banned ? ' <span style="color:var(--danger);font-size:10px;">(banned)</span>' : ''}</div>
           <div class="roster-item-sub">${online ? (u.mainFrame ? escapeHtml(u.mainFrame) : "Online") : escapeHtml(formatLastSeen(u.lastSeen))}</div>
         </div>
         ${unread > 0 ? `<div class="unread-badge">${unread > 9 ? '9+' : unread}</div>` : ""}
+        ${banBtn}
       </div>`;
   }).join("");
  
   list.querySelectorAll(".roster-item").forEach(el => {
-    el.addEventListener("click", () => {
+    el.addEventListener("click", (e) => {
+      if (e.target.closest(".roster-ban-btn")) return; // handled separately below
       openDM(el.getAttribute("data-uid"));
       closeMobileRoster();
     });
   });
+ 
+  list.querySelectorAll(".roster-ban-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const uid = btn.getAttribute("data-uid");
+      toggleBan(uid);
+    });
+  });
+}
+ 
+/* ============================================================
+   ADMIN: KICK / BAN
+   Firestore rules only let a request whose caller's own
+   users/{uid}.isAdmin == true flip the `banned` field on someone
+   else's user doc. Once banned, the rules block that uid from
+   writing (sending messages, typing, DMs) anywhere in the app,
+   and the live listener on their own doc above force-signs them
+   out. Note: this cannot stop the uid from *authenticating* with
+   Firebase Auth itself (that requires the Admin SDK / a Cloud
+   Function to disable the account) — it blocks them at the
+   Firestore layer and boots them from the UI the moment it happens.
+============================================================= */
+function toggleBan(uid){
+  const u = usersCache[uid];
+  if (!u) return;
+  const nextBanned = !(u.banned === true);
+  if (!confirm(`${nextBanned ? 'Ban' : 'Unban'} ${u.username}?`)) return;
+  db.collection("users").doc(uid).update({ banned: nextBanned })
+    .catch(err => alert("Action failed: " + (err.message || err)));
 }
  
 function updateDMSubtitle(uid){
@@ -995,10 +1060,12 @@ function renderMessages(msgs){
       receiptHtml = `<span class="msg-receipt ${isRead ? 'read' : ''}" title="${isRead ? 'Read' : 'Sent'}">${isRead ? '✓✓' : '✓'}</span>`;
     }
  
-    const actionsHtml = own ? `
+    const canEdit = own;
+    const canDelete = own || currentIsAdmin;
+    const actionsHtml = (canEdit || canDelete) ? `
         <div class="msg-actions">
-          <button type="button" class="msg-action-btn edit-btn" title="Edit message">✎</button>
-          <button type="button" class="msg-action-btn delete-btn" title="Delete message">🗑</button>
+          ${canEdit ? '<button type="button" class="msg-action-btn edit-btn" title="Edit message">✎</button>' : ''}
+          ${canDelete ? `<button type="button" class="msg-action-btn delete-btn" title="${own ? 'Delete message' : 'Delete message (admin)'}">🗑</button>` : ''}
         </div>` : "";
  
     return `
