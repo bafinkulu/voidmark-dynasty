@@ -1,0 +1,41 @@
+name: Update Warframe data
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: warframe-data-pages
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node refresh-warframe-data.cjs
+      - name: Save refreshed data
+        run: |
+          git config user.name "Voidmark data updater"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          if ! git diff --cached --quiet; then
+            git commit -m "Refresh public Warframe data"
+            git push
+          fi
+      - uses: actions/configure-pages@v5
+      - name: Prepare public site only
+        run: |
+          mkdir public-site
+          cp index.html sw.js manifest.json public-site/
+          cp -r data public-site/
+          find . -maxdepth 1 -type f \( -name '*.png' -o -name '*.ico' -o -name 'demo.html' \) -exec cp '{}' public-site/ \;
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public-site
+      - uses: actions/deploy-pages@v4
