@@ -1,1 +1,1 @@
-{"checkedAt":"2026-10-08T16:55:22.900Z","available":false,"errors":["https://api.warframe.com/cdn/worldState.php returned 403","Missing or stale world state"]}
+{"checkedAt":"2026-10-08T21:36:23.518Z","available":true,"source":"https://api.warframe.com/cdn/worldState.php","feedTime":"2026-10-08T21:36:04.000Z"}
